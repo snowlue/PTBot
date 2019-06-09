@@ -10,7 +10,6 @@ pycosat==0.6.3
 pycparser==2.19
 pyOpenSSL==19.0.0
 PySocks==1.6.8
-pywin32==223
 requests==2.21.0
 ruamel-yaml==0.15.46
 six==1.12.0
