@@ -10,7 +10,7 @@ for event in longpoll.listen():
 		id = event.object.peer_id
 		text = event.object.text
 		
-		if payload == 'wait idea' and text != 'Вернуться ↩': payload = 'sending idea'
+		if payload == 'wait idea': payload = 'sending idea'
 		else: payload = event.object.payload
 
 		if payload == '{"command":"start"}': 
@@ -82,12 +82,15 @@ for event in longpoll.listen():
 
 			elif payload == '{"command":"back"}':
 				msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопок: \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#support — администрация, помощь и вопросы \n#buy — товары, магазин и покупки', board=keyboards.menu)
+				payload = ''
 
 			elif event.object.text.find('/restartptbot0921') != -1:
 				msg(id, 'Перезапуск клавиатуры...', board=keyboards.menu)
+				payload = ''
 
 	if event.type == VkBotEventType.MESSAGE_REPLY:
 		text = event.object.text
 		id = event.object.peer_id
 		if event.object.text.find('/restartptbot0921') != -1:
 			msg(id, 'Перезапуск клавиатуры...', board=keyboards.menu)
+			payload = ''
