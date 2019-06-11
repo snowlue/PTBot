@@ -88,9 +88,6 @@ for event in longpoll.listen():
 			elif payload == '{"command":"back"}':
 				msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопок: \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#support — администрация, помощь и вопросы \n#buy — магазин услуг и покупки', board=keyboards.menu)
 
-			elif event.object.text.find('/restartptbot0921') != -1:
-				msg(id, 'Перезапуск клавиатуры...', board=keyboards.menu)
-				payload = ''
 
 	if event.type == VkBotEventType.MESSAGE_REPLY:
 		text = event.object.text
