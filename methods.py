@@ -2,7 +2,7 @@ import vk_api, random
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
 def msg(id, message='', board=[], attach=''):
-	vk.method('messages.send', {'peer_id': id, 'random_id': random.randint(-2147483648, 2147483647), 'message': message, 'attachment': attach, 'sticker_id': stick, 'keyboard': board})
+	vk.method('messages.send', {'peer_id': id, 'random_id': random.randint(-2147483648, 2147483647), 'message': message, 'attachment': attach, 'keyboard': board})
 	print('Сообщение для {} отправлено'.format(id))
 
 def name(id):
