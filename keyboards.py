@@ -1,7 +1,7 @@
 import vk_api, json
 from vk_api.keyboard import VkKeyboard
 
-back, menu, buy, buyback, partner = VkKeyboard(True), VkKeyboard(True), VkKeyboard(True), VkKeyboard(True), VkKeyboard(False)
+back, menu, buy, buyback = VkKeyboard(True), VkKeyboard(True), VkKeyboard(True), VkKeyboard(True)
 
 def backboard(back):
 	back.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
@@ -38,11 +38,8 @@ def buybackboard(buyback):
 	buyback.add_button('Вернуться &#8617;', 'negative', '{"command":"back_buy"}')
 	return buyback.get_keyboard()
 
-def partnerboard(partner):
-	partner.add_button('SAPOD - Подкаст из мира San Andreas &#127897;', 'primary', '{"command":"sapod"}')
-	partner.add_line()
-	partner.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
-	return partner.get_keyboard()
+def partnerboard():
+	return json.dumps({"one_time":False, "buttons":[[{"color": "primary", "action":{"type":"text", "payload":"{\"command\":\"sapod\"}", "label":"SAPOD - Подкаст из мира San Andreas &#127897;"}}], [{"action":{"type":"open_app", "app_id":7007699, "label":"TryOut — платформа для тестирования VK Mini Apps &#128640;"}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back\"}","label":"Вернуться &#8617;"}}]]})
 
 def locateboard():
 	return json.dumps({"one_time":True, "buttons":[[{"action":{"type":"location", "payload":"{\"command\":\"sent_location\"}"}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back_buy\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
@@ -54,4 +51,3 @@ back = backboard(back)
 menu = menuboard(menu)
 buy = buyboard(buy)
 buyback = buybackboard(buyback)
-partner = partnerboard(partner)
