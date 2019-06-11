@@ -6,7 +6,7 @@ def msg(id, message='', stick=0, attach='', board=[]):
 	print('Сообщение для {} отправлено'.format(id))
 
 def name(id):
-	return vk.method('users.get', {'user_ids': id, 'fields': 'first_name, last_name', 'name_case': 'Nom'})
+	return vk.method('users.get', {'user_ids': id, 'fields': 'first_name, last_name', 'name_case': 'Nom'})[0]
 
 def give_attachs(msg_id):
 	attachs, stick = [], 0

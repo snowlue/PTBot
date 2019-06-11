@@ -33,9 +33,9 @@ for event in longpoll.listen():
 					print('{} отправляет идею'.format(id))
 
 				if attachs[1] == 0:
-					msg(2000000002, '#botidea \n[id{}|{} {}] предлагает идею: \n{}\n\nОтветить пользователю: https://vk.com/gim132868814?sel={}'.format(id ,name(id)[0]['first_name'], name(id)[0]['last_name'], text, id), attach=attachs[0])
+					msg(2000000002, '#botidea \n[id{}|{} {}] предлагает идею: \n{}\n\nОтветить пользователю: https://vk.com/gim132868814?sel={}'.format(id ,name(id)['first_name'], name(id)['last_name'], text, id), attach=attachs[0])
 				else:
-					msg(2000000002, '#botidea \n[id{}|{} {}] предлагает идею, отправляя стикер. \nОтветить пользователю: https://vk.com/gim132868814?sel={}'.format(id ,name(id)[0]['first_name'], name(id)[0]['last_name'], id), attach=attachs[0])
+					msg(2000000002, '#botidea \n[id{}|{} {}] предлагает идею, отправляя стикер. \nОтветить пользователю: https://vk.com/gim132868814?sel={}'.format(id ,name(id)['first_name'], name(id)['last_name'], id), attach=attachs[0])
 					msg(2000000002, stick=attachs[1])
 
 				msg(id, 'Ваша идея будет доставлена команде PTCodding в аккуратном конвертике с Вашей печатью. Ожидайте ответа! &#8986;', board=keyboards.menu)
@@ -65,7 +65,7 @@ for event in longpoll.listen():
 				msg(id, 'Мы работаем над этим разделом...\nSoon...', board=keyboards.buyback)
 
 			elif payload == '{"command":"location"}':
-				msg(id, 'У вас есть возможность отправить Ваше местоположение сразу для заказа звукозаписи или ремонта ПК.', board=keyboards.locateboard())
+				msg(id, 'У Вас есть возможность отправить Ваше местоположение сразу для заказа звукозаписи или ремонта ПК.', board=keyboards.locateboard())
 
 			elif payload == '{"command":"sent_location"}':
 				msg(id, 'Спасибо за отправку Вашего местоположения! Команда PTCodding обязательно учтёт это при оформлении заказа! &#128521;', board=keyboards.buy)
