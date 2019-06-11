@@ -98,3 +98,12 @@ for event in longpoll.listen():
 		if event.object.text.find('/restartptbot0921') != -1:
 			msg(id, 'Перезапуск клавиатуры...', board=keyboards.menu)
 			payload = ''
+
+
+	if event.type == VkBotEventType.VKPAY_TRANSACTION:
+		id = event.object.from_id
+		amount = event.object.amount * 1000
+		if description in event.object and event.object.description:
+			msg(2000000002, '{} перевёл ₽{} с комментарием «{}»'.format(name(id), amount, text))
+		else:
+			msg(2000000002, '{} пожертвовал ₽{}'.format(name(id), amount))
