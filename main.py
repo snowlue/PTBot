@@ -80,6 +80,13 @@ for event in longpoll.listen():
 			elif payload == '{"command":"sapod"}':
 				msg(id, '@sapod (SAPOD) — первый и единственный подкаст из мира San Andreas. \n\nВедущий подкаста Стич часто появляется и в подкастах от PTCodding. Вместе с Павлом они обсуждают новости уходящего месяца в IT-кухне и жарко спорят, кто лучше: iOS или Android &#128521;\n\nСлушайте Стича в его подкасте SAPOD — vk.com/sapod')
 
+			elif payload == '{"command":"back"}':
+				msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопок: \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#support — администрация, помощь и вопросы \n#buy — товары, магазин и покупки', board=keyboards.menu)
+				payload = ''
+
+			elif event.object.text.find('/restartptbot0921') != -1:
+				msg(id, 'Перезапуск клавиатуры...', board=keyboards.menu)
+				payload = ''
 
 	if event.type == VkBotEventType.MESSAGE_REPLY:
 		text = event.object.text
