@@ -19,7 +19,16 @@ for event in longpoll.listen():
 		print('{} отправляет сообщение с текстом "{}"'.format(id, text))
 
 		if id != 2000000002:
-			if payload == '{"command":"idea"}':
+
+			if payload == '{"command":"back"}':
+				msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопок: \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#support — администрация, помощь и вопросы \n#buy — товары, магазин и покупки', board=keyboards.menu)
+				payload = ''
+
+			elif event.object.text.find('/restartptbot0921') != -1:
+				msg(id, 'Перезапуск клавиатуры...', board=keyboards.menu)
+				payload = ''
+
+			elif payload == '{"command":"idea"}':
 				msg(id, "Предложите свою идею для PTCodding! Я pассмотрю её, и команда PTCodding обязательно отпишется Вам в этом диалоге. \nПостарайтесь соблюдать структуру: \n1. Лаконичное название, отражающее суть идеи \n2. Собственно идея, её развёртка \n3. Средства и блага, необходимые для развёртки Вашей идеи \n4. Расскажите, чем Ваша идея поможет сообществу \nНе забудьте, что необходимо уместить Вашу идею в рамках одного сообщения. Спасибо за Ваше содействие и помощь! \n\nС уважением, PTBot.", board=keyboards.back)
 				payload = 'wait idea'
 
@@ -27,12 +36,10 @@ for event in longpoll.listen():
 				attachs	= give_attachs(event.object.id)
 				if attachs[0] != '': print('{} отправляет идею и прикрепляет {}'.format(id, attachs[0]))
 				else: print('{} отправляет идею'.format(id))
-
 				if attachs[1] == 0: msg(2000000002, '#botidea \n[id{}|{} {}] предлагает идею: \n{}\n\nОтветить пользователю: https://vk.com/gim132868814?sel={}'.format(id ,name(id)[0]['first_name'], name(id)[0]['last_name'], text, id), attach=attachs[0])
 				else:
 					msg(2000000002, '#botidea \n[id{}|{} {}] предлагает идею, отправляя стикер. \nОтветить пользователю: https://vk.com/gim132868814?sel={}'.format(id ,name(id)[0]['first_name'], name(id)[0]['last_name'], id), attach=attachs[0])
 					msg(2000000002, stick=attachs[1])
-
 				msg(id, 'Ваша идея будет доставлена команде PTCodding в аккуратном конвертике с Вашей печатью. Ожидайте ответа!', board=keyboards.menu)
 
 			elif payload == '{"command":"partnership"}':
@@ -80,13 +87,6 @@ for event in longpoll.listen():
 			elif payload == '{"command":"sapod"}':
 				msg(id, '@sapod (SAPOD) — первый и единственный подкаст из мира San Andreas. \n\nВедущий подкаста Стич часто появляется и в подкастах от PTCodding. Вместе с Павлом они обсуждают новости уходящего месяца в IT-кухне и жарко спорят, кто лучше: iOS или Android &#128521;\n\nСлушайте Стича в его подкасте SAPOD — vk.com/sapod')
 
-			elif payload == '{"command":"back"}':
-				msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопок: \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#support — администрация, помощь и вопросы \n#buy — товары, магазин и покупки', board=keyboards.menu)
-				payload = ''
-
-			elif event.object.text.find('/restartptbot0921') != -1:
-				msg(id, 'Перезапуск клавиатуры...', board=keyboards.menu)
-				payload = ''
 
 	if event.type == VkBotEventType.MESSAGE_REPLY:
 		text = event.object.text
