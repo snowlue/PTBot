@@ -75,6 +75,8 @@ for event in longpoll.listen():
 			
 			elif payload == '{"command":"back_buy"}':
 				msg(id, 'Возвращаю Вас в меню товаров. Напоминаю назначение кнопок: \n\n', board=keyboards.buy)
+			elif payload == '{"command":"news"}':
+				msg(id, 'Мы работаем над этим разделом...\nSoon...', board=keyboards.back)
 
 			elif payload == '{"command":"donat"}':
 				msg(id, 'Я очень хочу кушать. Я голодный... &#128546; Дайте, пожалуйста, пару долларов, чтобы мне купили пончик. &#127849;', board=keyboards.payboard('action=transfer-to-group&group_id=132868814&aid=10'))

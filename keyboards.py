@@ -14,6 +14,8 @@ def menuboard(menu):
 	menu.add_button('#support &#10067;', 'positive', '{"command":"support"}')
 	menu.add_button('#buy &#128717;', 'positive', '{"command":"buy"}')
 	menu.add_line()
+	menu.add_button('#news &#128240;', 'positive', '{"command":"news"}')
+	menu.add_line()
 	menu.add_button('Пожертвовать &#9749;', payload='{"command":"donat"}')
 	menu.add_line()
 	menu.add_button('Наши партнёры &#128101;', payload='{"command":"partners"}')
