@@ -87,6 +87,9 @@ try:
 						
 				elif payload == '{"command":"cart_ui"}':
 					msg(id, 'Загляните в привычный магазин, если мой Вам оказался не по душе: https://vk.com/market-132868814 &#128072;', keyboards.buyback)
+
+				elif payload == '{"command":"order"}':
+					msg(2000000002, 'Вас вызывают для оформления заказа. Пройдите, пожалуйста, по этой ссылке: https://vk.com/gim132868814?sel={}'.format(id))
 				
 				elif payload == '{"command":"back_buy"}':
 					msg(id, 'Возвращаю Вас в меню товаров.', keyboards.buy)
@@ -115,21 +118,22 @@ try:
 			text = event.object.text
 			id = event.object.peer_id
 
-			if text.find('Заказ оформлен') != -1:
-				msg(text.split()[-1], 'Спасибо Вам за оформление заказа. В дальнейшем мои операторы будут поддерживать с Вами периодическую связь по поводу заказа, а я всегда работаю здесь для Вас, в этом чате ', keyboards.menu)
-				payload = ''
+			if id == 2000000002:
+				if text.find('Заказ оформлен') != -1:
+					msg(text.split()[-1], 'Спасибо Вам за оформление заказа. В дальнейшем мои операторы будут поддерживать с Вами периодическую связь по поводу заказа, а я всегда работаю здесь для Вас, в этом чате ', keyboards.menu)
+					payload = ''
 
-			elif text.find('Перезапуск') != -1:
-				msg(text.split()[-1], 'Меня перезапустили. Не знаю, почему, но так надо, видимо.')
+				elif text.find('Перезапуск') != -1:
+					msg(text.split()[-1], 'Меня перезапустили. Не знаю, почему, но так надо, видимо.')
 
-			elif text.find('Баг-перезапуск') != -1:
-				msg(text.split()[-1], 'Добрый день! Видимо, наш PTBot где-то сломался, но сейчас уже всё хорошо. Приносим свои извинения, и перезапускаем его...')
-				msg(text.split()[-1], 'Привет, это снова я, Ваш любимый PTBot! &#128075; Добро пожаловать в старое доброе меню — где какие кнопки, я думаю, Вы и сами знаете! &#128526;')
+				elif text.find('Баг-перезапуск') != -1:
+					msg(text.split()[-1], 'Добрый день! Видимо, наш PTBot где-то сломался, но сейчас уже всё хорошо. Приносим свои извинения, и перезапускаем его...')
+					msg(text.split()[-1], 'Привет, это снова я, Ваш любимый PTBot! &#128075; Добро пожаловать в старое доброе меню — где какие кнопки, я думаю, Вы и сами знаете! &#128526;')
 
-			elif text.find('Оплатить-') != -1:
-				amount = text.split('-')[1]
-				description = text.split()[3].split('"')[1]
-				msg(id, 'Меня попросили запустить для Вас оплату «{}» на сумму в ₽{}. Подтвердите оплату...'.format(description, amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(amount, description)))
+				elif text.find('Оплатить-') != -1:
+					amount = text.split('-')[1]
+					description = text.split()[3].split('"')[1]
+					msg(id, 'Меня попросили запустить для Вас оплату «{}» на сумму в ₽{}. Подтвердите оплату...'.format(description, amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(amount, description)))
 
 
 

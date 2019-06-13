@@ -54,7 +54,7 @@ def cartboard(id, item='', adding=True):
 		board.add_button(it.split('-')[0]+' &#10134;', payload='{"command":"delete_{}"}'.format(it.split('-')[1]))
 		board.add_line()
 	if cart:
-		board.add_button('Оформить заказ &#128222;', 'positive', '{"command":"book"}')
+		board.add_button('Оформить заказ &#128222;', 'positive', '{"command":"order"}')
 		board.add_line()
 	if item:
 		board.add_button('Вернуться &#8617;', 'negative', '{"command":"{}"}'.format(item.split('-')[1]))
