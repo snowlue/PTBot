@@ -58,7 +58,7 @@ def cartboard(id, item='', adding=True):
 		board.add_line()
 	if item:
 		board.add_button('Вернуться &#8617;', 'negative', '{"command":"{}"}'.format(item.split('-')[1]))
-	else
+	else:
 		board.add_button('Вернуться &#8617;', 'negative', '{"command":"back_buy"}')
 
 	return board.get_keyboard()
