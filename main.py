@@ -124,8 +124,8 @@ for event in longpoll.listen():
 				msg(text.split()[-1], 'Добрый день! Видимо, наш PTBot где-то сломался, но сейчас уже всё хорошо. Приносим свои извинения, и перезапускаем его...')
 				msg(text.split()[-1], 'Привет, это снова я, Ваш любимый PTBot! &#128075; Добро пожаловать в старое доброе меню — где какие кнопки, я думаю, Вы и сами знаете! &#128526;', keyboards.menu)
 
-			elif text.find('Оплатить-') != -1:
-				amount = text.split('-')[1]
+			elif text.find('Оплатить') != -1:
+				amount = text.split()[1]
 				description = text.split()[3].split('"')[1]
 				msg(text.split()[-1], 'Меня попросили запустить для Вас оплату «{}» на сумму в ₽{}. Подтвердите оплату...'.format(description, amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(amount, description)))
 
