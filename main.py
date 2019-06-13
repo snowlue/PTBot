@@ -99,7 +99,6 @@ try:
 
 				elif payload == '{"command":"donat"}':
 					msg(id, 'Я очень хочу кушать. Я голодный... &#128546; Дайте, пожалуйста, пару долларов, чтобы мне купили пончик. &#127849;', keyboards.payboard('action=transfer-to-group&group_id=132868814&aid=10'))
-					raise Exception
 
 				elif payload == '{"command":"partners"}':
 					msg(id, 'Добро пожаловать в список партнёров команды PTCodding! Я от лица команды говорю жизни спасибо за то, что она свела нас с этими людьми, ведь без их поддержки и помощи у нас бы ничего не получилось бы! &#128079;', keyboards.partner)
@@ -114,11 +113,6 @@ try:
 					msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопок: \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#support — администрация, помощь и вопросы \n#buy — магазин услуг и покупки', keyboards.menu)
 
 
-		if event.type == VkBotEventType.MESSAGE_REPLY:
-			text = event.object.text
-			id = event.object.peer_id
-
-			if id == 2000000002:
 				if text.find('Заказ оформлен') != -1:
 					msg(text.split()[-1], 'Спасибо Вам за оформление заказа. В дальнейшем мои операторы будут поддерживать с Вами периодическую связь по поводу заказа, а я всегда работаю здесь для Вас, в этом чате ', keyboards.menu)
 					payload = ''
