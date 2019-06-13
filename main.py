@@ -133,7 +133,7 @@ try:
 				elif text.find('Оплатить-') != -1:
 					amount = text.split('-')[1]
 					description = text.split()[3].split('"')[1]
-					msg(id, 'Меня попросили запустить для Вас оплату «{}» на сумму в ₽{}. Подтвердите оплату...'.format(description, amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(amount, description)))
+					msg(text.split()[-1], 'Меня попросили запустить для Вас оплату «{}» на сумму в ₽{}. Подтвердите оплату...'.format(description, amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(amount, description)))
 
 
 
