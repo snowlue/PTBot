@@ -3,44 +3,45 @@ from methods import *
 
 payload = ''
 
-for event in longpoll.listen():
+try:
+	for event in longpoll.listen():
 
-	print('\n\nЛовлю события... Поймал {}'.format(event.type))
-	if event.type == VkBotEventType.MESSAGE_NEW:
-		id = event.object.peer_id
-		text = event.object.text
-		
-		if payload == 'wait idea' and text != 'Вернуться ↩':
-			payload = 'sending idea'
-		else:
-			payload = event.object.payload
+		print('\n\nЛовлю события... Поймал {}'.format(event.type))
+		if event.type == VkBotEventType.MESSAGE_NEW:
+			id = event.object.peer_id
+			text = event.object.text
+			
+			if payload == 'wait idea' and text != 'Вернуться ↩':
+				payload = 'sending idea'
+			else:
+				payload = event.object.payload
 
-		if payload == '{"command":"start"}': 
-			msg(id, 'Привет, я PTBot, дворецкий команды PTCodding. \nНажмите на нужную Вам кнопку, чтобы команда нашла Вас и быстро ответила, а я не потерял Вас =) \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#support — администрация, помощь и вопросы \n#buy — магазин услуг и покупки', keyboards.menu)
+			if payload == '{"command":"start"}': 
+				msg(id, 'Привет, я PTBot, дворецкий команды PTCodding. \nНажмите на нужную Вам кнопку, чтобы команда нашла Вас и быстро ответила, а я не потерял Вас =) \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#support — администрация, помощь и вопросы \n#buy — магазин услуг и покупки', keyboards.menu)
 
-		print('{} отправляет сообщение с текстом "{}"'.format(id, text))
+			print('{} отправляет сообщение с текстом "{}"'.format(id, text))
 
-		if id != 2000000002:
-			if payload == '{"command":"idea"}':
-				msg(id, "Предложите свою идею для PTCodding! Я pассмотрю её, и команда PTCodding обязательно отпишется Вам в этом диалоге. \nПостарайтесь соблюдать структуру: \n1. Лаконичное название, отражающее суть идеи \n2. Собственно идея, её развёртка \n3. Средства и блага, необходимые для развёртки Вашей идеи \n4. Расскажите, чем Ваша идея поможет сообществу \nНе забудьте, что необходимо уместить Вашу идею в рамках одного сообщения. Спасибо за Ваше содействие и помощь! \n\nС уважением, PTBot.", keyboards.back)
-				payload = 'wait idea'
+			if id != 2000000002:
+				if payload == '{"command":"idea"}':
+					msg(id, "Предложите свою идею для PTCodding! Я pассмотрю её, и команда PTCodding обязательно отпишется Вам в этом диалоге. \nПостарайтесь соблюдать структуру: \n1. Лаконичное название, отражающее суть идеи \n2. Собственно идея, её развёртка \n3. Средства и блага, необходимые для развёртки Вашей идеи \n4. Расскажите, чем Ваша идея поможет сообществу \nНе забудьте, что необходимо уместить Вашу идею в рамках одного сообщения. Спасибо за Ваше содействие и помощь! \n\nС уважением, PTBot.", keyboards.back)
+					payload = 'wait idea'
 
-			elif payload == 'sending idea':
-				attachs	= give_attachs(event.object.id)
-				if attachs:
-					print('{} отправляет идею и прикрепляет {}'.format(id, attachs))
-				else:
-					print('{} отправляет идею'.format(id))
+				elif payload == 'sending idea':
+					attachs	= give_attachs(event.object.id)
+					if attachs:
+						print('{} отправляет идею и прикрепляет {}'.format(id, attachs))
+					else:
+						print('{} отправляет идею'.format(id))
 
 				msg(2000000002, '#botidea \n[id{}|{} {}] предлагает идею: \n{}\n\nОтветить пользователю: https://vk.com/gim132868814?sel={}'.format(id ,name(id)['first_name'], name(id)['last_name'], text, id), attach=attachs)
 
-				msg(id, 'Ваша идея будет доставлена команде PTCodding в аккуратном конвертике с Вашей печатью. Ожидайте ответа! &#8986;', keyboards.menu)
+					msg(id, 'Ваша идея будет доставлена команде PTCodding в аккуратном конвертике с Вашей печатью. Ожидайте ответа! &#8986;', keyboards.menu)
 
-			elif payload == '{"command":"partnership"}':
-				msg(id, 'Мы работаем над этим разделом...\nSoon...', keyboards.back)
+				elif payload == '{"command":"partnership"}':
+					msg(id, 'Мы работаем над этим разделом...\nSoon...', keyboards.back)
 
-			elif payload == '{"command":"support"}':
-				msg(id, 'Мы работаем над этим разделом...\nSoon...', keyboards.back)
+				elif payload == '{"command":"support"}':
+					msg(id, 'Мы работаем над этим разделом...\nSoon...', keyboards.back)
 
 			elif payload == '{"command":"buy"}':
 				msg(id, 'Мы работаем над этим разделом...\nSoon...', board=keyboards.buy)
@@ -89,20 +90,46 @@ for event in longpoll.listen():
 			
 			elif payload == '{"command":"back"}':
 				msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопок: \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#support — администрация, помощь и вопросы \n#buy — магазин услуг и покупки', keyboards.menu)
+				elif payload == '{"command":"news"}':
+					msg(id, 'Мы работаем над этим разделом...\nSoon...', keyboards.back)
+
+				elif payload == '{"command":"donat"}':
+					msg(id, 'Я очень хочу кушать. Я голодный... &#128546; Дайте, пожалуйста, пару долларов, чтобы мне купили пончик. &#127849;', keyboards.payboard('action=transfer-to-group&group_id=132868814&aid=10'))
+					raise Exception
+
+				elif payload == '{"command":"partners"}':
+					msg(id, 'Добро пожаловать в список партнёров команды PTCodding! Я от лица команды говорю жизни спасибо за то, что она свела нас с этими людьми, ведь без их поддержки и помощи у нас бы ничего не получилось бы! &#128079;', keyboards.partner)
+				
+				elif payload == '{"command":"sapod"}':
+					msg(id, '@sapod (SAPOD) — первый и единственный подкаст из мира San Andreas. \n\nВедущий подкаста Стич часто появляется и в подкастах от PTCodding. Вместе с Павлом они обсуждают новости уходящего месяца в IT-кухне и жарко спорят, кто лучше: iOS или Android &#128521;\n\nСлушайте Стича в его подкасте SAPOD — vk.com/sapod &#128072;')
+
+				elif payload == '{"command":"tryout"}':
+					msg(id, 'TryOut — платформа для тестирования сервисов VK Mini Apps. \n\nНаш недавний партнёр @hit2hat (Степан Новожилов) делает так, чтобы обнаружение и исправление багов не было рутиной как для тестеров, так и для самих разработчиков. \nПавел и Степан давно работают вместе над разными проектами и постигают хакатоны. &#9994; \n\nЗаглядывайте в TryOut Степана — там PTCodding иногда проводит бета-тестирования своих проектов &#128071;', keyboards.appboard(id))
+				
+				elif payload == '{"command":"back"}':
+					msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопок: \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#support — администрация, помощь и вопросы \n#buy — магазин услуг и покупки', keyboards.menu)
 
 
-	if event.type == VkBotEventType.MESSAGE_REPLY:
-		text = event.object.text
-		id = event.object.peer_id
-		if event.object.text.find('/restartptbot0921') != -1:
-			msg(id, 'Перезапуск клавиатуры...', keyboards.menu)
-			payload = ''
+		if event.type == VkBotEventType.MESSAGE_REPLY:
+			text = event.object.text
+			id = event.object.peer_id
+
+			elif text.find('Перезапуск') != -1:
+				msg(text.split()[-1], 'Меня перезапустили. Не знаю, почему, но так надо, видимо.')
+
+			elif text.find('Баг-перезапуск') != -1:
+				msg(text.split()[-1], 'Добрый день! Видимо, наш PTBot где-то сломался, но сейчас уже всё хорошо. Приносим свои извинения, и перезапускаем его...')
+				msg(text.split()[-1], 'Привет, это снова я, Ваш любимый PTBot! &#128075; Добро пожаловать в старое доброе меню — где какие кнопки, я думаю, Вы и сами знаете! &#128526;')
 
 
-	if event.type == VkBotEventType.VKPAY_TRANSACTION:
-		id = event.object.from_id
-		amount = event.object.amount * 1000
-		if description in event.object and event.object.description:
-			msg(2000000002, '{} перевёл ₽{} с комментарием «{}»'.format(name(id), amount, text))
-		else:
-			msg(2000000002, '{} пожертвовал ₽{}'.format(name(id), amount))
+
+		if event.type == VkBotEventType.VKPAY_TRANSACTION:
+			id = event.object.from_id
+			amount = event.object.amount * 1000
+			if description in event.object and event.object.description:
+				msg(2000000002, '{} перевёл ₽{} с комментарием «{}»'.format(name(id), amount, text))
+			else:
+				msg(2000000002, '{} пожертвовал ₽{}'.format(name(id), amount))
+
+except Exception:
+	msg(2000000002, 'Бот упал с лестницы самодержавия! @pavetranquil (Павел), помоги ему подняться — исправь баг &#128513;')
