@@ -51,13 +51,13 @@ def cartboard(id, item='', adding=True):
 			cart.remove(item)
 
 	for it in cart:
-		board.add_button(it.split('-')[0]+' &#10134;', payload='{"command":"delete_{}"}'.format(it.split('-')[1]))
+		board.add_button(it.split('-')[0]+' &#10134;', payload='{"command":"delete_' + it.split('-')[1] + '"}')
 		board.add_line()
 	if cart:
 		board.add_button('Оформить заказ &#128222;', 'positive', '{"command":"order"}')
 		board.add_line()
 	if item:
-		board.add_button('Вернуться &#8617;', 'negative', '{"command":"{}"}'.format(item.split('-')[1]))
+		board.add_button('Вернуться &#8617;', 'negative', '{"command":"' + item.split('-')[1] + '"}')
 	else:
 		board.add_button('Вернуться &#8617;', 'negative', '{"command":"back_buy"}')
 
