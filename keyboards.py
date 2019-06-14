@@ -56,10 +56,8 @@ def cartboard(id, item='', adding=True):
 	if cart:
 		board.add_button('Оформить заказ &#128222;', 'positive', '{"command":"order"}')
 		board.add_line()
-	if item:
-		board.add_button('Вернуться &#8617;', 'negative', '{"command":"' + item.split('-')[1] + '"}')
-	else:
-		board.add_button('Вернуться &#8617;', 'negative', '{"command":"back_buy"}')
+
+	board.add_button('Вернуться &#8617;', 'negative', '{"command":"back_buy"}')
 
 	return board.get_keyboard()
 
