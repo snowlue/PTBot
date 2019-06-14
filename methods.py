@@ -20,7 +20,7 @@ def get_attachs(msg_id):
 	attachs = ', '.join(attachs)
 	return attachs
 
-def get_poll(id, own_id, var_id=0)
+def get_poll(id, own_id, var_id=0):
 	poll = vk.polls.getById(owner_id=own_id, poll_id=id)
 	name = poll['question']
 	if var_id:
