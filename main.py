@@ -27,13 +27,13 @@ for event in longpoll.listen():
 				payload = 'wait idea'
 
 			elif payload == 'sending idea':
-				attachs	= give_attachs(event.object.id)
+				attachs	= get_attachs(event.object.id)
 				if attachs:
 					print('{} отправляет идею и прикрепляет {}'.format(id, attachs))
 				else:
 					print('{} отправляет идею'.format(id))
 
-				msg(2000000002, '#botidea \n[id{}|{} {}] предлагает идею: \n{}\n\nОтветить пользователю: https://vk.com/gim132868814?sel={}'.format(id ,name(id)['first_name'], name(id)['last_name'], text, id), attach=attachs)
+				msg(2000000002, '#botidea \n[id{0}|{1} {2}] предлагает идею: \n{3}\n\nОтветить пользователю: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name'], text), attach=attachs)
 
 				msg(id, 'Ваша идея будет доставлена команде PTCodding в аккуратном конвертике с Вашей печатью. Ожидайте ответа! &#8986;', keyboards.menu)
 
@@ -90,6 +90,7 @@ for event in longpoll.listen():
 
 			elif payload == '{"command":"order"}':
 				msg(2000000002, 'Вас вызывают для оформления заказа. Пройдите, пожалуйста, по этой ссылке: https://vk.com/gim132868814?sel={}'.format(id))
+				msg(id, 'Ожидайте... Скоро мои операторы свяжутся с Вами для уточнения деталей и оплаты заказа! &#8986;')
 			
 			elif payload == '{"command":"back_buy"}':
 				msg(id, 'Возвращаю Вас в меню товаров.', keyboards.buy)
@@ -121,7 +122,7 @@ for event in longpoll.listen():
 				msg(text.split()[-1], 'Меня перезапустили. Не знаю, почему, но так надо, видимо.', keyboards.menu)
 
 			elif text.find('Баг-перезапуск') != -1:
-				msg(text.split()[-1], 'Добрый день! Видимо, наш PTBot где-то сломался, но сейчас уже всё хорошо. Приносим свои извинения, и перезапускаем его...')
+				msg(text.split()[-1], 'Добрый день, {}! Видимо, наш PTBot где-то сломался, но сейчас уже всё хорошо. Приносим свои извинения, и перезапускаем его...\n\nС уважением, команда PTCodding.'.format(name(int(text.split()[-1]))['first_name']))
 				msg(text.split()[-1], 'Привет, это снова я, Ваш любимый PTBot! &#128075; Добро пожаловать в старое доброе меню — где какие кнопки, я думаю, Вы и сами знаете! &#128526;', keyboards.menu)
 
 			elif text.find('Оплатить') != -1:
@@ -140,5 +141,4 @@ for event in longpoll.listen():
 			msg(2000000002, '{} пожертвовал ₽{}'.format(name(id), amount))
 
 # except Exception:
-# 	print(keyboards.carts)
-# 	msg(2000000002, 'Бот упал с лестницы самодержавия! @pavetranquil (Павел), помоги ему подняться — исправь баг &#128513;')
+# 	msg(2000000002, 'Бот упал с лестницы самодержавия, споткнувшись о событие {}! @pavetranquil (Павел), помоги ему подняться — исправь баг &#128513;'.format(event.type))
