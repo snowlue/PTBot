@@ -21,7 +21,7 @@ for event in longpoll.listen():
 
 		print('{} отправляет сообщение с текстом "{}"'.format(id, text))
 
-		if id != 2000000002:
+		if id != 2000000002 and id in [223166352, 165504240, 186823615, 484735371]:
 			if payload == '{"command":"idea"}':
 				msg(id, "Предложите свою идею для PTCodding! Я pассмотрю её, и команда PTCodding обязательно отпишется Вам в этом диалоге. \nПостарайтесь соблюдать структуру: \n1. Лаконичное название, отражающее суть идеи \n2. Собственно идея, её развёртка \n3. Средства и блага, необходимые для развёртки Вашей идеи \n4. Расскажите, чем Ваша идея поможет сообществу \nНе забудьте, что необходимо уместить Вашу идею в рамках одного сообщения. Спасибо за Ваше содействие и помощь! \n\nС уважением, PTBot.", keyboards.back)
 				payload = 'wait idea'
@@ -125,20 +125,97 @@ for event in longpoll.listen():
 				msg(text.split()[-1], 'Добрый день, {}! Видимо, наш PTBot где-то сломался, но сейчас уже всё хорошо. Приносим свои извинения, и перезапускаем его...\n\nС уважением, команда PTCodding.'.format(name(int(text.split()[-1]))['first_name']))
 				msg(text.split()[-1], 'Привет, это снова я, Ваш любимый PTBot! &#128075; Добро пожаловать в старое доброе меню — где какие кнопки, я думаю, Вы и сами знаете! &#128526;', keyboards.menu)
 
-			elif text.find('Оплатить') != -1:
-				amount = text.split()[1]
-				description = text.split()[3].split('"')[1]
-				msg(text.split()[-1], 'Меня попросили запустить для Вас оплату «{}» на сумму в ₽{}. Подтвердите оплату...'.format(description, amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(amount, description)))
-
+			elif text.find('Запросить') != -1:
+				try:
+					amount = text.split()[1]
+					description = ' '.join(text.split()[3:-2])
+					msg(text.split()[-1], 'Меня попросили запросить у Вас оплату для «{}» на сумму в ₽{}. Подтвердите оплату...'.format(description, amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(amount, description)))
+				except Exception:
+					msg(2000000002, 'Возникла проблема при запросе оплаты у пользователя. \nНе забывайте про формат: «Запросить [price] для "[description]" у [id]». \n\nЗагляните в консоль и повторите попытку: dashboard.heroku.com/apps/ptcodding-bot/logs')
 
 
 	if event.type == VkBotEventType.VKPAY_TRANSACTION:
 		id = event.object.from_id
 		amount = event.object.amount * 1000
 		if description in event.object and event.object.description:
-			msg(2000000002, '{} перевёл ₽{} с комментарием «{}»'.format(name(id), amount, text))
+			if sex(id) == 1:
+				msg(2000000002, '{} перевела ₽{} с комментарием «{}»'.format(name(id), amount, text))
+			else:
+				msg(2000000002, '{} перевёл ₽{} с комментарием «{}»'.format(name(id), amount, text))
 		else:
-			msg(2000000002, '{} пожертвовал ₽{}'.format(name(id), amount))
+			if sex(id) == 1:
+				msg(2000000002, '{} пожертвовала ₽{}'.format(name(id), amount))
+			else:
+				msg(2000000002, '{} пожертвовал ₽{}'.format(name(id), amount))
+
+
+	if event.type == VkBotEventType.MESSAGE_ALLOW:
+		id = event.object.user_id
+		if sex(id) == 1:
+			msg(2000000002, '&#128236; [id{0}|{1} {2}] разрешила присылать сообщения. \nДиалог с подписчиком: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']))
+		else:
+			msg(2000000002, '&#128236; [id{0}|{1} {2}] разрешил присылать сообщения. \nДиалог с подписчиком: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']))
+	
+	if event.type == VkBotEventType.MESSAGE_DENY:
+		id = event.object.user_id
+		if sex(id) == 1:
+			msg(2000000002, '&#128234; [id{0}|{1} {2}] запретил присылать сообщения.'.format(id, name(id)['first_name'], name(id)['last_name']))
+		else:
+			msg(2000000002, '&#128234; [id{0}|{1} {2}] запретил присылать сообщения.'.format(id, name(id)['first_name'], name(id)['last_name']))
+
+
+	if event.type == VkBotEventType.GROUP_JOIN:
+		id = event.object.user_id
+		if sex(id) == 1:
+			msg(2000000002, '&#128152; [id{0}|{1} {2}] вступила в PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+		else:
+			msg(2000000002, '&#128152; [id{0}|{1} {2}] вступил в PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+
+
+	if event.type == VkBotEventType.GROUP_LEAVE:
+		id = event.object.user_id
+		if event.object.self:
+			if sex(id) == 1:
+				msg(2000000002, '&#128148; [id{0}|{1} {2}] покинула PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+			else:
+				msg(2000000002, '&#128148; [id{0}|{1} {2}] покинул PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+		else:
+			if sex(id) == 1:
+				msg(2000000002, '&#128683; [id{0}|{1} {2}] удалёна из PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+			else:
+				msg(2000000002, '&#128683; [id{0}|{1} {2}] удалён из PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+
+
+	if event.type == VkBotEventType.USER_UNBLOCK and event.object.by_end_date:
+		id = event.object.user_id
+		if sex(id) == 1:
+			msg(2000000002, '&#127379; [id{0}|{1} {2}] удалёна из чёрного списка PTCodding по истечении срока блокировки.'.format(id, name(id)['first_name'], name(id)['last_name']))
+		else:
+			msg(2000000002, '&#127379; [id{0}|{1} {2}] удалён из чёрного списка PTCodding по истечении срока блокировки.'.format(id, name(id)['first_name'], name(id)['last_name']))
+
+
+	if event.type == VkBotEventType.POLL_VOTE_NEW:
+		id = event.object.user_id
+		poll = get_poll(event.object.poll_id, event.object.owner_id, event.object.option_id)
+		if sex(id) == 1:
+			msg(2000000002, '&#128152; [id{0}|{1} {2}] проголосовала в опросе «{3}» за вариант «{4}»'.format(id, name(id)['first_name'], name(id)['last_name'], poll[0], poll[1]))
+		else:
+			msg(2000000002, '&#128152; [id{0}|{1} {2}] проголосовал в опросе «{3}» за вариант «{4}»'.format(id, name(id)['first_name'], name(id)['last_name'], poll[0], poll[1]))
+
+
+	if event.type == VkBotEventType.GROUP_OFFICERS_EDIT:
+		id = event.object.admin_id
+		change_id = event.object.user_id
+		levels = {0: 'Нет полномочий', 1: 'Модератор', 2: 'Редактор', 3: 'Администратор'}
+		level_old = levels[event.object.level_old]
+		level_new = levels[event.object.level_new]
+		msg(2000000002, '&#128152; [id{0}|{1} {2}] изменил полномочия участника команды PTCodding [id{3}|{4} {5}] с «{6}» на «{7}»'.format(id, name(id)['first_name'], name(id)['last_name'], change_id, name(change_id, 'gen')['first_name'], name(change_id, 'gen')['last_name'], level_old, level_new))
+
+
+	if event.type == VkBotEventType.GROUP_CHANGE_PHOTO:
+		id = event.object.user_id
+		msg(2000000002, '&#128152; [id{0}|{1} {2}] изменил главную фотографию PTCodding'.format(id, name(id)['first_name'], name(id)['last_name']))
+		
 
 # except Exception:
 # 	msg(2000000002, 'Бот упал с лестницы самодержавия, споткнувшись о событие {}! @pavetranquil (Павел), помоги ему подняться — исправь баг &#128513;'.format(event.type))
