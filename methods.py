@@ -41,6 +41,7 @@ def isMember(group, id):
 	return vk.groups.isMember(group_id=group, user_id=id)
 
 
-vk_session = vk_api.VkApi(token='a65f7372579bd5eb918cf5c04562e251e243500569ae286f8d489383813ebb4043e3d711b8b4b8aad831f')
+vk_session = vk_api.VkApi(token='f5b418b767430283a5ae08615df495e27530e0b8d23a8b54ed5a68610ad71abbed6949e1a419d5671ea4c')
+
 vk = vk_session.get_api()
 longpoll = VkBotLongPoll(vk_session, '132868814', 0)
