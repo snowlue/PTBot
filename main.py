@@ -198,9 +198,9 @@ for event in longpoll.listen():
 		id = event.object.user_id
 		poll = get_poll(event.object.poll_id, event.object.owner_id, event.object.option_id)
 		if sex(id) == 1:
-			msg(2000000002, '&#128152; [id{0}|{1} {2}] проголосовала в опросе «{3}» за вариант «{4}»'.format(id, name(id)['first_name'], name(id)['last_name'], poll[0], poll[1]))
+			msg(2000000002, '&#128152; [id{0}|{1} {2}] проголосовала в опросе «{3}» за вариант «{4}»\nvk.com/poll{5}_{6}'.format(id, name(id)['first_name'], name(id)['last_name'], poll[0], poll[1]), event.object.owner_id, event.object.poll_id)
 		else:
-			msg(2000000002, '&#128152; [id{0}|{1} {2}] проголосовал в опросе «{3}» за вариант «{4}»'.format(id, name(id)['first_name'], name(id)['last_name'], poll[0], poll[1]))
+			msg(2000000002, '&#128152; [id{0}|{1} {2}] проголосовал в опросе «{3}» за вариант «{4}»\nvk.com/poll{5}_{6}'.format(id, name(id)['first_name'], name(id)['last_name'], poll[0], poll[1]), event.object.owner_id, event.object.poll_id)
 
 
 	elif event.type == VkBotEventType.GROUP_OFFICERS_EDIT:
