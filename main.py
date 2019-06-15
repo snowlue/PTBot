@@ -168,9 +168,9 @@ for event in longpoll.listen():
 	elif event.type == VkBotEventType.GROUP_JOIN:
 		id = event.object.user_id
 		if sex(id) == 1:
-			msg(2000000002, '&#128152; [id{0}|{1} {2}] вступила в PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+			msg(2000000002, '&#128150; [id{0}|{1} {2}] вступила в PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
 		else:
-			msg(2000000002, '&#128152; [id{0}|{1} {2}] вступил в PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+			msg(2000000002, '&#128150; [id{0}|{1} {2}] вступил в PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
 
 
 	elif event.type == VkBotEventType.GROUP_LEAVE:
@@ -224,7 +224,7 @@ for event in longpoll.listen():
 
 	elif event.type == VkBotEventType.GROUP_CHANGE_PHOTO:
 		id = event.object.user_id
-		msg(2000000002, '&#128152; [id{0}|{1} {2}] изменил главную фотографию PTCodding'.format(id, name(id)['first_name'], name(id)['last_name']))
+		msg(2000000002, '&#128444 [id{0}|{1} {2}] изменил главную фотографию PTCodding'.format(id, name(id)['first_name'], name(id)['last_name']))
 		
 
 # except Exception:
