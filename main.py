@@ -209,7 +209,7 @@ for event in longpoll.listen():
 		levels = {0: 'Нет полномочий', 1: 'Модератор', 2: 'Редактор', 3: 'Администратор'}
 		level_old = levels[event.object.level_old]
 		level_new = levels[event.object.level_new]
-		msg(2000000002, '&#128152; [id{0}|{1} {2}] изменил полномочия участника команды PTCodding [id{3}|{4} {5}] с «{6}» на «{7}»'.format(id, name(id)['first_name'], name(id)['last_name'], change_id, name(change_id, 'gen')['first_name'], name(change_id, 'gen')['last_name'], level_old, level_new))
+		msg(2000000002, '&#127385; [id{0}|{1} {2}] изменил полномочия участника команды PTCodding [id{3}|{4} {5}] с «{6}» на «{7}»'.format(id, name(id)['first_name'], name(id)['last_name'], change_id, name(change_id, 'gen')['first_name'], name(change_id, 'gen')['last_name'], level_old, level_new))
 
 
 	elif event.type == VkBotEventType.GROUP_CHANGE_PHOTO:
