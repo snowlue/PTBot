@@ -156,6 +156,7 @@ for event in longpoll.listen():
 		else:
 			msg(2000000002, '&#128236; [id{0}|{1} {2}] разрешил присылать сообщения. \nДиалог с подписчиком: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']))
 	
+
 	elif event.type == VkBotEventType.MESSAGE_DENY:
 		id = event.object.user_id
 		if sex(id) == 1:
@@ -185,6 +186,16 @@ for event in longpoll.listen():
 			else:
 				msg(2000000002, '&#128683; [id{0}|{1} {2}] удалён из PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
 
+
+	elif event.type == VkBotEventType.WALL_REPOST:
+		id = event.object.from_id
+		wall_id = event.object.owner_id
+		post_id = event.object.id
+		if sex(id) == 1:
+			msg(2000000002, '&#128226; [id{0}|{1} {2}] сделала репост записи из PTCodding. \nСсылка на запись: vk.com/wall{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], wall_id, post_id))
+		else:
+			msg(2000000002, '&#128226; [id{0}|{1} {2}] сделал репост записи из PTCodding. \nСсылка на запись: vk.com/wall{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], wall_id, post_id))
+	
 
 	elif event.type == VkBotEventType.USER_UNBLOCK and event.object.by_end_date:
 		id = event.object.user_id
