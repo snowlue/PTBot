@@ -134,7 +134,7 @@ for event in longpoll.listen():
 					msg(2000000002, 'Возникла проблема при запросе оплаты у пользователя. \nНе забывайте про формат: «Запросить [price] для "[description]" у [id]». \n\nЗагляните в консоль и повторите попытку: dashboard.heroku.com/apps/ptcodding-bot/logs')
 
 
-	if event.type == VkBotEventType.VKPAY_TRANSACTION:
+	elif event.type == VkBotEventType.VKPAY_TRANSACTION:
 		id = event.object.from_id
 		amount = event.object.amount * 1000
 		if description in event.object and event.object.description:
@@ -149,14 +149,14 @@ for event in longpoll.listen():
 				msg(2000000002, '{} пожертвовал ₽{}'.format(name(id), amount))
 
 
-	if event.type == VkBotEventType.MESSAGE_ALLOW:
+	elif event.type == VkBotEventType.MESSAGE_ALLOW:
 		id = event.object.user_id
 		if sex(id) == 1:
 			msg(2000000002, '&#128236; [id{0}|{1} {2}] разрешила присылать сообщения. \nДиалог с подписчиком: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']))
 		else:
 			msg(2000000002, '&#128236; [id{0}|{1} {2}] разрешил присылать сообщения. \nДиалог с подписчиком: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']))
 	
-	if event.type == VkBotEventType.MESSAGE_DENY:
+	elif event.type == VkBotEventType.MESSAGE_DENY:
 		id = event.object.user_id
 		if sex(id) == 1:
 			msg(2000000002, '&#128234; [id{0}|{1} {2}] запретил присылать сообщения.'.format(id, name(id)['first_name'], name(id)['last_name']))
@@ -164,7 +164,7 @@ for event in longpoll.listen():
 			msg(2000000002, '&#128234; [id{0}|{1} {2}] запретил присылать сообщения.'.format(id, name(id)['first_name'], name(id)['last_name']))
 
 
-	if event.type == VkBotEventType.GROUP_JOIN:
+	elif event.type == VkBotEventType.GROUP_JOIN:
 		id = event.object.user_id
 		if sex(id) == 1:
 			msg(2000000002, '&#128152; [id{0}|{1} {2}] вступила в PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
@@ -172,7 +172,7 @@ for event in longpoll.listen():
 			msg(2000000002, '&#128152; [id{0}|{1} {2}] вступил в PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
 
 
-	if event.type == VkBotEventType.GROUP_LEAVE:
+	elif event.type == VkBotEventType.GROUP_LEAVE:
 		id = event.object.user_id
 		if event.object.self:
 			if sex(id) == 1:
@@ -186,7 +186,7 @@ for event in longpoll.listen():
 				msg(2000000002, '&#128683; [id{0}|{1} {2}] удалён из PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
 
 
-	if event.type == VkBotEventType.USER_UNBLOCK and event.object.by_end_date:
+	elif event.type == VkBotEventType.USER_UNBLOCK and event.object.by_end_date:
 		id = event.object.user_id
 		if sex(id) == 1:
 			msg(2000000002, '&#127379; [id{0}|{1} {2}] удалёна из чёрного списка PTCodding по истечении срока блокировки.'.format(id, name(id)['first_name'], name(id)['last_name']))
@@ -194,7 +194,7 @@ for event in longpoll.listen():
 			msg(2000000002, '&#127379; [id{0}|{1} {2}] удалён из чёрного списка PTCodding по истечении срока блокировки.'.format(id, name(id)['first_name'], name(id)['last_name']))
 
 
-	if event.type == VkBotEventType.POLL_VOTE_NEW:
+	elif event.type == VkBotEventType.POLL_VOTE_NEW:
 		id = event.object.user_id
 		poll = get_poll(event.object.poll_id, event.object.owner_id, event.object.option_id)
 		if sex(id) == 1:
@@ -203,7 +203,7 @@ for event in longpoll.listen():
 			msg(2000000002, '&#128152; [id{0}|{1} {2}] проголосовал в опросе «{3}» за вариант «{4}»'.format(id, name(id)['first_name'], name(id)['last_name'], poll[0], poll[1]))
 
 
-	if event.type == VkBotEventType.GROUP_OFFICERS_EDIT:
+	elif event.type == VkBotEventType.GROUP_OFFICERS_EDIT:
 		id = event.object.admin_id
 		change_id = event.object.user_id
 		levels = {0: 'Нет полномочий', 1: 'Модератор', 2: 'Редактор', 3: 'Администратор'}
@@ -212,7 +212,7 @@ for event in longpoll.listen():
 		msg(2000000002, '&#128152; [id{0}|{1} {2}] изменил полномочия участника команды PTCodding [id{3}|{4} {5}] с «{6}» на «{7}»'.format(id, name(id)['first_name'], name(id)['last_name'], change_id, name(change_id, 'gen')['first_name'], name(change_id, 'gen')['last_name'], level_old, level_new))
 
 
-	if event.type == VkBotEventType.GROUP_CHANGE_PHOTO:
+	elif event.type == VkBotEventType.GROUP_CHANGE_PHOTO:
 		id = event.object.user_id
 		msg(2000000002, '&#128152; [id{0}|{1} {2}] изменил главную фотографию PTCodding'.format(id, name(id)['first_name'], name(id)['last_name']))
 		
