@@ -137,16 +137,16 @@ for event in longpoll.listen():
 	elif event.type == VkBotEventType.VKPAY_TRANSACTION:
 		id = event.object.from_id
 		amount = event.object.amount * 1000
-		if description in event.object and event.object.description:
+		if event.object.description:
 			if sex(id) == 1:
-				msg(2000000002, '{} перевела ₽{} с комментарием «{}»'.format(name(id), amount, text))
+				msg(2000000002, '[id{0}|{1} {2}] перевела ₽{3} с комментарием «{4}»'.format(id, name(id)['first_name'], name(id)['last_name'], amount, text))
 			else:
-				msg(2000000002, '{} перевёл ₽{} с комментарием «{}»'.format(name(id), amount, text))
+				msg(2000000002, '[id{0}|{1} {2}] перевёл ₽{3} с комментарием «{4}»'.format(id, name(id)['first_name'], name(id)['last_name'], amount, text))
 		else:
 			if sex(id) == 1:
-				msg(2000000002, '{} пожертвовала ₽{}'.format(name(id), amount))
+				msg(2000000002, '[id{0}|{1} {2}] пожертвовала ₽{3}'.format(id, name(id)['first_name'], name(id)['last_name'], amount))
 			else:
-				msg(2000000002, '{} пожертвовал ₽{}'.format(name(id), amount))
+				msg(2000000002, '[id{0}|{1} {2}] пожертвовал ₽{3}'.format(id, name(id)['first_name'], name(id)['last_name'], amount))
 
 
 	elif event.type == VkBotEventType.MESSAGE_ALLOW:
@@ -203,9 +203,9 @@ for event in longpoll.listen():
 		post_id = event.object.post_id
 		owner_id = event.object.owner_id
 		if sex(id) == 1:
-			msg(2000000002, '&#128226; [id{0}|{1} {2}] оставила комментарий к записи из PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
+			msg(2000000002, '&#128196; [id{0}|{1} {2}] оставила комментарий к записи из PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
 		else:
-			msg(2000000002, '&#128226; [id{0}|{1} {2}] оставила комментарий к записи из PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
+			msg(2000000002, '&#128196; [id{0}|{1} {2}] оставил комментарий к записи из PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
 
 
 	elif event.type == VkBotEventType.USER_UNBLOCK and event.object.by_end_date:
