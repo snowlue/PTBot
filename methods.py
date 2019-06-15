@@ -23,17 +23,6 @@ def get_attachs(msg_id):
 	attachs = ', '.join(attachs)
 	return attachs
 
-def get_poll(id, own_id, var_id=0):
-	poll = vk.polls.getById(owner_id=own_id, poll_id=id)
-	name = poll['question']
-	if var_id:
-		for ans in poll['answers']:
-			if ans['id'] == var_id:
-				answer = ans['text']
-		return [name, answer]
-	else:
-		return name
-
 def online():
 	vk.groups.enableOnline(group_id=132868814)
 
