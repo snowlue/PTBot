@@ -197,6 +197,17 @@ for event in longpoll.listen():
 			msg(2000000002, '&#128226; [id{0}|{1} {2}] сделал репост записи из PTCodding. \nСсылка на запись: vk.com/wall{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], wall_id, post_id))
 	
 
+	elif event.type == VkBotEventType.WALL_REPLY_NEW:
+		id = event.object.from_id
+		comment_id = event.object.id
+		post_id = event.object.post_id
+		owner_id = event.object.owner_id
+		if sex(id) == 1:
+			msg(2000000002, '&#128226; [id{0}|{1} {2}] оставила комментарий к записи из PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
+		else:
+			msg(2000000002, '&#128226; [id{0}|{1} {2}] оставила комментарий к записи из PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
+
+
 	elif event.type == VkBotEventType.USER_UNBLOCK and event.object.by_end_date:
 		id = event.object.user_id
 		if sex(id) == 1:
