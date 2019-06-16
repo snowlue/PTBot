@@ -1,9 +1,9 @@
 import vk_api, random
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
-def msg(id, message='', board=[], attach=''):
+def msg(id, message='', board=[], forward=''):
 	if board:
-		vk.messages.send(peer_id=id, random_id=random.randint(-2147483648, 2147483647), message=message, attachment=attach, keyboard=board)
+		vk.messages.send(peer_id=id, random_id=random.randint(-2147483648, 2147483647), message=message, forward_messages=forward, keyboard=board)
 	else:
 		vk_session.method('messages.send', {'peer_id': id, 'random_id': random.randint(-2147483648, 2147483647), 'message': message, 'attachment': attach, 'keyboard': board})
 	print('Сообщение с текстом «{}» для {} отправлено'.format(message ,id))
