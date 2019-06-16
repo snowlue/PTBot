@@ -6,7 +6,7 @@ payload = ''
 # try:
 for event in longpoll.listen():
 
-	print('\n\nЛовлю события... Поймал {}'.format(event.type))
+	print('\nЛовлю события... Поймал {}'.format(event.type))
 	if event.type == VkBotEventType.MESSAGE_NEW:
 		id = event.object.peer_id
 		text = event.object.text
@@ -30,7 +30,7 @@ for event in longpoll.listen():
 			elif payload == 'sending idea':
 				print('{} отправляет идею'.format(id))
 
-				msg(2000000002, '#botidea \n[id{0}|{1} {2}] предлагает идею: \n{3}\n\nОтветить пользователю: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name'], text), forward=str(msg_id))
+				msg(2000000002, '#botidea \n[id{0}|{1} {2}] предлагает идею.\n\nОтветить пользователю: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']), forward=str(msg_id))
 
 				msg(id, 'Ваша идея будет доставлена команде PTCodding в аккуратном конвертике с Вашей печатью. Ожидайте ответа! &#8986;', keyboards.menu)
 
