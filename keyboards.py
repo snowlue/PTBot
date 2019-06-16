@@ -69,14 +69,12 @@ def buybackboard(buyback):
 def partnerboard(partner):
 	partner.add_button('SAPOD — Подкаст из мира San Andreas &#127897;', 'primary', '{"command":"sapod"}')
 	partner.add_line()
-	partner.add_button('TryOut — тестирование VK Mini Apps &#128640;', 'primary', '{"command":"tryout"}')
-	partner.add_line()
 	partner.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return partner.get_keyboard()
 
 
-def appboard(id):
-	return json.dumps({"one_time":True, "buttons":[[{"action":{"type":"open_app", "app_id":7007699, "owner_id": id, "label":"TryOut — тестирование VK Mini Apps &#128640;"}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
+def appboard(app_id, id, label):
+	return json.dumps({"one_time":True, "buttons":[[{"action":{"type":"open_app", "app_id": app_id, "owner_id": id, "label": label}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
 
 def locateboard():
 	return json.dumps({"one_time":True, "buttons":[[{"action":{"type":"location", "payload":"{\"command\":\"sent_location\"}"}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back_buy\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
@@ -86,6 +84,9 @@ def itemboard(item_name):
 
 def payboard(hash):
 	return json.dumps({"one_time":True, "buttons":[[{"action":{"type":"vkpay", "hash":hash}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
+
+def donatboard(hash):
+	return json.dumps({"one_time":True, "buttons":[[{"action":{"type":"vkpay", "hash":hash}}], [{"color": "primary", "action":{"type":"text", "payload":'{"command": "app_donat"}', "label":"Задонатить через приложение &#128242;"}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
 
 back = backboard(back)
 menu = menuboard(menu)
