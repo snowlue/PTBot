@@ -205,6 +205,27 @@ for event in longpoll.listen():
 			msg(2000000002, '&#128196; [id{0}|{1} {2}] оставил комментарий к записи из PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
 
 
+	elif event.type == VkBotEventType.BOARD_POST_NEW:
+		id = event.object.from_id
+		comment_id = event.object.id
+		topic_id = event.object.topic_id
+		owner_id = event.object.topic_owner_id
+		if sex(id) == 1:
+			msg(2000000002, '&#128196; [id{0}|{1} {2}] оставила комментарий в обсуждении PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=board{3}_{4}_?post={5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, topic_id, comment_id))
+		else:
+			msg(2000000002, '&#128196; [id{0}|{1} {2}] оставил комментарий в обсуждении PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=board{3}_{4}_?post={5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, topic_id, comment_id))
+
+
+	elif event.type == VkBotEventType.MARKET_COMMENT_NEW:
+		id = event.object.from_id
+		item_id = event.object.item_id
+		market_id = event.object.market_owner_id
+		if sex(id) == 1:
+			msg(2000000002, '&#128196; [id{0}|{1} {2}] оставила комментарий к товару PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=product{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], market_id, item_id))
+		else:
+			msg(2000000002, '&#128196; [id{0}|{1} {2}] оставил комментарий к товару PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=product{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], market_id, item_id))
+
+
 	elif event.type == VkBotEventType.USER_UNBLOCK and event.object.by_end_date:
 		id = event.object.user_id
 		if sex(id) == 1:
