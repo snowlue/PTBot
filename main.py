@@ -1,4 +1,4 @@
-﻿import keyboards
+﻿import keyboards, urllib.parse
 from methods import *
 
 payload = ''
@@ -126,7 +126,7 @@ for event in longpoll.listen():
 				try:
 					amount = text.split()[1]
 					description = ' '.join(text.split()[3:-2])
-					msg(text.split()[-1], 'Меня попросили запросить у Вас оплату для «{}» на сумму в ₽{}. Подтвердите оплату...'.format(description, amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(amount, description)))
+					msg(text.split()[-1], 'Меня попросили запросить у Вас оплату для «{}» на сумму в ₽{}. Подтвердите оплату...'.format(description, amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(amount, urllib.parse.quote(description))))
 				except Exception:
 					msg(2000000002, 'Возникла проблема при запросе оплаты у пользователя. \nНе забывайте про формат: «Запросить [price] для "[description]" у [id]». \n\nЗагляните в консоль и повторите попытку: dashboard.heroku.com/apps/ptcodding-bot/logs')
 
