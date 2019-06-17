@@ -121,18 +121,21 @@ for event in longpoll.listen():
 
 			elif text.find('перезапуск') != -1:
 				msg(text.split()[-1], 'Меня перезапустили. Не знаю, почему, но так надо, видимо.', keyboards.menu)
+				msg(2000000002, 'Перезапуск клавиатуры у [id{0}|{1} {2}] прошёл успешно!'.format(text.split()[-1], name(text.split()[-1], 'gen')['first_name'], name(text.split()[-1], 'gen')['last_name']))
 
 			elif text.find('баг-перезапуск') != -1:
 				msg(text.split()[-1], 'Добрый день, {}! Видимо, наш PTBot где-то сломался, но сейчас уже всё хорошо. Приносим свои извинения, и перезапускаем его...\n\nС уважением, команда PTCodding.'.format(name(int(text.split()[-1]))['first_name']))
 				msg(text.split()[-1], 'Привет, это снова я, Ваш любимый PTBot! &#128075; Добро пожаловать в старое доброе меню — где какие кнопки, я думаю, Вы и сами знаете! &#128526;', keyboards.menu)
+				msg(2000000002, 'Баг-перезапуск у [id{0}|{1} {2}] прошёл успешно!'.format(text.split()[-1], name(text.split()[-1], 'gen')['first_name'], name(text.split()[-1], 'gen')['last_name']))
 
 			elif text.find('запросить') != -1:
 				try:
 					amount = text.split()[2]
 					description = ' '.join(text.split()[4:-2])
 					msg(text.split()[-1], 'Меня попросили запросить у Вас оплату для «{}» на сумму в ₽{}. Подтвердите оплату...'.format(description, amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(amount, urllib.parse.quote(description))))
+					msg(2000000002, 'Запрос оплаты у [id{0}|{1} {2}] прошёл успешно!'.format(text.split()[-1], name(text.split()[-1], 'gen')['first_name'], name(text.split()[-1], 'gen')['last_name']))
 				except Exception:
-					msg(2000000002, 'Возникла проблема при запросе оплаты у пользователя. \nНе забывайте про формат: «Запросить [price] для "[description]" у [id]». \n\nЗагляните в консоль и повторите попытку: dashboard.heroku.com/apps/ptcodding-bot/logs')
+					msg(2000000002, 'Возникла проблема при запросе оплаты у пользователя. \nНе забывайте про формат: «Запросить [price] для [description] у [id]». \n\nЗагляните в консоль и повторите попытку: dashboard.heroku.com/apps/ptcodding-bot/logs')
 
 
 	elif event.type == VkBotEventType.VKPAY_TRANSACTION:
