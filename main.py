@@ -17,7 +17,7 @@ for event in longpoll.listen():
 		else:
 			payload = event.object.payload
 
-		if id > 2000000000 and (payload == '{"command":"start"}' or text.lower() == 'начать'):
+		if id > 2000000000 and (payload == '{"command":"start"}' or text.lower().find('начать') != -1):
 			msg(id, 'Привет, я PTBot, дворецкий команды PTCodding. Как вижу, Вы запустили меня в чате: у вас есть возможность узнать последние новости из сферы IT — кнопка #news!', keyboards.chat)
 		else: 
 			msg(id, 'Привет, я PTBot, дворецкий команды PTCodding. \nНажмите на нужную Вам кнопку, чтобы команда нашла Вас и быстро ответила, а я не потерял Вас &#128522; \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#support — администрация, помощь и вопросы \n#buy — магазин услуг и покупки \n#news — последние новости из сферы IT', keyboards.menu)
