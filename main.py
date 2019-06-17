@@ -111,21 +111,21 @@ for event in longpoll.listen():
 				msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопок: \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#support — администрация, помощь и вопросы \n#buy — магазин услуг и покупки', keyboards.menu)
 
 		if id == 2000000002:
-			if text.find('Заказ оформлен') != -1:
+			if text.find('заказ оформлен') != -1:
 				msg(text.split()[-1], 'Спасибо Вам за оформление заказа. В дальнейшем мои операторы будут поддерживать с Вами периодическую связь по поводу заказа, а я всегда работаю здесь для Вас, в этом чате ', keyboards.menu)
 				payload = ''
 
-			elif text.find('Перезапуск') != -1:
+			elif text.find('перезапуск') != -1:
 				msg(text.split()[-1], 'Меня перезапустили. Не знаю, почему, но так надо, видимо.', keyboards.menu)
 
-			elif text.find('Баг-перезапуск') != -1:
+			elif text.find('баг-перезапуск') != -1:
 				msg(text.split()[-1], 'Добрый день, {}! Видимо, наш PTBot где-то сломался, но сейчас уже всё хорошо. Приносим свои извинения, и перезапускаем его...\n\nС уважением, команда PTCodding.'.format(name(int(text.split()[-1]))['first_name']))
 				msg(text.split()[-1], 'Привет, это снова я, Ваш любимый PTBot! &#128075; Добро пожаловать в старое доброе меню — где какие кнопки, я думаю, Вы и сами знаете! &#128526;', keyboards.menu)
 
-			elif text.find('Запросить') != -1:
+			elif text.find('запросить') != -1:
 				try:
-					amount = text.split()[1]
-					description = ' '.join(text.split()[3:-2])
+					amount = text.split()[2]
+					description = ' '.join(text.split()[4:-2])
 					msg(text.split()[-1], 'Меня попросили запросить у Вас оплату для «{}» на сумму в ₽{}. Подтвердите оплату...'.format(description, amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(amount, urllib.parse.quote(description))))
 				except Exception:
 					msg(2000000002, 'Возникла проблема при запросе оплаты у пользователя. \nНе забывайте про формат: «Запросить [price] для "[description]" у [id]». \n\nЗагляните в консоль и повторите попытку: dashboard.heroku.com/apps/ptcodding-bot/logs')
