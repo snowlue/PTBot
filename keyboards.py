@@ -1,13 +1,17 @@
 import vk_api, json
 from vk_api.keyboard import VkKeyboard
 
-back, menu, buy, buyback, partner = VkKeyboard(True), VkKeyboard(True), VkKeyboard(True), VkKeyboard(True), VkKeyboard(False)
+back, chat, menu, buy, buyback, partner = VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False)
 
 carts = dict()
 
 def backboard(back):
 	back.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return back.get_keyboard()
+
+def chatboard(chat):
+	chat.add_button('#news &#128240;', 'positive', '{"command":"news"}')
+	return chat.get_keyboard()
 
 def menuboard(menu):
 	menu.add_button('#idea &#128161;', 'positive', '{"command":"idea"}')
@@ -41,7 +45,7 @@ def cartboard(id, item='', adding=True):
 	if id not in carts:
 		carts[id] = []
 
-	board = VkKeyboard(True)
+	board = VkKeyboard(False)
 	cart = carts[id]
 
 	if item:
@@ -74,21 +78,22 @@ def partnerboard(partner):
 
 
 def appboard(app_id, id, label):
-	return json.dumps({"one_time":True, "buttons":[[{"action":{"type":"open_app", "app_id": app_id, "owner_id": id, "label": label}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
+	return json.dumps({"one_time":False, "buttons":[[{"action":{"type":"open_app", "app_id": app_id, "owner_id": id, "label": label}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
 
 def locateboard():
-	return json.dumps({"one_time":True, "buttons":[[{"action":{"type":"location", "payload":"{\"command\":\"sent_location\"}"}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back_buy\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
+	return json.dumps({"one_time":False, "buttons":[[{"action":{"type":"location", "payload":"{\"command\":\"sent_location\"}"}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back_buy\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
 
 def itemboard(item_name):
-	return json.dumps({"one_time":True, "buttons":[[{"color":"primary", "action":{"type":"text", "payload":'{"command":"add_' + item_name + '"}', "label":"Добавить в корзину &#10133;"}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back_buy\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
+	return json.dumps({"one_time":False, "buttons":[[{"color":"primary", "action":{"type":"text", "payload":'{"command":"add_' + item_name + '"}', "label":"Добавить в корзину &#10133;"}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back_buy\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
 
 def payboard(hash):
-	return json.dumps({"one_time":True, "buttons":[[{"action":{"type":"vkpay", "hash":hash}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
+	return json.dumps({"one_time":False, "buttons":[[{"action":{"type":"vkpay", "hash":hash}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
 
 def donatboard(hash):
-	return json.dumps({"one_time":True, "buttons":[[{"action":{"type":"vkpay", "hash":hash}}], [{"color": "primary", "action":{"type":"text", "payload":'{"command": "app_donat"}', "label":"Задонатить через приложение &#128242;"}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
+	return json.dumps({"one_time":False, "buttons":[[{"action":{"type":"vkpay", "hash":hash}}], [{"color": "primary", "action":{"type":"text", "payload":'{"command": "app_donat"}', "label":"Задонатить через приложение &#128242;"}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
 
 back = backboard(back)
+chat = chatboard(chat)
 menu = menuboard(menu)
 buy = buyboard(buy)
 buyback = buybackboard(buyback)
