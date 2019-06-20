@@ -1,4 +1,4 @@
-﻿import keyboards, urllib.parse
+﻿import keyboards, urllib.parse, traceback
 from methods import *
 
 payload = ''
@@ -117,7 +117,7 @@ for event in longpoll.listen():
 			elif payload == '{"command":"sapod"}':
 				msg(id, '@sapod (SAPOD) — первый и единственный подкаст из мира San Andreas. \n\nВедущий подкаста Стич часто появляется и в подкастах от PTCodding. Вместе с Павлом они обсуждают новости уходящего месяца в IT-кухне и жарко спорят, кто лучше: iOS или Android &#128521;\n\nСлушайте Стича в его подкасте SAPOD — vk.com/sapod &#128072;')
 			
-			elif payload == '{"command":"back"}':
+			elif payload == '{"command":"back"}' and id != 2000000002:
 				msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопок: \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#support — администрация, помощь и вопросы \n#buy — магазин услуг и покупки \n#news — последние новости из сферы IT', keyboards.menu)
 
 		if id == 2000000002:
@@ -140,8 +140,10 @@ for event in longpoll.listen():
 				try:
 					msg(request_id, 'Меня попросили запросить у Вас оплату для «{}» на сумму в ₽{}. Подтвердите оплату...'.format(request_desc, request_amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(request_amount, urllib.parse.quote(request_desc))))
 					msg(id, 'Запрос оплаты у [id{0}|{1} {2}] прошёл успешно!'.format(request_id, name(request_id, 'gen')['first_name'], name(request_id, 'gen')['last_name']))
-				except Exception:
+				except Exception as err:
 					msg(id, 'Возникла проблема при запросе оплаты у пользователя. \n\nЗагляните в консоль и повторите попытку: dashboard.heroku.com/apps/ptcodding-bot/logs')
+					print(err)
+					print(traceback.format_exc())
 				
 			elif payload == '{"command":"restart"}':
 				msg(id, 'Решили перезапустить меня? У кого? Отправьте id пользователя.', keyboards.back)
