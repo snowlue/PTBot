@@ -55,14 +55,11 @@ def cartboard(id, item=''):
 	if item:
 		if item not in cart:
 			cart.append(item)
-			print('Товар «{}» добавлен'.format(item))
-		if item in cart:
+		elif item in cart:
 			cart.remove(item)
-			print('Товар «{}» удалён'.format(item))
 
 	for it in cart:
 		board.add_button(it.split('.')[0]+' &#10134;', payload='{"command":"delete_' + it.split('.')[1] + '"}')
-		print('Товар «{}» выведен для delete_{}'.format(it.split('.')[0], it.split('.')[1]))
 		board.add_line()
 	if cart:
 		board.add_button('Оформить заказ &#128222;', 'positive', '{"command":"order"}')
