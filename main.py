@@ -12,7 +12,7 @@ for event in longpoll.listen():
 		text = event.object.text
 		msg_id = event.object.id
 		
-		if payload == 'wait idea' and text != 'Вернуться ↩':
+		if payload == 'wait idea' and text != 'Вернуться ↩' and id < 2000000000:
 			payload = 'sending idea'
 		elif payload == 'wait request_id' and text.split()[1] != 'Вернуться ↩':
 			payload = 'sending request_id'
@@ -104,7 +104,7 @@ for event in longpoll.listen():
 				msg(id, 'Если хотите поддержать наш проект, то лучше сделайте пожертвование через приложение — так Вы не просто поддержите нас, но и продвинете проект! &#128200;', keyboards.appboard(6887721, -132868814, 'Пончик — наши донаты &#127849;'))
 			
 			elif payload == '{"command":"partners"}':
-				msg(id, 'Добро пожаловать в список партнёров команды PTCodding! Я от лица команды говорю жизни спасибо за то, что она свела нас с этими людьми, ведь без их поддержки и помощи у нас бы ничего не получилось бы! &#128079;', keyboards.partner)
+				msg(id, 'Добро пожаловать в список партнёров команды PTCodding! Благодаря этим людям в PTCodding очень многое изменяется. Я как чат-бот сообщества наблюдаю за всем этим со стороны — PTCodding растёт на глазах! &#128079;', keyboards.partner)
 			
 			elif payload == '{"command":"sapod"}':
 				msg(id, '@sapod (SAPOD) — первый и единственный подкаст из мира San Andreas. \n\nВедущий подкаста Стич часто появляется и в подкастах от PTCodding. Вместе с Павлом они обсуждают новости уходящего месяца в IT-кухне и жарко спорят, кто лучше: iOS или Android &#128521;\n\nСлушайте Стича в его подкасте SAPOD — vk.com/sapod &#128072;')
@@ -131,9 +131,9 @@ for event in longpoll.listen():
 				request_desc = ' '.join(text.split()[1:])
 				try:
 					msg(request_id, 'Меня попросили запросить у Вас оплату для «{}» на сумму в ₽{}. Подтвердите оплату...'.format(request_desc, request_amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(request_amount, urllib.parse.quote(request_desc))))
-					msg(id, 'Запрос оплаты у [id{0}|{1} {2}] прошёл успешно!'.format(request_id, name(request_id, 'gen')['first_name'], name(request_id, 'gen')['last_name']))
+					msg(id, 'Запрос оплаты у [id{0}|{1} {2}] прошёл успешно!'.format(request_id, name(request_id, 'gen')['first_name'], name(request_id, 'gen')['last_name']), keyboards.chat)
 				except Exception as err:
-					msg(id, 'Возникла проблема при запросе оплаты у пользователя. \n\nЗагляните в консоль и повторите попытку: dashboard.heroku.com/apps/ptcodding-bot/logs')
+					msg(id, 'Возникла проблема при запросе оплаты у пользователя. \n\n@pavetranquil (Павел), загляните в консоль и повторите попытку: dashboard.heroku.com/apps/ptcodding-bot/logs', keyboards.chat)
 					print(err)
 					print(traceback.format_exc())
 				
@@ -143,9 +143,9 @@ for event in longpoll.listen():
 
 			elif payload == 'sending restart_id':
 				restart_id = text.split()[1]
-				msg(restart_id, 'Добрый день, {}! Видимо, наш PTBot где-то сломался, но сейчас уже всё хорошо. Приносим свои извинения, и перезапускаем его...\n\nС уважением, команда PTCodding.'.format(name(restart_id)['first_name']))
-				msg(restart_id, 'Привет, это снова я, Ваш любимый PTBot! &#128075; Добро пожаловать в старое доброе меню — где какие кнопки, я думаю, Вы и сами знаете! &#128526;', keyboards.menu)
-				msg(id, 'Баг-перезапуск у [id{0}|{1} {2}] прошёл успешно!'.format(restart_id, name(restart_id, 'gen')['first_name'], name(restart_id, 'gen')['last_name']))
+				msg(restart_id, 'Добрый день, {}! Видимо, наш PTBot где-то сломался, но сейчас уже всё хорошо. Приносим свои извинения, и перезапускаем его.\n\nС уважением, команда PTCodding.'.format(name(restart_id)['first_name']))
+				msg(restart_id, 'Привет, это снова я, Ваш любимый PTBot! &#128075; Добро пожаловать в старое доброе меню! &#128526;', keyboards.menu)
+				msg(id, 'Баг-перезапуск у [id{0}|{1} {2}] прошёл успешно!'.format(restart_id, name(restart_id, 'gen')['first_name'], name(restart_id, 'gen')['last_name']), keyboards.chat)
 
 			elif payload == '{"command":"back"}':
 				msg(id, 'Возвращаю вас в главное меню.', keyboards.chat)
