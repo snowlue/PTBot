@@ -1,7 +1,7 @@
 ﻿import keyboards, urllib.parse, traceback
 from methods import *
 
-payload = ''
+payload, state, state_chat = '', '', ''
 
 # try:
 for event in longpoll.listen():
@@ -15,11 +15,11 @@ for event in longpoll.listen():
 		if id == 2000000002:
 			if state_chat == 'wait request_id' and text.split()[1] != 'Вернуться ↩':
 				payload = 'sending request_id'
-			if state_chat == 'wait amount' and text.split()[1] != 'Вернуться ↩':
+			elif state_chat == 'wait amount' and text.split()[1] != 'Вернуться ↩':
 				payload = 'sending amount'
-			if state_chat == 'wait description' and text.split()[1] != 'Вернуться ↩':
+			elif state_chat == 'wait description' and text.split()[1] != 'Вернуться ↩':
 				payload = 'sending description'
-			if state_chat == 'wait restart_id' and ' '.join(text.split()[1:]) != 'Вернуться ↩':
+			elif state_chat == 'wait restart_id' and ' '.join(text.split()[1:]) != 'Вернуться ↩':
 				payload = 'sending restart_id'
 		if id < 2000000000:
 			if state == 'wait idea' and text != 'Вернуться ↩':
