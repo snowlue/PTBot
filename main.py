@@ -283,6 +283,6 @@ for event in longpoll.listen():
 		
 
 # except Exception:
-# 	msg(2000000002, 'PTBot споткнулся о событие {} пользователя {}! \n\n@pavetranquil (Павел), загляните в консоль и исправьте баг: dashboard.heroku.com/apps/ptcodding-bot/log'.format(event.type, id))
-#	print(err)
-#	print(traceback.format_exc())
+#   msg(2000000002, 'PTBot споткнулся о событие {} пользователя {}! \n\n@pavetranquil (Павел), загляните в консоль и исправьте баг: dashboard.heroku.com/apps/ptcodding-bot/log'.format(event.type, id))
+#   print(err)
+#   print(traceback.format_exc())
