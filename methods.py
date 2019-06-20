@@ -6,7 +6,7 @@ def msg(id, message='', board=[], forward=''):
 		vk.messages.send(peer_id=id, random_id=random.randint(-2147483648, 2147483647), message=message, forward_messages=forward, keyboard=board)
 	else:
 		vk_session.method('messages.send', {'peer_id': id, 'random_id': random.randint(-2147483648, 2147483647), 'message': message, 'forward_messages': forward, 'keyboard': board})
-	print('Сообщение с текстом «{}» для {} отправлено'.format(message, id))
+	print('Сообщение для {} отправлено'.format(id))
 
 def name(id, case='nom'):
 	return vk.users.get(user_ids=id, fields='first_name, last_name', name_case=case)[0]

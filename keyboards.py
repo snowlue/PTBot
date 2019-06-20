@@ -32,11 +32,11 @@ def menuboard(menu):
 	return menu.get_keyboard()
 
 def buyboard(buy):
-	buy.add_button('Создание чат-бота', 'primary', '{"command":"code"}')
-	buy.add_button('Создание дизайна', 'primary', '{"command":"design"}')
+	buy.add_button('Создание чат-бота &#129302;', 'primary', '{"command":"code"}')
+	buy.add_button('Создание дизайна &#128444;', 'primary', '{"command":"design"}')
 	buy.add_line()
-	buy.add_button('Звукозапись', 'primary', '{"command":"record"}')
-	buy.add_button('ПК и смартфоны', 'primary', '{"command":"fix"}')
+	buy.add_button('Звукозапись &#127897;', 'primary', '{"command":"record"}')
+	buy.add_button('ПК и смартфоны &#128736;', 'primary', '{"command":"fix"}')
 	buy.add_line()
 	buy.add_button('Корзина &#128722;', payload='{"command":"cart"}')
 	buy.add_line()
@@ -59,7 +59,7 @@ def cartboard(id, item=''):
 			cart.remove(item)
 
 	for it in cart:
-		board.add_button(it.split('—')[0]+' &#10134;', payload='{"command":"delete_' + it.split('—')[1] + '"}')
+		board.add_button(it.split('.')[0]+' &#10134;', payload='{"command":"delete_' + it.split('.')[1] + '"}')
 		board.add_line()
 	if cart:
 		board.add_button('Оформить заказ &#128222;', 'positive', '{"command":"order"}')
