@@ -12,17 +12,19 @@ for event in longpoll.listen():
 		text = event.object.text
 		msg_id = event.object.id
 		
-		if payload == 'wait idea' and text != 'Вернуться ↩' and id < 2000000000:
-			payload = 'sending idea'
-		elif payload == 'wait request_id' and text.split()[1] != 'Вернуться ↩':
-			payload = 'sending request_id'
-		elif payload == 'wait amount' and text.split()[1] != 'Вернуться ↩':
-			payload = 'sending amount'
-		elif payload == 'wait description' and text.split()[1] != 'Вернуться ↩':
-			payload = 'sending description'
-		elif payload == 'wait restart_id' and text.split()[1] != 'Вернуться ↩':
-			payload = 'sending restart_id'
-		else:
+		if id == 2000000002:
+			if state_chat == 'wait request_id' and text.split()[1] != 'Вернуться ↩':
+				payload = 'sending request_id'
+			if state_chat == 'wait amount' and text.split()[1] != 'Вернуться ↩':
+				payload = 'sending amount'
+			if state_chat == 'wait description' and text.split()[1] != 'Вернуться ↩':
+				payload = 'sending description'
+			if state_chat == 'wait restart_id' and ' '.join(text.split()[1:]) != 'Вернуться ↩':
+				payload = 'sending restart_id'
+		if id < 2000000000:
+			if state == 'wait idea' and text != 'Вернуться ↩':
+				payload = 'sending idea'
+		if payload not in ['sending idea', 'sending request_id', 'sending amount', 'sending description', 'sending restart_id']:
 			payload = event.object.payload
 
 		if id == 2000000002 and (payload == '{"command":"start"}' or text.lower().find('начать') != -1):
@@ -112,6 +114,9 @@ for event in longpoll.listen():
 			elif payload == '{"command":"back"}' and id != 2000000002:
 				msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопок: \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#support — администрация, помощь и вопросы \n#buy — магазин услуг и покупки \n#news — последние новости из сферы IT', keyboards.menu)
 
+			state = payload
+
+
 		if id == 2000000002:
 			if payload == '{"command":"request"}':
 				msg(id, 'Решили запросить у кого-то деньги? У кого? Отправьте id пользователя.', keyboards.back)
@@ -149,6 +154,8 @@ for event in longpoll.listen():
 
 			elif payload == '{"command":"back"}':
 				msg(id, 'Возвращаю вас в главное меню.', keyboards.chat)
+
+			state_chat = payload
 
 
 	elif event.type == VkBotEventType.VKPAY_TRANSACTION:
