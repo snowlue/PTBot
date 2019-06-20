@@ -11,21 +11,20 @@ for event in longpoll.listen():
 		id = event.object.peer_id
 		text = event.object.text
 		msg_id = event.object.id
+		payload = event.object.payload
 		
 		if id == 2000000002:
 			if state_chat == 'wait request_id' and text.split()[1] != 'Вернуться ↩':
-				payload = 'sending request_id'
+				state_chat = 'sending request_id'
 			elif state_chat == 'wait amount' and text.split()[1] != 'Вернуться ↩':
-				payload = 'sending amount'
+				state_chat = 'sending amount'
 			elif state_chat == 'wait description' and text.split()[1] != 'Вернуться ↩':
-				payload = 'sending description'
+				state_chat = 'sending description'
 			elif state_chat == 'wait restart_id' and ' '.join(text.split()[1:]) != 'Вернуться ↩':
-				payload = 'sending restart_id'
+				state_chat = 'sending restart_id'
 		if id < 2000000000:
 			if state == 'wait idea' and text != 'Вернуться ↩':
-				payload = 'sending idea'
-		if payload not in ['sending idea', 'sending request_id', 'sending amount', 'sending description', 'sending restart_id']:
-			payload = event.object.payload
+				state = 'sending idea'
 
 		if id == 2000000002 and (payload == '{"command":"start"}' or text.lower().find('начать') != -1):
 			msg(id, 'Привет, команда PTCodding! Рад вас видеть! Вижу, что этот чат — чат моих создателей. Включаю дополнительные функции &#128522; \n\n#news — последние новости из сферы IT \nЗапрос VK Pay — запрос средств с указанием amount, description и id \nБаг-перезапуск — перезапуск бота по id с сообщением о баге', keyboards.chat)
@@ -37,9 +36,9 @@ for event in longpoll.listen():
 		if id in [223166352, 165504240, 186823615, 484735371, 2000000002]:
 			if payload == '{"command":"idea"}':
 				msg(id, "Предложите свою идею для PTCodding! Я pассмотрю её, и команда PTCodding обязательно отпишется Вам в этом диалоге. \nПостарайтесь соблюдать структуру: \n1. Лаконичное название, отражающее суть идеи \n2. Собственно идея, её развёртка \n3. Средства и блага, необходимые для развёртки Вашей идеи \n4. Расскажите, чем Ваша идея поможет сообществу \nНе забудьте, что необходимо уместить Вашу идею в рамках одного сообщения. Спасибо за Ваше содействие и помощь! \n\nС уважением, PTBot.", keyboards.back)
-				payload = 'wait idea'
+				state = 'wait idea'
 
-			elif payload == 'sending idea':
+			elif state == 'sending idea':
 				print('{} отправляет идею'.format(id))
 
 				msg(2000000002, '#botidea \n[id{0}|{1} {2}] предлагает идею.\n\nОтветить пользователю: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']), forward=str(msg_id))
@@ -114,25 +113,23 @@ for event in longpoll.listen():
 			elif payload == '{"command":"back"}' and id != 2000000002:
 				msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопок: \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#support — администрация, помощь и вопросы \n#buy — магазин услуг и покупки \n#news — последние новости из сферы IT', keyboards.menu)
 
-			state = payload
-
 
 		if id == 2000000002:
 			if payload == '{"command":"request"}':
 				msg(id, 'Решили запросить у кого-то деньги? У кого? Отправьте id пользователя.', keyboards.back)
-				payload = 'wait request_id'
+				state_chat = 'wait request_id'
 
-			elif payload == 'sending request_id':
+			elif state_chat == 'sending request_id':
 				request_id = text.split()[1]
 				msg(id, 'А какую сумму нужно запросить? Отправьте число.', keyboards.back)
-				payload = 'wait amount'
+				state_chat = 'wait amount'
 
-			elif payload == 'sending amount':
+			elif state_chat == 'sending amount':
 				request_amount = text.split()[1]
 				msg(id, 'Какое описание к запросу? Отправьте текст.')
-				payload = 'wait description'
+				state_chat = 'wait description'
 
-			elif payload == 'sending description':
+			elif state_chat == 'sending description':
 				request_desc = ' '.join(text.split()[1:])
 				try:
 					msg(request_id, 'Меня попросили запросить у Вас оплату для «{}» на сумму в ₽{}. Подтвердите оплату...'.format(request_desc, request_amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(request_amount, urllib.parse.quote(request_desc))))
@@ -144,9 +141,9 @@ for event in longpoll.listen():
 				
 			elif payload == '{"command":"restart"}':
 				msg(id, 'Решили перезапустить меня? У кого? Отправьте id пользователя.', keyboards.back)
-				payload = 'wait restart_id'
+				state_chat = 'wait restart_id'
 
-			elif payload == 'sending restart_id':
+			elif state_chat == 'sending restart_id':
 				restart_id = text.split()[1]
 				msg(restart_id, 'Добрый день, {}! Видимо, наш PTBot где-то сломался, но сейчас уже всё хорошо. Приносим свои извинения, и перезапускаем его.\n\nС уважением, команда PTCodding.'.format(name(restart_id)['first_name']))
 				msg(restart_id, 'Привет, это снова я, Ваш любимый PTBot! &#128075; Добро пожаловать в старое доброе меню! &#128526;', keyboards.menu)
@@ -154,8 +151,6 @@ for event in longpoll.listen():
 
 			elif payload == '{"command":"back"}':
 				msg(id, 'Возвращаю вас в главное меню.', keyboards.chat)
-
-			state_chat = payload
 
 
 	elif event.type == VkBotEventType.VKPAY_TRANSACTION:
@@ -284,4 +279,6 @@ for event in longpoll.listen():
 		
 
 # except Exception:
-# 	msg(2000000002, 'Бот упал с лестницы самодержавия, споткнувшись о событие {}! @pavetranquil (Павел), помоги ему подняться — исправь баг &#128513;'.format(event.type))
+# 	msg(2000000002, 'PTBot споткнулся о событие {} пользователя {}! \n\n@pavetranquil (Павел), загляните в консоль и исправьте баг: dashboard.heroku.com/apps/ptcodding-bot/log'.format(event.type, id))
+#	print(err)
+#	print(traceback.format_exc())
