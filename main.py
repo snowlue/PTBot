@@ -14,13 +14,13 @@ for event in longpoll.listen():
 		
 		if payload == 'wait idea' and text != 'Вернуться ↩':
 			payload = 'sending idea'
-		elif payload == 'wait request_id' and text != 'Вернуться ↩':
+		elif payload == 'wait request_id' and text.split()[1] != 'Вернуться ↩':
 			payload = 'sending request_id'
-		elif payload == 'wait amount' and text != 'Вернуться ↩':
+		elif payload == 'wait amount' and text.split()[1] != 'Вернуться ↩':
 			payload = 'sending amount'
-		elif payload == 'wait description' and text != 'Вернуться ↩':
+		elif payload == 'wait description' and text.split()[1] != 'Вернуться ↩':
 			payload = 'sending description'
-		elif payload == 'wait restart_id' and text != 'Вернуться ↩':
+		elif payload == 'wait restart_id' and text.split()[1] != 'Вернуться ↩':
 			payload = 'sending restart_id'
 		else:
 			payload = event.object.payload
@@ -136,8 +136,7 @@ for event in longpoll.listen():
 				payload = 'wait description'
 
 			elif payload == 'sending description':
-				request_desc = text.split()[1:]
-				print(request_desc)
+				request_desc = ' '.join(text.split()[1:])
 				try:
 					msg(request_id, 'Меня попросили запросить у Вас оплату для «{}» на сумму в ₽{}. Подтвердите оплату...'.format(request_desc, request_amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(request_amount, urllib.parse.quote(request_desc))))
 					msg(id, 'Запрос оплаты у [id{0}|{1} {2}] прошёл успешно!'.format(request_id, name(request_id, 'gen')['first_name'], name(request_id, 'gen')['last_name']))
