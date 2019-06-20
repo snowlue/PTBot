@@ -99,7 +99,7 @@ for event in longpoll.listen():
 			elif state == '{"command":"back_buy"}':
 				msg(id, 'Возвращаю Вас в меню товаров.', keyboards.buy)
 
-			elif state == '{"command":"news"}':
+			elif payload == '{"command":"news"}':
 				msg(id, 'Мы работаем над этим разделом...\nSoon...', keyboards.back)
 
 			elif state == '{"command":"donat"}':
