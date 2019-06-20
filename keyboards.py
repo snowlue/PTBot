@@ -15,7 +15,6 @@ def chatboard(chat):
 	chat.add_button('Запрос VK Pay', 'primary', '{"command":"request"}')
 	chat.add_line()
 	chat.add_button('Баг-перезапуск', 'primary', '{"command":"restart"}')
-	chat.add_line()
 	return chat.get_keyboard()
 
 def menuboard(menu):
