@@ -49,8 +49,8 @@ for event in longpoll.listen():
 
 				msg(id, 'Ваша идея будет доставлена команде PTCodding в аккуратном конвертике с Вашей печатью. Ожидайте ответа! &#8986;', keyboards.menu)
 
-				msg(id, 'Мы работаем над этим разделом...\nSoon...', keyboards.back)
 			elif state == '{"command":"partnership"}':
+				msg(id, 'Мы работаем над этим разделом...\nSoon...', keyboards.back)
 
 			elif state == '{"command":"support"}':
 				msg(id, 'Мы работаем над этим разделом...\nSoon...', keyboards.back)
