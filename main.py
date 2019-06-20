@@ -14,12 +14,20 @@ for event in longpoll.listen():
 		
 		if payload == 'wait idea' and text != 'Вернуться ↩':
 			payload = 'sending idea'
+		elif payload == 'wait request_id' and text != 'Вернуться ↩':
+			payload = 'sending request_id'
+		elif payload == 'wait amount' and text != 'Вернуться ↩':
+			payload = 'sending amount'
+		elif payload == 'wait description' and text != 'Вернуться ↩':
+			payload = 'sending description'
+		elif payload == 'wait restart_id' and text != 'Вернуться ↩':
+			payload = 'sending restart_id'
 		else:
 			payload = event.object.payload
 
-		if id > 2000000000 and (payload == '{"command":"start"}' or text.lower().find('начать') != -1):
-			msg(id, 'Привет, я PTBot, дворецкий команды PTCodding. Как вижу, Вы запустили меня в чате: у вас есть возможность узнать последние новости из сферы IT — кнопка #news!', keyboards.chat)
-		if id < 2000000000 and payload == '{"command":"start"}': 
+		if id == 2000000002 and (payload == '{"command":"start"}' or text.lower().find('начать') != -1):
+			msg(id, 'Привет, команда PTCodding! Рад вас видеть! Вижу, что этот чат — чат моих создателей. Включаю дополнительные функции &#128522; \n\n#news — последние новости из сферы IT \nЗапрос VK Pay — запрос средств с указанием amount, description и id \nБаг-перезапуск — перезапуск бота по id с сообщением о баге', keyboards.chat)
+		elif id < 2000000000 and payload == '{"command":"start"}': 
 			msg(id, 'Привет, я PTBot, дворецкий команды PTCodding. \nНажмите на нужную Вам кнопку, чтобы команда нашла Вас и быстро ответила, а я не потерял Вас &#128522; \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#support — администрация, помощь и вопросы \n#buy — магазин услуг и покупки \n#news — последние новости из сферы IT', keyboards.menu)
 
 		print('{} отправляет сообщение с текстом "{}"'.format(id, text))
@@ -109,33 +117,44 @@ for event in longpoll.listen():
 			elif payload == '{"command":"sapod"}':
 				msg(id, '@sapod (SAPOD) — первый и единственный подкаст из мира San Andreas. \n\nВедущий подкаста Стич часто появляется и в подкастах от PTCodding. Вместе с Павлом они обсуждают новости уходящего месяца в IT-кухне и жарко спорят, кто лучше: iOS или Android &#128521;\n\nСлушайте Стича в его подкасте SAPOD — vk.com/sapod &#128072;')
 			
-			elif payload == '{"command":"back"}' and id > 2000000000:
-				msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопки #news — последние новости из сферы IT', keyboards.chat)
 			elif payload == '{"command":"back"}':
 				msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопок: \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#support — администрация, помощь и вопросы \n#buy — магазин услуг и покупки \n#news — последние новости из сферы IT', keyboards.menu)
 
 		if id == 2000000002:
-			if text.find('заказ оформлен') != -1:
-				msg(text.split()[-1], 'Спасибо Вам за оформление заказа. В дальнейшем мои операторы будут поддерживать с Вами периодическую связь по поводу заказа, а я всегда работаю здесь для Вас, в этом чате ', keyboards.menu)
-				payload = ''
+			if payload == '{"command":"request"}':
+				msg(id, 'Решили запросить у кого-то деньги? У кого? Отправьте id пользователя.', keyboards.back)
+				payload = 'wait request_id'
 
-			elif text.find('перезапуск') != -1:
-				msg(text.split()[-1], 'Меня перезапустили. Не знаю, почему, но так надо, видимо.', keyboards.menu)
-				msg(2000000002, 'Перезапуск клавиатуры у [id{0}|{1} {2}] прошёл успешно!'.format(text.split()[-1], name(text.split()[-1], 'gen')['first_name'], name(text.split()[-1], 'gen')['last_name']))
+			elif payload == 'sending request_id':
+				request_id = text.split()[1]
+				msg(id, 'А какую сумму нужно запросить? Отправьте число.', keyboards.back)
+				payload = 'wait amount'
 
-			elif text.find('баг-перезапуск') != -1:
-				msg(text.split()[-1], 'Добрый день, {}! Видимо, наш PTBot где-то сломался, но сейчас уже всё хорошо. Приносим свои извинения, и перезапускаем его...\n\nС уважением, команда PTCodding.'.format(name(int(text.split()[-1]))['first_name']))
-				msg(text.split()[-1], 'Привет, это снова я, Ваш любимый PTBot! &#128075; Добро пожаловать в старое доброе меню — где какие кнопки, я думаю, Вы и сами знаете! &#128526;', keyboards.menu)
-				msg(2000000002, 'Баг-перезапуск у [id{0}|{1} {2}] прошёл успешно!'.format(text.split()[-1], name(text.split()[-1], 'gen')['first_name'], name(text.split()[-1], 'gen')['last_name']))
+			elif payload == 'sending amount':
+				request_amount = text.split()[1]
+				msg(id, 'Какое описание к запросу? Отправьте текст.')
+				payload = 'wait description'
 
-			elif text.find('запросить') != -1:
+			elif payload == 'sending description':
+				request_desc = text.split()[1:]
 				try:
-					amount = text.split()[2]
-					description = ' '.join(text.split()[4:-2])
-					msg(text.split()[-1], 'Меня попросили запросить у Вас оплату для «{}» на сумму в ₽{}. Подтвердите оплату...'.format(description, amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(amount, urllib.parse.quote(description))))
-					msg(2000000002, 'Запрос оплаты у [id{0}|{1} {2}] прошёл успешно!'.format(text.split()[-1], name(text.split()[-1], 'gen')['first_name'], name(text.split()[-1], 'gen')['last_name']))
+					msg(request_id, 'Меня попросили запросить у Вас оплату для «{}» на сумму в ₽{}. Подтвердите оплату...'.format(request_desc, request_amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(request_amount, urllib.parse.quote(request_desc))))
+					msg(id, 'Запрос оплаты у [id{0}|{1} {2}] прошёл успешно!'.format(request_id, name(request_id, 'gen')['first_name'], name(request_id, 'gen')['last_name']))
 				except Exception:
-					msg(2000000002, 'Возникла проблема при запросе оплаты у пользователя. \nНе забывайте про формат: «Запросить [price] для [description] у [id]». \n\nЗагляните в консоль и повторите попытку: dashboard.heroku.com/apps/ptcodding-bot/logs')
+					msg(id, 'Возникла проблема при запросе оплаты у пользователя. \n\nЗагляните в консоль и повторите попытку: dashboard.heroku.com/apps/ptcodding-bot/logs')
+				
+			elif payload == '{"command":"restart"}':
+				msg(id, 'Решили перезапустить меня? У кого? Отправьте id пользователя.', keyboards.back)
+				payload = 'wait restart_id'
+
+			elif payload == 'sending restart_id':
+				restart_id = text.split()[1]
+				msg(restart_id, 'Добрый день, {}! Видимо, наш PTBot где-то сломался, но сейчас уже всё хорошо. Приносим свои извинения, и перезапускаем его...\n\nС уважением, команда PTCodding.'.format(name(restart_id)['first_name']))
+				msg(restart_id, 'Привет, это снова я, Ваш любимый PTBot! &#128075; Добро пожаловать в старое доброе меню — где какие кнопки, я думаю, Вы и сами знаете! &#128526;', keyboards.menu)
+				msg(id, 'Баг-перезапуск у [id{0}|{1} {2}] прошёл успешно!'.format(restart_id, name(restart_id, 'gen')['first_name'], name(restart_id, 'gen')['last_name']))
+
+			elif payload == '{"command":"back"}':
+				msg(id, 'Возвращаю вас в главное меню.', keyboards.chat)
 
 
 	elif event.type == VkBotEventType.VKPAY_TRANSACTION:
