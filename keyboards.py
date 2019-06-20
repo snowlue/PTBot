@@ -21,7 +21,7 @@ def menuboard(menu):
 	menu.add_button('#idea &#128161;', 'positive', '{"command":"idea"}')
 	menu.add_button('#partnership &#129309;', 'positive', '{"command":"partnership"}')
 	menu.add_line()
-	menu.add_button('#support &#10067;', 'positive', '{"command":"support"}')
+	menu.add_button('#team &#128101;', 'positive', '{"command":"support"}')
 	menu.add_button('#buy &#128717;', 'positive', '{"command":"buy"}')
 	menu.add_line()
 	menu.add_button('#news &#128240;', 'positive', '{"command":"news"}')
