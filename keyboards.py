@@ -32,11 +32,11 @@ def menuboard(menu):
 	return menu.get_keyboard()
 
 def buyboard(buy):
-	buy.add_button('Code от Павла', 'primary', '{"command":"code"}')
-	buy.add_button('Design от Богдана', 'primary', '{"command":"design"}')
+	buy.add_button('Создание чат-бота', 'primary', '{"command":"code"}')
+	buy.add_button('Создание дизайна', 'primary', '{"command":"design"}')
 	buy.add_line()
 	buy.add_button('Звукозапись', 'primary', '{"command":"record"}')
-	buy.add_button('Ремонт ПК ', 'primary', '{"command":"fix"}')
+	buy.add_button('ПК и смартфоны', 'primary', '{"command":"fix"}')
 	buy.add_line()
 	buy.add_button('Корзина &#128722;', payload='{"command":"cart"}')
 	buy.add_line()
@@ -45,7 +45,7 @@ def buyboard(buy):
 	buy.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return buy.get_keyboard()
 
-def cartboard(id, item='', adding=True):
+def cartboard(id, item=''):
 	if id not in carts:
 		carts[id] = []
 
@@ -53,13 +53,13 @@ def cartboard(id, item='', adding=True):
 	cart = carts[id]
 
 	if item:
-		if item not in cart and adding:
+		if item not in cart:
 			cart.append(item)
-		if item in cart and not adding:
+		if item in cart:
 			cart.remove(item)
 
 	for it in cart:
-		board.add_button(it.split('-')[0]+' &#10134;', payload='{"command":"delete_' + it.split('-')[1] + '"}')
+		board.add_button(it.split('—')[0]+' &#10134;', payload='{"command":"delete_' + it.split('—')[1] + '"}')
 		board.add_line()
 	if cart:
 		board.add_button('Оформить заказ &#128222;', 'positive', '{"command":"order"}')
