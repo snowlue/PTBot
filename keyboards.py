@@ -52,7 +52,7 @@ def aboutboard(about):
 	about.add_line()
 	about.add_button('Ксения Хубутия &#128105; &#127995;', 'primary', '{"command":"Kseno"}')
 	about.add_line()
-	about.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
+	about.add_button('Вернуться &#8617;', 'negative', '{"command":"back_team"}')
 	return about.get_keyboard()
 
 def buyboard(buy):
