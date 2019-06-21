@@ -46,11 +46,11 @@ def teamboard(team):
 	return team.get_keyboard()
 
 def aboutboard(about):
-	about.add_button('Павел Овчинников &#128104;&#127997;', 'primary', '{"command":"Pavel"}')
+	about.add_button('Павел Овчинников 👦🏾', 'primary', '{"command":"Pavel"}')
 	about.add_line()
-	about.add_button('Богдан Гусев &#128113;&#127996;', 'primary', '{"command":"Bogdan"}')
+	about.add_button('Богдан Гусев 👦🏼', 'primary', '{"command":"Bogdan"}')
 	about.add_line()
-	about.add_button('Ксения Хубутия &#128105;&#127995;', 'primary', '{"command":"Kseno"}')
+	about.add_button('Ксения Хубутия 👩🏻', 'primary', '{"command":"Kseno"}')
 	about.add_line()
 	about.add_button('Вернуться &#8617;', 'negative', '{"command":"back_team"}')
 	return about.get_keyboard()
