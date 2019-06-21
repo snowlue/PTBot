@@ -1,7 +1,7 @@
 import vk_api, json
 from vk_api.keyboard import VkKeyboard
 
-chat, menu, buy, buyback, partner, team = VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False)
+chat, menu, buy, buyback, partner, team, about = VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False)
 
 carts = dict()
 
