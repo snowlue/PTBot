@@ -1,7 +1,7 @@
 ﻿import keyboards, urllib.parse, traceback
 from methods import *
 
-payload, state, state_chat, states = '', '', '', dict()
+payload, state_chat, states = '', '', dict()
 
 # try:
 for event in longpoll.listen():
@@ -12,6 +12,9 @@ for event in longpoll.listen():
 		text = event.object.text
 		msg_id = event.object.id
 		payload = event.object.payload
+
+		if id not in states:
+			states[id] = ''
 
 		if id == 2000000002:
 			if state_chat == 'wait request_id' and ' '.join(text.split()[1:]) != 'Вернуться ↩':
@@ -44,7 +47,7 @@ for event in longpoll.listen():
 
 		if id in [223166352, 165504240, 186823615, 484735371]:
 			if states[id] == '{"command":"idea"}':
-				msg(id, "Предложите свою идею для PTCodding! Я pассмотрю её, и команда PTCodding отпишется Вам в этом диалоге. \nCСоблюдайте структуру: \n1. Название, отражающее суть идеи \n2. Собственно идея, её развёртка \n3. Расскажите, чем Ваша идея поможет сообществу \nНе забудьте — необходимо уместить всё в рамках одного сообщения. Спасибо за Вашу помощь! \n\nС уважением, PTBot.", keyboards.back())
+				msg(id, "Предложите свою идею для PTCodding! Я pассмотрю её, и команда PTCodding отпишется Вам в этом диалоге. \nСоблюдайте структуру: \n1. Название, отражающее суть идеи \n2. Собственно идея, её развёртка \n3. Расскажите, чем Ваша идея поможет сообществу \nНе забудьте — необходимо уместить всё в рамках одного сообщения. Спасибо за Вашу помощь! \n\nС уважением, PTBot.", keyboards.back())
 				states[id] = 'wait idea'
 
 			elif states[id] == 'sending idea':
