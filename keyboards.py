@@ -46,7 +46,7 @@ def teamboard(team):
 	return team.get_keyboard()
 
 def aboutboard(about):
-	about.add_button('Павел Овчинников 👦🏾', 'primary', '{"command":"Pavel"}')
+	about.add_button('Павел Овчинников 👦🏽', 'primary', '{"command":"Pavel"}')
 	about.add_line()
 	about.add_button('Богдан Гусев 👦🏼', 'primary', '{"command":"Bogdan"}')
 	about.add_line()
