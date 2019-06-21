@@ -1,12 +1,18 @@
 import vk_api, json
 from vk_api.keyboard import VkKeyboard
 
-back, chat, menu, buy, buyback, partner = VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False)
+chat, menu, buy, buyback, partner, team = VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False)
 
 carts = dict()
 
-def backboard(back):
-	back.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
+def back(state=''):
+	back = VkKeyboard(False)
+	if state == 'buy':
+		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back_buy"}')
+	elif state == 'team':
+		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back_team"}')
+	else:
+		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return back.get_keyboard()
 
 def chatboard(chat):
@@ -21,14 +27,14 @@ def menuboard(menu):
 	menu.add_button('#idea &#128161;', 'positive', '{"command":"idea"}')
 	menu.add_button('#partnership &#129309;', 'positive', '{"command":"partnership"}')
 	menu.add_line()
-	menu.add_button('#team &#128101;', 'positive', '{"command":"support"}')
+	menu.add_button('#news &#128240;', 'positive', '{"command":"news"}')
 	menu.add_button('#buy &#128717;', 'positive', '{"command":"buy"}')
 	menu.add_line()
-	menu.add_button('#news &#128240;', 'positive', '{"command":"news"}')
+	menu.add_button('#team &#128101;', 'positive', '{"command":"team"}')
 	menu.add_line()
 	menu.add_button('Пожертвовать &#9749;', payload='{"command":"donat"}')
 	menu.add_line()
-	menu.add_button('Наши партнёры &#128101;', payload='{"command":"partners"}')
+	menu.add_button('Наши партнёры &#128226;', payload='{"command":"partners"}')
 	return menu.get_keyboard()
 
 def buyboard(buy):
@@ -66,13 +72,8 @@ def cartboard(id, item=''):
 		board.add_line()
 
 	board.add_button('Вернуться &#8617;', 'negative', '{"command":"back_buy"}')
-
 	return board.get_keyboard()
 
-
-def buybackboard(buyback):
-	buyback.add_button('Вернуться &#8617;', 'negative', '{"command":"back_buy"}')
-	return buyback.get_keyboard()
 
 def partnerboard(partner):
 	partner.add_button('SAPOD — Подкаст из мира San Andreas &#127897;', 'primary', '{"command":"sapod"}')
@@ -96,9 +97,7 @@ def payboard(hash):
 def donatboard(hash):
 	return json.dumps({"one_time":False, "buttons":[[{"action":{"type":"vkpay", "hash":hash}}], [{"color": "primary", "action":{"type":"text", "payload":'{"command": "app_donat"}', "label":"Задонатить через приложение &#128242;"}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
 
-back = backboard(back)
 chat = chatboard(chat)
 menu = menuboard(menu)
 buy = buyboard(buy)
-buyback = buybackboard(buyback)
 partner = partnerboard(partner)
