@@ -9,7 +9,6 @@ cryptography==2.6.1
 Django==2.2.2
 enum34==1.1.6
 idna==2.8
-menuinst==1.4.16
 pycosat==0.6.3
 pycparser==2.19
 pyOpenSSL==19.0.0
