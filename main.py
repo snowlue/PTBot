@@ -348,6 +348,20 @@ for event in longpoll.listen():
 					msg(id, 'Баг-перезапуск у [id{0}|{1} {2}] прошёл успешно!'.format(restart_id, name(restart_id, 'gen')['first_name'], name(restart_id, 'gen')['last_name']), keyboards.chat)
 
 
+				elif state_chat == '{"command":"back_to_start"}':
+					msg(id, 'Кого возвращаем к самому началу? Отправьте id пользователя.', keyboards.back())
+					state_chat = 'wait start_id'
+
+				elif state_chat == 'wait start_id':
+					start_id = text.split()[1]
+					msg(start_id, 'Машина времени чудесна... С её помощью можно вернуть нас к тому моменту, когда мы ещё не были знакомы...', keyboard.start())
+					try:
+						delete(get_id(start_id, 0))
+					except Exception:
+						pass
+					msg(id, 'Возврат к началу у [id{0}|{1} {2}] прошёл успешно!'.format(start_id, name(start_id, 'gen')['first_name'], name(start_id, 'gen')['last_name']), keyboards.chat)
+
+
 				elif state_chat == '{"command":"back"}':
 					msg(id, 'Возвращаю вас в главное меню.', keyboards.chat)
 

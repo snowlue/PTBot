@@ -17,12 +17,19 @@ def back(state=''):
 		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return back.get_keyboard()
 
+def start():
+	start = VkKeyboard(False)
+	start.add_button('Начать', payload='{"command":"start"}')
+	return start.get_keyboard()
+
 def chatboard(chat):
 	chat.add_button('#news &#128240;', 'primary', '{"command":"news"}')
 	chat.add_line()
 	chat.add_button('Запрос VK Pay', 'primary', '{"command":"request"}')
 	chat.add_line()
 	chat.add_button('Баг-перезапуск', 'primary', '{"command":"restart"}')
+	chat.add_line()
+	chat.add_button('Вернуть к началу', 'primary', '{"command":"back_to_start"}')
 	return chat.get_keyboard()
 
 def menuboard(menu):
