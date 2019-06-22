@@ -15,14 +15,11 @@ def name(id, case='nom'):
 def sex(id):
 	return vk.users.get(user_ids=id, fields='sex')[0]['sex']
 
-def get_attachs(msg_id):
-	attachs = []
-	for a in vk.messages.getById(message_ids=msg_id, extended=1)['items'][0]['attachments']:
-		type = a['type']
-		if 'access_key' in a[type]: attachs.append(type + str(a[type]['owner_id']) + '_' + str(a[type]['id']) + '_' + str(a[type]['access_key']))
-		else: attachs.append(type + str(a[type]['owner_id']) + '_' + str(a[type]['id']))
-	attachs = ', '.join(attachs)
-	return attachs
+def get_id(id, offset=1):
+	return vk.messages.getHistory(offset=offset, count=1, user_id=id)['items'][0]['id']
+
+def delete(msg_id):
+	vk.messages.delete(message_ids=msg_id, delete_for_all=True)
 
 def online():
 	vk.groups.enableOnline(group_id=132868814)

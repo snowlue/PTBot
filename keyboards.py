@@ -50,6 +50,8 @@ def newsboard(news):
 	news.add_button('7&#8419;', 'primary', '{"command":"7"}')
 	news.add_button('8&#8419;', 'primary', '{"command":"8"}')
 	news.add_line()
+	news.add_button('Обновить &#128260;', payload='{"command":"refresh"}')
+	news.add_line()
 	news.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return news.get_keyboard()
 
