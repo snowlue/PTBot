@@ -201,6 +201,8 @@ try:
 				elif states[id] == '{"command":"refresh"}':
 					try:
 						delete(get_id(165504240, 1))
+					except Exception:
+						pass
 					news_text = ''
 					for i in range(0,8):
 						news_text += str(i+1) + '. ' + news.headers[i] + '\n'
