@@ -478,7 +478,7 @@ try:
 			id = event.object.user_id
 			msg(2000000002, '&#128444 [id{0}|{1} {2}] изменил главную фотографию PTCodding'.format(id, name(id)['first_name'], name(id)['last_name']))
 
-except Exception:
+except Exception as err:
 	msg(2000000002, 'PTBot споткнулся о событие {} пользователя {}! \n\n@pavetranquil (Павел), загляните в консоль и исправьте баг: dashboard.heroku.com/apps/ptcodding-bot/log'.format(event.type, id))
 	print(err)
 	print(traceback.format_exc())
