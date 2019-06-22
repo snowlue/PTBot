@@ -40,15 +40,17 @@ def menuboard(menu):
 	return menu.get_keyboard()
 
 def newsboard(news):
-	news.add_button('1&#8419;', 'positive', '{"command":"1"}')
-	news.add_button('2&#8419;', 'positive', '{"command":"2"}')
-	news.add_button('3&#8419;', 'positive', '{"command":"3"}')
-	news.add_button('4&#8419;', 'positive', '{"command":"4"}')
+	news.add_button('1&#8419;', 'primary', '{"command":"1"}')
+	news.add_button('2&#8419;', 'primary', '{"command":"2"}')
+	news.add_button('3&#8419;', 'primary', '{"command":"3"}')
+	news.add_button('4&#8419;', 'primary', '{"command":"4"}')
 	news.add_line()
-	news.add_button('5&#8419;', 'positive', '{"command":"5"}')
-	news.add_button('6&#8419;', 'positive', '{"command":"6"}')
-	news.add_button('7&#8419;', 'positive', '{"command":"7"}')
-	news.add_button('8&#8419;', 'positive', '{"command":"8"}')
+	news.add_button('5&#8419;', 'primary', '{"command":"5"}')
+	news.add_button('6&#8419;', 'primary', '{"command":"6"}')
+	news.add_button('7&#8419;', 'primary', '{"command":"7"}')
+	news.add_button('8&#8419;', 'primary', '{"command":"8"}')
+	news.add_line()
+	news.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return news.get_keyboard()
 
 def teamboard(team):

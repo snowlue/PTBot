@@ -199,7 +199,10 @@ for event in longpoll.listen():
 				msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
 
 			elif states[id] == '{"command":"back_news"}':
-				msg(id, 'Возвращаю Вас обратно к выбору новостей')
+				news_text = ''
+				for i in range(0,8):
+					news_text += str(i+1) + '. ' + news.headers[i] + '\n'
+				msg(id, 'Возвращаю вас обратно к выбору новостей... \n\nПоследние новости из мира IT:\n' + news_text + '\n\nДанные взяты с сайта news.yandex.ru', keyboards.news, parse=False)
 
 
 
@@ -226,7 +229,64 @@ for event in longpoll.listen():
 
 		if id == 2000000002:
 			if state_chat == '{"command":"news"}':
-				msg(id, 'Мы работаем над этим разделом...\nSoon...', keyboards.back())
+				news_text = ''
+				for i in range(0,8):
+					news_text += str(i+1) + '. ' + news.headers[i] + '\n'
+				msg(id, 'Самый востребованный раздел PTBot! 😱💻 \n\nПоследние новости из мира IT:\n' + news_text + '\n\nДанные взяты с сайта news.yandex.ru', keyboards.news, parse=False)
+
+			elif state_chat == '{"command":"1"}':
+				header = news.headers[0]
+				desc = news.descs[0]
+				original = news.originals[0]
+				msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
+			
+			elif state_chat == '{"command":"2"}':
+				header = news.headers[1]
+				desc = news.descs[1]
+				original = news.originals[1]
+				msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
+
+			elif state_chat == '{"command":"3"}':
+				header = news.headers[2]
+				desc = news.descs[2]
+				original = news.originals[2]
+				msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
+			
+			elif state_chat == '{"command":"4"}':
+				header = news.headers[3]
+				desc = news.descs[3]
+				original = news.originals[3]
+				msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
+
+			elif state_chat == '{"command":"5"}':
+				header = news.headers[4]
+				desc = news.descs[4]
+				original = news.originals[4]
+				msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
+			
+			elif state_chat == '{"command":"6"}':
+				header = news.headers[5]
+				desc = news.descs[5]
+				original = news.originals[5]
+				msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
+
+			elif state_chat == '{"command":"7"}':
+				header = news.headers[6]
+				desc = news.descs[6]
+				original = news.originals[6]
+				msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
+			
+			elif state_chat == '{"command":"8"}':
+				header = news.headers[7]
+				desc = news.descs[7]
+				original = news.originals[7]
+				msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
+
+			elif state_chat == '{"command":"back_news"}':
+				news_text = ''
+				for i in range(0,8):
+					news_text += str(i+1) + '. ' + news.headers[i] + '\n'
+				msg(id, 'Возвращаю вас обратно к выбору новостей... \n\nПоследние новости из мира IT:\n' + news_text + '\n\nДанные взяты с сайта news.yandex.ru', keyboards.news, parse=False)
 
 
 			elif state_chat == '{"command":"request"}':
