@@ -4,9 +4,8 @@ from methods import *
 
 payload, state_chat, states = '', '', dict()
 
-try:
-	for event in longpoll.listen():
-
+for event in longpoll.listen():
+	try:
 		print('\nЛовлю события... Поймал {}'.format(event.type))
 		if event.type == VkBotEventType.MESSAGE_NEW:
 			id = event.object.peer_id
@@ -478,7 +477,8 @@ try:
 			id = event.object.user_id
 			msg(2000000002, '&#128444 [id{0}|{1} {2}] изменил главную фотографию PTCodding'.format(id, name(id)['first_name'], name(id)['last_name']))
 
-except Exception as err:
-	msg(2000000002, 'PTBot споткнулся о событие {} пользователя {}! \n\n@pavetranquil (Павел), загляните в консоль и исправьте баг: dashboard.heroku.com/apps/ptcodding-bot/log'.format(event.type, id))
-	print(err)
-	print(traceback.format_exc())
+	except Exception as err:
+		msg(2000000002, 'PTBot споткнулся о событие {} пользователя {}! \n\n@pavetranquil (Павел), загляните в консоль и исправьте баг: dashboard.heroku.com/apps/ptcodding-bot/logs'.format(event.type, id))
+		print(err)
+		print(traceback.format_exc())
+	
