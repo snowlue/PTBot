@@ -15,4 +15,4 @@ for i in range(0, 8):
 	article_site = requests.get(links[i])
 	article_soup = bs(article_site.text, 'html.parser')
 	descs.append(article_soup.find(class_='doc__text').contents[0])
-	originals.append(article_soup.find(class_='link link_theme_grey link_agency i-bem link_js_inited').get('href'))
+	originals.append(article_soup.find(class_='doc__content').find('a').get('href'))
