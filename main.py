@@ -25,6 +25,8 @@ for event in longpoll.listen():
 					state_chat = 'sending description'
 				elif state_chat == 'wait restart_id' and ' '.join(text.split()[1:]) != 'Вернуться ↩':
 					state_chat = 'sending restart_id'
+				elif state_chat == 'wait start_id' and ' '.join(text.split()[1:]) != 'Вернуться ↩':
+					state_chat = 'sending start_id'
 				else:
 					state_chat = payload
 			if id < 2000000000:
@@ -39,7 +41,7 @@ for event in longpoll.listen():
 
 
 			if id == 2000000002 and (payload == '{"command":"start"}' or text.lower().find('начать') != -1):
-				msg(id, 'Привет, команда PTCodding! Рад вас видеть! Вижу, что этот чат — чат моих создателей. Включаю дополнительные функции &#128522; \n\n#news — последние новости из сферы IT \nЗапрос VK Pay — запрос средств с указанием amount, description и id \nБаг-перезапуск — перезапуск бота по id с сообщением о баге', keyboards.chat)
+				msg(id, 'Привет, команда PTCodding! Рад вас видеть! Вижу, что этот чат — чат моих создателей. Включаю дополнительные функции &#128522; \n\n#news — последние новости из сферы IT \nЗапрос VK Pay — запрос средств с указанием amount, description и id \nБаг-перезапуск — перезапуск бота по id с сообщением о баге \nВернуть к началу — возвращает кнопку «Начать» у юзера по id', keyboards.chat)
 			elif id < 2000000000 and states[id] == '{"command":"start"}': 
 				msg(id, 'Привет, я PTBot, дворецкий команды PTCodding. \nНажмите на нужную Вам кнопку, чтобы команда нашла Вас и быстро ответила, а я не потерял Вас &#128522; \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#news — последние новости из сферы IT \n#market — магазин услуг и покупки \n#team — вопросы к команде и о команде', keyboards.menu)
 
@@ -352,7 +354,7 @@ for event in longpoll.listen():
 					msg(id, 'Кого возвращаем к самому началу? Отправьте id пользователя.', keyboards.back())
 					state_chat = 'wait start_id'
 
-				elif state_chat == 'wait start_id':
+				elif state_chat == 'sending start_id':
 					start_id = text.split()[1]
 					msg(start_id, 'Машина времени чудесна... С её помощью можно вернуть нас к тому моменту, когда мы ещё не были знакомы...', keyboard.start())
 					try:
