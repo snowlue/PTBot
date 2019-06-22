@@ -295,6 +295,17 @@ try:
 					original = news.originals[7]
 					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
 
+				elif state_chat == '{"command":"refresh"}':
+					try:
+						delete(get_id(165504240, 1))
+					except Exception:
+						pass
+					news.refresh()
+					news_text = ''
+					for i in range(0,8):
+						news_text += str(i+1) + '. ' + news.headers[i] + '\n'
+					msg(id, 'Обновляю список новостей... \n\nПоследние новости из мира IT:\n' + news_text + '\n\nДанные взяты с сайта news.yandex.ru', parse=False)
+
 				elif state_chat == '{"command":"back_news"}':
 					news_text = ''
 					for i in range(0,8):
