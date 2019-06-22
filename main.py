@@ -200,7 +200,7 @@ for event in longpoll.listen():
 
 				elif states[id] == '{"command":"refresh"}':
 					try:
-						delete(get_id(165504240, 1))
+						delete(get_id(id, 1))
 					except Exception:
 						pass
 					news.refresh()
@@ -296,7 +296,7 @@ for event in longpoll.listen():
 
 				elif state_chat == '{"command":"refresh"}':
 					try:
-						delete(get_id(165504240, 1))
+						delete(get_id(id, 1))
 					except Exception:
 						pass
 					news.refresh()
