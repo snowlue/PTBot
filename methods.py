@@ -1,11 +1,11 @@
 import vk_api, random
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
-def msg(id, message='', board=[], forward=''):
+def msg(id, message='', board=[], forward='', parse=True):
 	if board:
-		vk.messages.send(peer_id=id, random_id=random.randint(-2147483648, 2147483647), message=message, forward_messages=forward, keyboard=board)
+		vk.messages.send(peer_id=id, random_id=random.randint(-2147483648, 2147483647), message=message, forward_messages=forward, keyboard=board, dont_parse_links: not parse)
 	else:
-		vk_session.method('messages.send', {'peer_id': id, 'random_id': random.randint(-2147483648, 2147483647), 'message': message, 'forward_messages': forward, 'keyboard': board})
+		vk_session.method('messages.send', {'peer_id': id, 'random_id': random.randint(-2147483648, 2147483647), 'message': message, 'forward_messages': forward, 'keyboard': board, 'dont_parse_links': not parse})
 	print('Сообщение для {} отправлено'.format(id))
 
 def name(id, case='nom'):
@@ -31,6 +31,8 @@ def isMember(group, id):
 
 
 vk_session = vk_api.VkApi(token='f5b418b767430283a5ae08615df495e27530e0b8d23a8b54ed5a68610ad71abbed6949e1a419d5671ea4c')
+vk_upload = vk_api.upload.VkUpload(vk_session)
+print(vk_upload.photo_messages('test.jpg'))
 
 vk = vk_session.get_api()
 longpoll = VkBotLongPoll(vk_session, '132868814', 0)

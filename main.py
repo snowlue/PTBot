@@ -1,4 +1,5 @@
-﻿import keyboards, urllib.parse, traceback
+﻿import keyboards, news
+import urllib.parse, traceback
 from methods import *
 
 payload, state_chat, states = '', '', dict()
@@ -144,7 +145,58 @@ for event in longpoll.listen():
 
 
 			elif states[id] == '{"command":"news"}':
-				msg(id, 'Мы работаем над этим разделом...\nSoon...', keyboards.back())
+				news_text = ''
+				for i in range(0,8):
+					news_text += str(i+1) + '. ' + news.headers[i] + '\n'
+				msg(id, 'Самый востребованный раздел PTBot! 😱💻 \n\nПоследние новости из мира IT:\n' + news_text + '\n\nДанные взяты с сайта news.yandex.ru', keyboards.news, parse=False)
+
+			elif states[id] == '{"command":"1"}':
+				header = news.headers[0]
+				desc = news.descs[0]
+				original = news.originals[0]
+				msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
+			
+			elif states[id] == '{"command":"2"}':
+				header = news.headers[1]
+				desc = news.descs[1]
+				original = news.originals[1]
+				msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
+
+			elif states[id] == '{"command":"3"}':
+				header = news.headers[2]
+				desc = news.descs[2]
+				original = news.originals[2]
+				msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
+			
+			elif states[id] == '{"command":"4"}':
+				header = news.headers[3]
+				desc = news.descs[3]
+				original = news.originals[3]
+				msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
+
+			elif states[id] == '{"command":"5"}':
+				header = news.headers[4]
+				desc = news.descs[4]
+				original = news.originals[4]
+				msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
+			
+			elif states[id] == '{"command":"6"}':
+				header = news.headers[5]
+				desc = news.descs[5]
+				original = news.originals[5]
+				msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
+
+			elif states[id] == '{"command":"7"}':
+				header = news.headers[6]
+				desc = news.descs[6]
+				original = news.originals[6]
+				msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
+			
+			elif states[id] == '{"command":"8"}':
+				header = news.headers[7]
+				desc = news.descs[7]
+				original = news.originals[7]
+				msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
 
 			elif states[id] == '{"command":"back_news"}':
 				msg(id, 'Возвращаю Вас обратно к выбору новостей')

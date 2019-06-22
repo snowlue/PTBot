@@ -1,7 +1,7 @@
 import vk_api, json
 from vk_api.keyboard import VkKeyboard
 
-chat, menu, buy, buyback, partner, team, about = VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False)
+chat, menu, buy, buyback, partner, team, about, news = VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False)
 
 carts = dict()
 
@@ -11,6 +11,8 @@ def back(state=''):
 		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back_buy"}')
 	elif state == 'team':
 		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back_team"}')
+	elif state == 'news':
+		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back_news"}')
 	else:
 		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return back.get_keyboard()
@@ -27,15 +29,27 @@ def menuboard(menu):
 	menu.add_button('#idea &#128161;', 'positive', '{"command":"idea"}')
 	menu.add_button('#partnership &#129309;', 'positive', '{"command":"partnership"}')
 	menu.add_line()
-	menu.add_button('#news &#128240;', 'positive', '{"command":"news"}')
 	menu.add_button('#buy &#128717;', 'positive', '{"command":"buy"}')
-	menu.add_line()
 	menu.add_button('#team &#128101;', 'positive', '{"command":"team"}')
+	menu.add_line()
+	menu.add_button('#news &#128240;', 'positive', '{"command":"news"}')
 	menu.add_line()
 	menu.add_button('Пожертвовать &#9749;', payload='{"command":"donat"}')
 	menu.add_line()
 	menu.add_button('Наши партнёры &#128226;', payload='{"command":"partners"}')
 	return menu.get_keyboard()
+
+def newsboard(news):
+	news.add_button('1&#8419;', 'positive', '{"command":"1"}')
+	news.add_button('2&#8419;', 'positive', '{"command":"2"}')
+	news.add_button('3&#8419;', 'positive', '{"command":"3"}')
+	news.add_button('4&#8419;', 'positive', '{"command":"4"}')
+	news.add_line()
+	news.add_button('5&#8419;', 'positive', '{"command":"5"}')
+	news.add_button('6&#8419;', 'positive', '{"command":"6"}')
+	news.add_button('7&#8419;', 'positive', '{"command":"7"}')
+	news.add_button('8&#8419;', 'positive', '{"command":"8"}')
+	return news.get_keyboard()
 
 def teamboard(team):
 	team.add_button('Задать вопрос команде &#10067;', payload='{"command":"question"}')
@@ -117,6 +131,7 @@ def donatboard(hash):
 
 chat = chatboard(chat)
 menu = menuboard(menu)
+news = newsboard(news)
 team = teamboard(team)
 about = aboutboard(about)
 buy = buyboard(buy)
