@@ -2,12 +2,11 @@ import vk_api, random
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
 def msg(id, message='', board=[], forward='', parse=True):
-	parse = not parse
 	if board:
-		vk.messages.send(peer_id=id, random_id=random.randint(-2147483648, 2147483647), message=message, forward_messages=forward, keyboard=board, dont_parse_links: parse)
+		vk.messages.send(peer_id=id, random_id=random.randint(-2147483648, 2147483647), message=message, forward_messages=forward, keyboard=board, dont_parse_links=not parse)
 		
 	else:
-		vk_session.method('messages.send', {'peer_id': id, 'random_id': random.randint(-2147483648, 2147483647), 'message': message, 'forward_messages': forward, 'keyboard': board, 'dont_parse_links': parse})
+		vk_session.method('messages.send', {'peer_id': id, 'random_id': random.randint(-2147483648, 2147483647), 'message': message, 'forward_messages': forward, 'keyboard': board, 'dont_parse_links': not parse})
 	print('Сообщение для {} отправлено'.format(id))
 
 def name(id, case='nom'):
