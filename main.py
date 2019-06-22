@@ -356,7 +356,7 @@ for event in longpoll.listen():
 
 				elif state_chat == 'sending start_id':
 					start_id = text.split()[1]
-					msg(start_id, 'Машина времени чудесна... С её помощью можно вернуть нас к тому моменту, когда мы ещё не были знакомы...', keyboard.start())
+					msg(start_id, 'Машина времени чудесна... С её помощью можно вернуть нас к тому моменту, когда мы ещё не были знакомы...', keyboards.start())
 					try:
 						delete(get_id(start_id, 0))
 					except Exception:
