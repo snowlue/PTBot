@@ -153,7 +153,7 @@ for event in longpoll.listen():
 					news.refresh_internet()
 					news_text, news_type = '', 'internet'
 					for i in range(0, 8):
-						news_text += str(i) + '. ' + news.headers_internet[i] + '\n'
+						news_text += str(i+1) + '. ' + news.headers_internet[i] + '\n'
 					msg(id, 'Последние новости из мира интернета на сегодня: \n' + news_text, keyboards.listboard())		
 
 				elif states[id] == '{"command":"news_gadgets"}':
@@ -161,7 +161,7 @@ for event in longpoll.listen():
 					news.refresh_gadgets()
 					news_text, news_type = '', 'gadgets'
 					for i in range(0, 8):
-						news_text += str(i) + '. ' + news.headers_gadgets[i] + '\n'
+						news_text += str(i+1) + '. ' + news.headers_gadgets[i] + '\n'
 					msg(id, 'Последние новости из мира гаджетов на сегодня: \n' + news_text, keyboards.listboard())
 
 				elif states[id] == '{"command":"news_games"}':
@@ -169,7 +169,7 @@ for event in longpoll.listen():
 					news.refresh_games()
 					news_text, news_type = '', 'games'
 					for i in range(0, 8):
-						news_text += str(i) + '. ' + news.headers_games[i] + '\n'
+						news_text += str(i+1) + '. ' + news.headers_games[i] + '\n'
 					msg(id, 'Последние новости из мира игр на сегодня: \n' + news_text, keyboards.listboard())
 
 				elif states[id] == '{"command":"1"}':
@@ -354,7 +354,7 @@ for event in longpoll.listen():
 					news.refresh_internet()
 					news_text, news_type = '', 'internet'
 					for i in range(0, 8):
-						news_text += str(i) + '. ' + news.headers_internet[i] + '\n'
+						news_text += str(i+1) + '. ' + news.headers_internet[i] + '\n'
 					msg(id, 'Последние новости из мира интернета на сегодня: \n' + news_text, keyboards.listboard())		
 
 				elif state_chat == '{"command":"news_gadgets"}':
@@ -362,7 +362,7 @@ for event in longpoll.listen():
 					news.refresh_gadgets()
 					news_text, news_type = '', 'gadgets'
 					for i in range(0, 8):
-						news_text += str(i) + '. ' + news.headers_gadgets[i] + '\n'
+						news_text += str(i+1) + '. ' + news.headers_gadgets[i] + '\n'
 					msg(id, 'Последние новости из мира гаджетов на сегодня: \n' + news_text, keyboards.listboard())
 
 				elif state_chat == '{"command":"news_games"}':
@@ -370,7 +370,7 @@ for event in longpoll.listen():
 					news.refresh_games()
 					news_text, news_type = '', 'games'
 					for i in range(0, 8):
-						news_text += str(i) + '. ' + news.headers_games[i] + '\n'
+						news_text += str(i+1) + '. ' + news.headers_games[i] + '\n'
 					msg(id, 'Последние новости из мира игр на сегодня: \n' + news_text, keyboards.listboard())
 
 				elif state_chat == '{"command":"1"}':
