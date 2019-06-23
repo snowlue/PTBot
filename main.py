@@ -149,28 +149,31 @@ for event in longpoll.listen():
 					msg(id, 'Самый востребованный раздел PTBot — новости из мира IT прямо в этом чате! 😱💻 \nВыберите категорию и подождите 7 секунд, пока данные подгрузятся на наши сервера...\n\nДанные взяты из news.yandex.ru', keyboards.news, parse=False)
 
 				elif states[id] == '{"command":"news_internet"}':
-					msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
-					news.refresh_internet()
-					news_text, news_type = '', 'internet'
-					for i in range(0, 8):
-						news_text += str(i+1) + '. ' + news.headers_internet[i] + '\n'
-					msg(id, 'Последние новости из мира интернета на сегодня: \n' + news_text, keyboards.listboard())		
+					if not internet_text:
+						msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
+						news.refresh_internet()
+						internet_text, news_type = '', 'internet'
+						for i in range(0, 8):
+							internet_text += str(i+1) + '. ' + news.headers_internet[i] + '\n'
+					msg(id, 'Последние новости из мира интернета на сегодня: \n' + internet_text, keyboards.listboard())		
 
 				elif states[id] == '{"command":"news_gadgets"}':
-					msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
-					news.refresh_gadgets()
-					news_text, news_type = '', 'gadgets'
-					for i in range(0, 8):
-						news_text += str(i+1) + '. ' + news.headers_gadgets[i] + '\n'
-					msg(id, 'Последние новости из мира гаджетов на сегодня: \n' + news_text, keyboards.listboard())
+					if not gadgets_text:
+						msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
+						news.refresh_gadgets()
+						gadgets_text, news_type = '', 'gadgets'
+						for i in range(0, 8):
+							gadgets_text += str(i+1) + '. ' + news.headers_gadgets[i] + '\n'
+					msg(id, 'Последние новости из мира гаджетов на сегодня: \n' + gadgets_text, keyboards.listboard())
 
 				elif states[id] == '{"command":"news_games"}':
-					msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
-					news.refresh_games()
-					news_text, news_type = '', 'games'
-					for i in range(0, 8):
-						news_text += str(i+1) + '. ' + news.headers_games[i] + '\n'
-					msg(id, 'Последние новости из мира игр на сегодня: \n' + news_text, keyboards.listboard())
+					if not games_text:
+						msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
+						news.refresh_games()
+						games_text, news_type = '', 'games'
+						for i in range(0, 8):
+							games_text += str(i+1) + '. ' + news.headers_games[i] + '\n'
+					msg(id, 'Последние новости из мира игр на сегодня: \n' + games_text, keyboards.listboard())
 
 				elif states[id] == '{"command":"1"}':
 					if news_type == 'internet':
@@ -293,34 +296,34 @@ for event in longpoll.listen():
 					msg(id, 'Обновляю список новостей... {}, ожидайте...'.format(name(id)['first_name']))
 					if news_type == 'internet':
 						news.refresh_internet()
-						news_text = ''
+						internet_text = ''
 						for i in range(0,8):
-							news_text += str(i+1) + '. ' + news.headers_internet[i] + '\n'
-						msg(id, 'Последние новости из мира интернета на сегодня:\n' + news_text)
+							internet_text += str(i+1) + '. ' + news.headers_internet[i] + '\n'
+						msg(id, 'Последние новости из мира интернета на сегодня:\n' + internet_text)
 					elif news_type == 'gadgets':
 						news.refresh_gadgets()
-						news_text = ''
+						gadgets_text = ''
 						for i in range(0,8):
-							news_text += str(i+1) + '. ' + news.headers_gadgets[i] + '\n'
-						msg(id, 'Последние новости из мира гаджетов на сегодня:\n' + news_text)
+							gadgets_text += str(i+1) + '. ' + news.headers_gadgets[i] + '\n'
+						msg(id, 'Последние новости из мира гаджетов на сегодня:\n' + gadgets_text)
 					elif news_type == 'games':
 						news.refresh_games()
-						news_text = ''
+						games_text = ''
 						for i in range(0,8):
-							news_text += str(i+1) + '. ' + news.headers_games[i] + '\n'
-						msg(id, 'Последние новости из мира игр на сегодня:\n' + news_text)
+							games_text += str(i+1) + '. ' + news.headers_games[i] + '\n'
+						msg(id, 'Последние новости из мира игр на сегодня:\n' + games_text)
 
 				elif states[id] == '{"command":"back_list"}':
 					if news_type == 'internet':
-						paste_text = 'интернета'
+						msg(id, 'Возвращаю Вас обратно к выбору новостей. \n\nПоследние новости из мира интернета на сегодня:\n' + internet_text, keyboards.listboard())
 					elif news_type == 'gadgets':
-						paste_text = 'гаджетов'
+						msg(id, 'Возвращаю Вас обратно к выбору новостей. \n\nПоследние новости из мира гаджетов на сегодня:\n' + gadgets_text, keyboards.listboard())
 					elif news_type == 'games':
-						paste_text = 'игр'
-					msg(id, 'Возвращаю Вас обратно к выбору новостей. \n\nПоследние новости из мира ' + paste_text + ' на сегодня:\n' + news_text, keyboards.listboard())
+						msg(id, 'Возвращаю Вас обратно к выбору новостей. \n\nПоследние новости из мира игр на сегодня:\n' + games_text, keyboards.listboard())
+					
 
 				elif states[id] == '{"command":"back_news"}':
-					msg(id, 'Возвращаю Вас к выбору категории новостей. Выберите категорию и подождите 5-10 секунд, пока данные подгрузятся на наши сервера...\n\nДанные взяты из news.yandex.ru', keyboards.news)
+					msg(id, 'Возвращаю Вас к выбору категории новостей. Выберите категорию: интернет, гаджеты или игры. \n\nДанные взяты из news.yandex.ru', keyboards.news)
 
 
 
@@ -342,6 +345,7 @@ for event in longpoll.listen():
 
 				elif states[id] == '{"command":"back"}':
 					msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопок: \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#news — последние новости из сферы IT \n#market — магазин услуг и покупки \n#team — вопросы к команде и о команде', keyboards.menu)
+					internet_text, gadgets_text, games_text = '', '', ''
 
 
 
@@ -350,28 +354,31 @@ for event in longpoll.listen():
 					msg(id, 'Самый востребованный раздел PTBot — новости из мира IT прямо в этом чате! 😱💻 \nВыберите категорию и подождите 7 секунд, пока данные подгрузятся на сервера...\n\nДанные взяты из news.yandex.ru', keyboards.news, parse=False)
 
 				elif state_chat == '{"command":"news_internet"}':
-					msg(id, 'Ждите, скоро всё будет...')
-					news.refresh_internet()
-					news_text, news_type = '', 'internet'
-					for i in range(0, 8):
-						news_text += str(i+1) + '. ' + news.headers_internet[i] + '\n'
-					msg(id, 'Последние новости из мира интернета на сегодня: \n' + news_text, keyboards.listboard())		
+					if not internet_text:
+						msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
+						news.refresh_internet()
+						internet_text, news_type = '', 'internet'
+						for i in range(0, 8):
+							internet_text += str(i+1) + '. ' + news.headers_internet[i] + '\n'
+					msg(id, 'Последние новости из мира интернета на сегодня: \n' + internet_text, keyboards.listboard())	
 
 				elif state_chat == '{"command":"news_gadgets"}':
-					msg(id, 'Ждите, скоро всё будет...')
-					news.refresh_gadgets()
-					news_text, news_type = '', 'gadgets'
-					for i in range(0, 8):
-						news_text += str(i+1) + '. ' + news.headers_gadgets[i] + '\n'
-					msg(id, 'Последние новости из мира гаджетов на сегодня: \n' + news_text, keyboards.listboard())
+					if not gadgets_text:
+						msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
+						news.refresh_gadgets()
+						gadgets_text, news_type = '', 'gadgets'
+						for i in range(0, 8):
+							gadgets_text += str(i+1) + '. ' + news.headers_gadgets[i] + '\n'
+					msg(id, 'Последние новости из мира гаджетов на сегодня: \n' + gadgets_text, keyboards.listboard())
 
 				elif state_chat == '{"command":"news_games"}':
-					msg(id, 'Ждите, скоро всё будет...')
-					news.refresh_games()
-					news_text, news_type = '', 'games'
-					for i in range(0, 8):
-						news_text += str(i+1) + '. ' + news.headers_games[i] + '\n'
-					msg(id, 'Последние новости из мира игр на сегодня: \n' + news_text, keyboards.listboard())
+					if not games_text:
+						msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
+						news.refresh_games()
+						games_text, news_type = '', 'games'
+						for i in range(0, 8):
+							games_text += str(i+1) + '. ' + news.headers_games[i] + '\n'
+					msg(id, 'Последние новости из мира игр на сегодня: \n' + games_text, keyboards.listboard())
 
 				elif state_chat == '{"command":"1"}':
 					if news_type == 'internet':
@@ -494,34 +501,33 @@ for event in longpoll.listen():
 					msg(id, 'Обновляю список новостей... Ждите...')
 					if news_type == 'internet':
 						news.refresh_internet()
-						news_text = ''
+						internet_text = ''
 						for i in range(0,8):
-							news_text += str(i+1) + '. ' + news.headers_internet[i] + '\n'
-						msg(id, 'Последние новости из мира интернета на сегодня:\n' + news_text)
+							internet_text += str(i+1) + '. ' + news.headers_internet[i] + '\n'
+						msg(id, 'Последние новости из мира интернета на сегодня:\n' + internet_text)
 					elif news_type == 'gadgets':
 						news.refresh_gadgets()
-						news_text = ''
+						gadgets_text = ''
 						for i in range(0,8):
-							news_text += str(i+1) + '. ' + news.headers_gadgets[i] + '\n'
-						msg(id, 'Последние новости из мира гаджетов на сегодня:\n' + news_text)
+							gadgets_text += str(i+1) + '. ' + news.headers_gadgets[i] + '\n'
+						msg(id, 'Последние новости из мира гаджетов на сегодня:\n' + gadgets_text)
 					elif news_type == 'games':
 						news.refresh_games()
-						news_text = ''
+						games_text = ''
 						for i in range(0,8):
-							news_text += str(i+1) + '. ' + news.headers_games[i] + '\n'
-						msg(id, 'Последние новости из мира игр на сегодня:\n' + news_text)
+							games_text += str(i+1) + '. ' + news.headers_games[i] + '\n'
+						msg(id, 'Последние новости из мира игр на сегодня:\n' + games_text)
 
 				elif state_chat == '{"command":"back_list"}':
 					if news_type == 'internet':
-						paste_text = 'интернета'
+						msg(id, 'Возвращаю вас обратно к выбору новостей. \n\nПоследние новости из мира интернета на сегодня:\n' + internet_text, keyboards.listboard())
 					elif news_type == 'gadgets':
-						paste_text = 'гаджетов'
+						msg(id, 'Возвращаю вас обратно к выбору новостей. \n\nПоследние новости из мира гаджетов на сегодня:\n' + gadgets_text, keyboards.listboard())
 					elif news_type == 'games':
-						paste_text = 'игр'
-					msg(id, 'Возвращаю вас обратно к выбору новостей. \n\nПоследние новости из мира ' + paste_text + ' на сегодня:\n' + news_text, keyboards.listboard())
+						msg(id, 'Возвращаю вас обратно к выбору новостей. \n\nПоследние новости из мира игр на сегодня:\n' + games_text, keyboards.listboard())
 
-				elif states[id] == '{"command":"back_news"}':
-					msg(id, 'Возвращаю вас к выбору категории новостей. Выберите категорию и подождите 5-10 секунд, пока данные подгрузятся на сервера...\n\nДанные взяты из news.yandex.ru', keyboards.news)
+				elif state_chat == '{"command":"back_news"}':
+					msg(id, 'Возвращаю вас к выбору категории новостей. Выберите категорию: интернет, гаджеты или игры. \n\nДанные взяты из news.yandex.ru', keyboards.news)
 
 
 				elif state_chat == '{"command":"request"}':
@@ -576,6 +582,7 @@ for event in longpoll.listen():
 
 				elif state_chat == '{"command":"back"}':
 					msg(id, 'Возвращаю вас в главное меню.', keyboards.chat)
+					internet_text, gadgets_text, games_text = '', '', ''
 
 
 
