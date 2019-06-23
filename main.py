@@ -49,7 +49,7 @@ for event in longpoll.listen():
 
 			if id < 2000000000:
 				if states[id] == '{"command":"idea"}':
-					msg(id, "Предложите свою идею для PTCodding! Я pассмотрю её, и команда PTCodding отпишется Вам в этом диалоге. \nСоблюдайте структуру: \n1. Название, отражающее суть идеи \n2. Собственно идея, её развёртка \n3. Расскажите, чем Ваша идея поможет сообществу \nНе забудьте — необходимо уместить всё в рамках одного сообщения. Спасибо за Вашу помощь! \n\nС уважением, PTBot.", keyboards.back())
+					msg(id, "Предложите свою идею для PTCodding! Я pассмотрю её, и команда PTCodding отпишется Вам в этом диалоге. \nСоблюдайте структуру: \n1. Название, отражающее суть идеи \n2. Собственно идея, её развёртка \n3. Расскажите, чем Ваша идея поможет сообществу \nНе забудьте — необходимо уместить всё в рамках одного сообщения. Спасибо за Вашу помощь!", keyboards.back())
 					states[id] = 'wait idea'
 
 				elif states[id] == 'sending idea':
@@ -83,7 +83,7 @@ for event in longpoll.listen():
 					msg(id, 'Ждите ответа на свой вопрос от команды PTCodding! &#8986;', keyboards.team)
 
 				elif states[id] == '{"command":"about"}':
-					msg(id, 'PTCodding появился 11 ноября 2016 года. За период с момента создания до 1 сентября 2018 года было сделано много крупных проектов: текстовая игра «Кто хочет стать миллионером?», «Мы — люди этой Земли!», прочие проекты. PTCodding наполнялся контент, команда опубликовала Backstage на свою деятельность. \nС 1 сентября начался активный прирост подписчиков, команда начала работать над медиа и активно развивалась в этом направлении. Был опубликован промо-ролик о митапе VK×Junction, 11 ноября на своё двухлетие PTCodding выпустил первый выпуск подкаста «Взгляд в неделю». \n2 февраля PTCodding переехал на платформу подкастов ВКонтакте и начал активно распространяться на других платформах подкастов. С марта по май в PTCodding публиковался подкаст «Игродайджест». В мае появился подкаст «IT-кухня». \n\nСейчас PTCodding — узнаваемый бренд в Санкт-Петербурге, известный как команда подростков, которые делают качественный и уникальный IT-контент. Каждый день они растут и становятся лучше и известнее, популяризуя программирование и IT-технологии в массы. Они записывают подкасты, пишут лонгриды, делают музыкальные подборки!\n\nВы можете подробнее почитать о каждом участнике команды ниже, нажав на кнопку с именем участника! &#128071;', keyboards.about)
+					msg(id, 'PTCodding появился 11 ноября 2016 года. За период с момента создания до 1 сентября 2018 года было сделано много крупных проектов: текстовая игра «Кто хочет стать миллионером?», «Мы — люди этой Земли!», прочие проекты. PTCodding наполнялся контентом, команда опубликовала Backstage на свою деятельность. \nС 1 сентября начался активный прирост подписчиков, команда начала работать над медиа и активно развивалась в этом направлении. Был опубликован промо-ролик о митапе VK×Junction, 11 ноября на своё двухлетие PTCodding выпустил первый выпуск подкаста «Взгляд в неделю». \n2 февраля PTCodding переехал на платформу подкастов ВКонтакте и начал активно распространяться на других. С марта по май в PTCodding публиковался экспериментальный подкаст «Игродайджест». В мае появился подкаст «IT-кухня». \n\nСейчас PTCodding — узнаваемый бренд в Санкт-Петербурге, известный как команда подростков, которые делают качественный и уникальный IT-контент. Каждый день они растут и становятся лучше и известнее, популяризуя программирование и IT-технологии в массы. Они записывают подкасты, пишут лонгриды, делают музыкальные подборки!\n\nВы можете подробнее почитать о каждом участнике команды ниже, нажав на кнопку с именем участника! &#128071;', keyboards.about)
 
 				elif states[id] == '{"command":"Pavel"}':
 					msg(id, 'Павел — основатель PTCodding. Именно под его началом были созданы многие код-проекты, концепт и окружение бренда. Павел является шеф-редактором на платформе лонгридов, главным ведущим подкастов «Взгляд в неделю» и «IT-кухня», шеф-кодером в команде программистов. Он ищет новых партнёров и достойных людей для сотрудничества и работы в команде PTCodding, думает над дальнейшим продвижением и мыслит неординарно, чтобы PTCodding становился лучше для своих слушателей и читателей. Одним из крупнейших проектов Павла являюсь я — PTBot, чат-бот PTCodding!')
@@ -146,76 +146,174 @@ for event in longpoll.listen():
 
 
 				elif states[id] == '{"command":"news"}':
-					news.refresh()
-					news_text = ''
-					for i in range(0,8):
-						news_text += str(i+1) + '. ' + news.headers[i] + '\n'
-					msg(id, 'Самый востребованный раздел PTBot! 😱💻 \n\nПоследние новости из мира IT:\n' + news_text + '\n\nДанные взяты с сайта news.yandex.ru', keyboards.news, parse=False)
+					msg(id, 'Самый востребованный раздел PTBot — новости из мира IT прямо в этом чате! 😱💻 \nВыберите категорию и подождите 5-10 секунд, пока данные подгрузятся с сайта...\n\nДанные взяты из news.yandex.ru', keyboards.news, parse=False)
+
+				elif states[id] == '{"command":"news_internet"}':
+					news.refresh_internet()
+					news_text, news_type = '', 'internet'
+					for i in range(0, 8):
+						news_text += str(i) + '. ' + news.headers_internet[i] + '\n'
+					msg(id, 'Последние новости из мира интернета на сегодня: \n' + news_text, keyboards.listboard())		
+
+				elif states[id] == '{"command":"news_gadgets"}':
+					news.refresh_gadgets()
+					news_text, news_type = '', 'gadgets'
+					for i in range(0, 8):
+						news_text += str(i) + '. ' + news.headers_gadgets[i] + '\n'
+					msg(id, 'Последние новости из мира гаджетов на сегодня: \n' + news_text, keyboards.listboard())
+
+				elif states[id] == '{"command":"news_games"}':
+					news.refresh_games()
+					news_text, news_type = '', 'games'
+					for i in range(0, 8):
+						news_text += str(i) + '. ' + news.headers_games[i] + '\n'
+					msg(id, 'Последние новости из мира игр на сегодня: \n' + news_text, keyboards.listboard())
 
 				elif states[id] == '{"command":"1"}':
-					header = news.headers[0]
-					desc = news.descs[0]
-					original = news.originals[0]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
-				
+					if news_type == 'internet':
+						header = news.headers_internet[0]
+						desc = news.descs_internet[0]
+						original = news.originals_internet[0]
+					elif news_type == 'gadgets':
+						header = news.headers_gadgets[0]
+						desc = news.descs_gadgets[0]
+						original = news.originals_gadgets[0]
+					elif news_type == 'games':
+						header = news.headers_games[0]
+						desc = news.descs_games[0]
+						original = news.originals_games[0]
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif states[id] == '{"command":"2"}':
-					header = news.headers[1]
-					desc = news.descs[1]
-					original = news.originals[1]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
-
+					if news_type == 'internet':
+						header = news.headers_internet[1]
+						desc = news.descs_internet[1]
+						original = news.originals_internet[1]
+					elif news_type == 'gadgets':
+						header = news.headers_gadgets[1]
+						desc = news.descs_gadgets[1]
+						original = news.originals_gadgets[1]
+					elif news_type == 'games':
+						header = news.headers_games[1]
+						desc = news.descs_games[1]
+						original = news.originals_games[1]
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif states[id] == '{"command":"3"}':
-					header = news.headers[2]
-					desc = news.descs[2]
-					original = news.originals[2]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
-				
+					if news_type == 'internet':
+						header = news.headers_internet[2]
+						desc = news.descs_internet[2]
+						original = news.originals_internet[2]
+					elif news_type == 'gadgets':
+						header = news.headers_gadgets[2]
+						desc = news.descs_gadgets[2]
+						original = news.originals_gadgets[2]
+					elif news_type == 'games':
+						header = news.headers_games[2]
+						desc = news.descs_games[2]
+						original = news.originals_games[2]
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif states[id] == '{"command":"4"}':
-					header = news.headers[3]
-					desc = news.descs[3]
-					original = news.originals[3]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
-
+					if news_type == 'internet':
+						header = news.headers_internet[3]
+						desc = news.descs_internet[3]
+						original = news.originals_internet[3]
+					elif news_type == 'gadgets':
+						header = news.headers_gadgets[3]
+						desc = news.descs_gadgets[3]
+						original = news.originals_gadgets[3]
+					elif news_type == 'games':
+						header = news.headers_games[3]
+						desc = news.descs_games[3]
+						original = news.originals_games[3]
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif states[id] == '{"command":"5"}':
-					header = news.headers[4]
-					desc = news.descs[4]
-					original = news.originals[4]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
-				
+					if news_type == 'internet':
+						header = news.headers_internet[4]
+						desc = news.descs_internet[4]
+						original = news.originals_internet[4]
+					elif news_type == 'gadgets':
+						header = news.headers_gadgets[4]
+						desc = news.descs_gadgets[4]
+						original = news.originals_gadgets[4]
+					elif news_type == 'games':
+						header = news.headers_games[4]
+						desc = news.descs_games[4]
+						original = news.originals_games[4]
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif states[id] == '{"command":"6"}':
-					header = news.headers[5]
-					desc = news.descs[5]
-					original = news.originals[5]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
-
+					if news_type == 'internet':
+						header = news.headers_internet[5]
+						desc = news.descs_internet[5]
+						original = news.originals_internet[5]
+					elif news_type == 'gadgets':
+						header = news.headers_gadgets[5]
+						desc = news.descs_gadgets[5]
+						original = news.originals_gadgets[5]
+					elif news_type == 'games':
+						header = news.headers_games[5]
+						desc = news.descs_games[5]
+						original = news.originals_games[5]
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif states[id] == '{"command":"7"}':
-					header = news.headers[6]
-					desc = news.descs[6]
-					original = news.originals[6]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
-				
+					if news_type == 'internet':
+						header = news.headers_internet[6]
+						desc = news.descs_internet[6]
+						original = news.originals_internet[6]
+					elif news_type == 'gadgets':
+						header = news.headers_gadgets[6]
+						desc = news.descs_gadgets[6]
+						original = news.originals_gadgets[6]
+					elif news_type == 'games':
+						header = news.headers_games[6]
+						desc = news.descs_games[6]
+						original = news.originals_games[6]
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif states[id] == '{"command":"8"}':
-					header = news.headers[7]
-					desc = news.descs[7]
-					original = news.originals[7]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
+					if news_type == 'internet':
+						header = news.headers_internet[7]
+						desc = news.descs_internet[7]
+						original = news.originals_internet[7]
+					elif news_type == 'gadgets':
+						header = news.headers_gadgets[7]
+						desc = news.descs_gadgets[7]
+						original = news.originals_gadgets[7]
+					elif news_type == 'games':
+						header = news.headers_games[7]
+						desc = news.descs_games[7]
+						original = news.originals_games[7]
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 
 				elif states[id] == '{"command":"refresh"}':
 					try:
 						delete(get_id(id, 1))
 					except Exception:
 						pass
-					news.refresh()
-					news_text = ''
-					for i in range(0,8):
-						news_text += str(i+1) + '. ' + news.headers[i] + '\n'
-					msg(id, 'Обновляю список новостей... \n\nПоследние новости из мира IT:\n' + news_text + '\n\nДанные взяты с сайта news.yandex.ru', parse=False)
+					if news_type == 'internet':
+						news.refresh_internet()
+						news_text = ''
+						for i in range(0,8):
+							news_text += str(i+1) + '. ' + news.headers_internet[i] + '\n'
+						msg(id, 'Обновляю список новостей... \n\nПоследние новости из мира интернета на сегодня:\n' + news_text)
+					elif news_type == 'gadgets':
+						news.refresh_gadgets()
+						news_text = ''
+						for i in range(0,8):
+							news_text += str(i+1) + '. ' + news.headers_gadgets[i] + '\n'
+						msg(id, 'Обновляю список новостей... \n\nПоследние новости из мира гаджетов на сегодня:\n' + news_text)
+					elif news_type == 'games':
+						news.refresh_games()
+						news_text = ''
+						for i in range(0,8):
+							news_text += str(i+1) + '. ' + news.headers_games[i] + '\n'
+						msg(id, 'Обновляю список новостей... \n\nПоследние новости из мира игр на сегодня:\n' + news_text)
 
-				elif states[id] == '{"command":"back_news"}':
-					news_text = ''
-					for i in range(0,8):
-						news_text += str(i+1) + '. ' + news.headers[i] + '\n'
-					msg(id, 'Возвращаю вас обратно к выбору новостей... \n\nПоследние новости из мира IT:\n' + news_text + '\n\nДанные взяты с сайта news.yandex.ru', keyboards.news, parse=False)
+				elif states[id] == '{"command":"back_list"}':
+					if news_type == 'internet':
+						paste_text = 'интернета'
+					elif news_type == 'gadgets':
+						paste_text = 'гаджетов'
+					elif news_type == 'games':
+						paste_text = 'игр'
+					msg(id, 'Возвращаю Вас обратно к выбору новостей... \n\nПоследние новости из мира ' + paste_text + ' на сегодня:\n' + news_text, keyboards.listboard(news_type))
 
 
 
@@ -242,76 +340,174 @@ for event in longpoll.listen():
 
 			if id == 2000000002:
 				if state_chat == '{"command":"news"}':
-					news.refresh()
-					news_text = ''
-					for i in range(0,8):
-						news_text += str(i+1) + '. ' + news.headers[i] + '\n'
-					msg(id, 'Самый востребованный раздел PTBot! 😱💻 \n\nПоследние новости из мира IT:\n' + news_text + '\n\nДанные взяты с сайта news.yandex.ru', keyboards.news, parse=False)
+					msg(id, 'Самый востребованный раздел PTBot — новости из мира IT прямо в этом чате! 😱💻 \nВыберите категорию и подождите 5-10 секунд, пока данные подгрузятся с сайта...\n\nДанные взяты из news.yandex.ru', keyboards.news, parse=False)
+
+				elif state_chat == '{"command":"news_internet"}':
+					news.refresh_internet()
+					news_text, news_type = '', 'internet'
+					for i in range(0, 8):
+						news_text += str(i) + '. ' + news.headers_internet[i] + '\n'
+					msg(id, 'Последние новости из мира интернета на сегодня: \n' + news_text, keyboards.listboard())		
+
+				elif state_chat == '{"command":"news_gadgets"}':
+					news.refresh_gadgets()
+					news_text, news_type = '', 'gadgets'
+					for i in range(0, 8):
+						news_text += str(i) + '. ' + news.headers_gadgets[i] + '\n'
+					msg(id, 'Последние новости из мира гаджетов на сегодня: \n' + news_text, keyboards.listboard())
+
+				elif state_chat == '{"command":"news_games"}':
+					news.refresh_games()
+					news_text, news_type = '', 'games'
+					for i in range(0, 8):
+						news_text += str(i) + '. ' + news.headers_games[i] + '\n'
+					msg(id, 'Последние новости из мира игр на сегодня: \n' + news_text, keyboards.listboard())
 
 				elif state_chat == '{"command":"1"}':
-					header = news.headers[0]
-					desc = news.descs[0]
-					original = news.originals[0]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
-				
+					if news_type == 'internet':
+						header = news.headers_internet[0]
+						desc = news.descs_internet[0]
+						original = news.originals_internet[0]
+					elif news_type == 'gadgets':
+						header = news.headers_gadgets[0]
+						desc = news.descs_gadgets[0]
+						original = news.originals_gadgets[0]
+					elif news_type == 'games':
+						header = news.headers_games[0]
+						desc = news.descs_games[0]
+						original = news.originals_games[0]
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif state_chat == '{"command":"2"}':
-					header = news.headers[1]
-					desc = news.descs[1]
-					original = news.originals[1]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
-
+					if news_type == 'internet':
+						header = news.headers_internet[1]
+						desc = news.descs_internet[1]
+						original = news.originals_internet[1]
+					elif news_type == 'gadgets':
+						header = news.headers_gadgets[1]
+						desc = news.descs_gadgets[1]
+						original = news.originals_gadgets[1]
+					elif news_type == 'games':
+						header = news.headers_games[1]
+						desc = news.descs_games[1]
+						original = news.originals_games[1]
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif state_chat == '{"command":"3"}':
-					header = news.headers[2]
-					desc = news.descs[2]
-					original = news.originals[2]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
-				
+					if news_type == 'internet':
+						header = news.headers_internet[2]
+						desc = news.descs_internet[2]
+						original = news.originals_internet[2]
+					elif news_type == 'gadgets':
+						header = news.headers_gadgets[2]
+						desc = news.descs_gadgets[2]
+						original = news.originals_gadgets[2]
+					elif news_type == 'games':
+						header = news.headers_games[2]
+						desc = news.descs_games[2]
+						original = news.originals_games[2]
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif state_chat == '{"command":"4"}':
-					header = news.headers[3]
-					desc = news.descs[3]
-					original = news.originals[3]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
-
+					if news_type == 'internet':
+						header = news.headers_internet[3]
+						desc = news.descs_internet[3]
+						original = news.originals_internet[3]
+					elif news_type == 'gadgets':
+						header = news.headers_gadgets[3]
+						desc = news.descs_gadgets[3]
+						original = news.originals_gadgets[3]
+					elif news_type == 'games':
+						header = news.headers_games[3]
+						desc = news.descs_games[3]
+						original = news.originals_games[3]
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif state_chat == '{"command":"5"}':
-					header = news.headers[4]
-					desc = news.descs[4]
-					original = news.originals[4]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
-				
+					if news_type == 'internet':
+						header = news.headers_internet[4]
+						desc = news.descs_internet[4]
+						original = news.originals_internet[4]
+					elif news_type == 'gadgets':
+						header = news.headers_gadgets[4]
+						desc = news.descs_gadgets[4]
+						original = news.originals_gadgets[4]
+					elif news_type == 'games':
+						header = news.headers_games[4]
+						desc = news.descs_games[4]
+						original = news.originals_games[4]
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif state_chat == '{"command":"6"}':
-					header = news.headers[5]
-					desc = news.descs[5]
-					original = news.originals[5]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
-
+					if news_type == 'internet':
+						header = news.headers_internet[5]
+						desc = news.descs_internet[5]
+						original = news.originals_internet[5]
+					elif news_type == 'gadgets':
+						header = news.headers_gadgets[5]
+						desc = news.descs_gadgets[5]
+						original = news.originals_gadgets[5]
+					elif news_type == 'games':
+						header = news.headers_games[5]
+						desc = news.descs_games[5]
+						original = news.originals_games[5]
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif state_chat == '{"command":"7"}':
-					header = news.headers[6]
-					desc = news.descs[6]
-					original = news.originals[6]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
-				
+					if news_type == 'internet':
+						header = news.headers_internet[6]
+						desc = news.descs_internet[6]
+						original = news.originals_internet[6]
+					elif news_type == 'gadgets':
+						header = news.headers_gadgets[6]
+						desc = news.descs_gadgets[6]
+						original = news.originals_gadgets[6]
+					elif news_type == 'games':
+						header = news.headers_games[6]
+						desc = news.descs_games[6]
+						original = news.originals_games[6]
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif state_chat == '{"command":"8"}':
-					header = news.headers[7]
-					desc = news.descs[7]
-					original = news.originals[7]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('news'))
+					if news_type == 'internet':
+						header = news.headers_internet[7]
+						desc = news.descs_internet[7]
+						original = news.originals_internet[7]
+					elif news_type == 'gadgets':
+						header = news.headers_gadgets[7]
+						desc = news.descs_gadgets[7]
+						original = news.originals_gadgets[7]
+					elif news_type == 'games':
+						header = news.headers_games[7]
+						desc = news.descs_games[7]
+						original = news.originals_games[7]
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 
 				elif state_chat == '{"command":"refresh"}':
 					try:
 						delete(get_id(id, 1))
 					except Exception:
 						pass
-					news.refresh()
-					news_text = ''
-					for i in range(0,8):
-						news_text += str(i+1) + '. ' + news.headers[i] + '\n'
-					msg(id, 'Обновляю список новостей... \n\nПоследние новости из мира IT:\n' + news_text + '\n\nДанные взяты с сайта news.yandex.ru', parse=False)
+					if news_type == 'internet':
+						news.refresh_internet()
+						news_text = ''
+						for i in range(0,8):
+							news_text += str(i+1) + '. ' + news.headers_internet[i] + '\n'
+						msg(id, 'Обновляю список новостей... \n\nПоследние новости из мира интернета на сегодня:\n' + news_text)
+					elif news_type == 'gadgets':
+						news.refresh_gadgets()
+						news_text = ''
+						for i in range(0,8):
+							news_text += str(i+1) + '. ' + news.headers_gadgets[i] + '\n'
+						msg(id, 'Обновляю список новостей... \n\nПоследние новости из мира гаджетов на сегодня:\n' + news_text)
+					elif news_type == 'games':
+						news.refresh_games()
+						news_text = ''
+						for i in range(0,8):
+							news_text += str(i+1) + '. ' + news.headers_games[i] + '\n'
+						msg(id, 'Обновляю список новостей... \n\nПоследние новости из мира игр на сегодня:\n' + news_text)
 
-				elif state_chat == '{"command":"back_news"}':
-					news_text = ''
-					for i in range(0,8):
-						news_text += str(i+1) + '. ' + news.headers[i] + '\n'
-					msg(id, 'Возвращаю вас обратно к выбору новостей... \n\nПоследние новости из мира IT:\n' + news_text + '\n\nДанные взяты с сайта news.yandex.ru', keyboards.news, parse=False)
+				elif state_chat == '{"command":"back_list"}':
+					if news_type == 'internet':
+						paste_text = 'интернета'
+					elif news_type == 'gadgets':
+						paste_text = 'гаджетов'
+					elif news_type == 'games':
+						paste_text = 'игр'
+					msg(id, 'Возвращаю Вас обратно к выбору новостей... \n\nПоследние новости из мира ' + paste_text + ' на сегодня:\n' + news_text, keyboards.listboard(news_type))
 
 
 				elif state_chat == '{"command":"request"}':

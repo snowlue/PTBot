@@ -11,8 +11,8 @@ def back(state=''):
 		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back_buy"}')
 	elif state == 'team':
 		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back_team"}')
-	elif state == 'news':
-		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back_news"}')
+	elif state == 'list':
+		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back_list"}')
 	else:
 		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return back.get_keyboard()
@@ -47,23 +47,34 @@ def menuboard(menu):
 	return menu.get_keyboard()
 
 def newsboard(news):
-	news.add_button('1&#8419;', 'primary', '{"command":"1"}')
-	news.add_button('2&#8419;', 'primary', '{"command":"2"}')
-	news.add_button('3&#8419;', 'primary', '{"command":"3"}')
-	news.add_button('4&#8419;', 'primary', '{"command":"4"}')
+	news.add_button('Интернет', 'primary', '{"command":"news_internet"}')
 	news.add_line()
-	news.add_button('5&#8419;', 'primary', '{"command":"5"}')
-	news.add_button('6&#8419;', 'primary', '{"command":"6"}')
-	news.add_button('7&#8419;', 'primary', '{"command":"7"}')
-	news.add_button('8&#8419;', 'primary', '{"command":"8"}')
+	news.add_button('Гаджеты', 'primary', '{"command":"news_gadgets"}')
 	news.add_line()
-	news.add_button('Обновить &#128260;', payload='{"command":"refresh"}')
+	news.add_button('Игры', 'primary', '{"command":"news_games"}')
 	news.add_line()
 	news.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return news.get_keyboard()
 
+def listboard():
+	board = VkKeyboard(False)
+	board.add_button('1&#8419;', 'primary', '{"command":"1"}')
+	board.add_button('2&#8419;', 'primary', '{"command":"2"}')
+	board.add_button('3&#8419;', 'primary', '{"command":"3"}')
+	board.add_button('4&#8419;', 'primary', '{"command":"4"}')
+	board.add_line()
+	board.add_button('5&#8419;', 'primary', '{"command":"5"}')
+	board.add_button('6&#8419;', 'primary', '{"command":"6"}')
+	board.add_button('7&#8419;', 'primary', '{"command":"7"}')
+	board.add_button('8&#8419;', 'primary', '{"command":"8"}')
+	board.add_line()
+	board.add_button('Обновить &#128260;', payload='{"command":"refresh"}')
+	board.add_line()
+	board.add_button('Вернуться &#8617;', 'negative', '{"command":"back_news"}')
+	return board.get_keyboard()
+
 def teamboard(team):
-	team.add_button('Задать вопрос команде &#10067;', payload='{"command":"question"}')
+	team.add_button('Задать вопрос команде&#10067;', payload='{"command":"question"}')
 	team.add_line()
 	team.add_button('О команде &#128142;', payload='{"command":"about"}')
 	team.add_line()
@@ -119,7 +130,7 @@ def cartboard(id, item=''):
 
 
 def partnerboard(partner):
-	partner.add_button('SAPOD — Подкаст из мира San Andreas &#127897;', 'primary', '{"command":"sapod"}')
+	partner.add_button('SAPOD — Подкаст из мира San Andreas&#127897;', 'primary', '{"command":"sapod"}')
 	partner.add_line()
 	partner.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return partner.get_keyboard()
