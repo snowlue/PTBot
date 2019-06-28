@@ -2,7 +2,10 @@
 import urllib.parse, traceback
 from methods import *
 
-payload, state_chat, states = '', '', dict()
+payload, state_chat, states, news_types, mails, id_chat = '', '', dict(), dict(), dict(), 2000000006
+internet_text, gadgets_text, games_text = '', '', ''
+
+print('main.py started!')
 
 for event in longpoll.listen():
 	try:
@@ -15,8 +18,12 @@ for event in longpoll.listen():
 
 			if id not in states:
 				states[id] = ''
+			if id not in news_types:
+				news_types[id] = ''
+			if id not in mails:
+				mails[id] = True
 
-			if id == 2000000002:
+			if id == id_chat:
 				if state_chat == 'wait request_id' and ' '.join(text.split()[1:]) != 'Вернуться ↩':
 					state_chat = 'sending request_id'
 				elif state_chat == 'wait amount' and ' '.join(text.split()[1:]) != 'Вернуться ↩':
@@ -27,6 +34,10 @@ for event in longpoll.listen():
 					state_chat = 'sending restart_id'
 				elif state_chat == 'wait start_id' and ' '.join(text.split()[1:]) != 'Вернуться ↩':
 					state_chat = 'sending start_id'
+				elif state_chat == 'wait mail_text' and ' '.join(text.split()[1:]) != 'Вернуться ↩':
+					state_chat = 'sending mail_text'
+				elif state_chat == 'wait mail_confirm' and ' '.join(text.split()[1:]) != 'Вернуться ↩':
+					state_chat = 'sending mail_confirm'	
 				else:
 					state_chat = payload
 			if id < 2000000000:
@@ -40,10 +51,10 @@ for event in longpoll.listen():
 					states[id] = payload
 
 
-			if id == 2000000002 and (payload == '{"command":"start"}' or text.lower().find('начать') != -1):
-				msg(id, 'Привет, команда PTCodding! Рад вас видеть! Вижу, что этот чат — чат моих создателей. Включаю дополнительные функции &#128522; \n\n#news — последние новости из сферы IT \nЗапрос VK Pay — запрос средств с указанием amount, description и id \nБаг-перезапуск — перезапуск бота по id с сообщением о баге \nВернуть к началу — возвращает кнопку «Начать» у юзера по id', keyboards.chat)
-			elif id < 2000000000 and states[id] == '{"command":"start"}': 
-				msg(id, 'Привет, я PTBot, дворецкий команды PTCodding. \nНажмите на нужную Вам кнопку, чтобы команда нашла Вас и быстро ответила, а я не потерял Вас &#128522; \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#news — последние новости из сферы IT \n#market — магазин услуг и покупки \n#team — вопросы к команде и о команде', keyboards.menu)
+			if id == id_chat and (state_chat == '{"command":"start"}' or 'нач' in text.lower().split()[1] or 'start' in text.lower().split()[1] or 'ptbot' in text.lower().split()[1] or 'поехали' in text.lower().split()[1] or 'появи' in text.lower().split()[1] or 'откр' in text.lower().split()[1] or 'эй' in text.lower().split()[1] or 'клавиатур' in text.lower().split()[1]):
+				msg(id, 'Привет, команда PTCodding! Рад вас видеть! Вижу, что этот чат — чат моих создателей. Включаю дополнительные функции &#128522; \n\n#news — последние новости из сферы IT \nЗапрос VK Pay — запрос средств с указанием amount, description и id \nБаг-перезапуск — перезапуск бота по id с сообщением о баге \nВернуть к началу — возвращает кнопку «Начать» у юзера по id \nОтправить рассылку — отправляет рассылку с заданными text и всем, кроме id \nВывести данные в консоль — выводит данные в консоль сервера', keyboards.chat)
+			elif id < 2000000000 and (states[id] == '{"command":"start"}' or 'начать' in text.lower()) and states[id] not in ['sending idea', 'sending question', 'sending partner']: 
+				msg(id, 'Привет, я PTBot, дворецкий команды PTCodding. \nНажмите на нужную Вам кнопку, чтобы команда нашла Вас и быстро ответила, а я не потерял Вас &#128522; \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#news — последние новости из сферы IT \n#market — магазин услуг и покупки \n#team — вопросы к команде и о команде', keyboards.menu(mails[id]))
 
 			print('{} отправляет сообщение с текстом "{}"'.format(id, text))
 
@@ -54,8 +65,8 @@ for event in longpoll.listen():
 
 				elif states[id] == 'sending idea':
 					print('{} отправляет идею'.format(id))
-					msg(2000000002, '#botidea \n[id{0}|{1} {2}] предлагает идею.\n\nОтветить пользователю: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']), forward=str(msg_id))
-					msg(id, 'Ваша идея будет доставлена команде PTCodding в аккуратном конвертике с Вашей печатью. Ожидайте ответа! &#8986;', keyboards.menu)
+					msg(id_chat, '#botidea \n[id{0}|{1} {2}] предлагает идею.\n\nОтветить пользователю: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']), forward=str(msg_id))
+					msg(id, 'Ваша идея будет доставлена команде PTCodding в аккуратном конвертике с Вашей печатью. Ожидайте ответа! &#8986;', keyboards.menu(mails[id]))
 
 
 
@@ -65,8 +76,8 @@ for event in longpoll.listen():
 
 				elif states[id] == 'sending partner':
 					print('{} предлагает партнёрство'.format(id))
-					msg(2000000002, '#botpartner \n[id{0}|{1} {2}] предлагает партнёрство.\n\nОтветить пользователю: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']), forward=str(msg_id))
-					msg(id, 'Ждите ответа! Скоро с Вами свяжутся мои операторы! &#8986;', keyboards.menu)
+					msg(id_chat, '#botpartner \n[id{0}|{1} {2}] предлагает партнёрство.\n\nОтветить пользователю: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']), forward=str(msg_id))
+					msg(id, 'Ждите ответа! Скоро с Вами свяжутся мои операторы! &#8986;', keyboards.menu(mails[id]))
 
 
 
@@ -79,7 +90,7 @@ for event in longpoll.listen():
 
 				elif states[id] == 'sending question':
 					print('{} отправляет вопрос'.format(id))
-					msg(2000000002, '#botquestion \n[id{0}|{1} {2}] задаёт вопрос.\n\nОтветить пользователю: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']), forward=str(msg_id))
+					msg(id_chat, '#botquestion \n[id{0}|{1} {2}] задаёт вопрос.\n\nОтветить пользователю: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']), forward=str(msg_id))
 					msg(id, 'Ждите ответа на свой вопрос от команды PTCodding! &#8986;', keyboards.team)
 
 				elif states[id] == '{"command":"about"}':
@@ -137,7 +148,7 @@ for event in longpoll.listen():
 					msg(id, 'Загляните в привычный магазин, если мой Вам оказался не по душе: https://vk.com/market-132868814 &#128072;', keyboards.back('buy'))
 
 				elif states[id] == '{"command":"order"}':
-					msg(2000000002, 'Вас вызывают для оформления заказа. Пройдите, пожалуйста, по этой ссылке: https://vk.com/gim132868814?sel={}'.format(id))
+					msg(id_chat, 'Вас вызывают для оформления заказа. Пройдите, пожалуйста, по этой ссылке: https://vk.com/gim132868814?sel={}'.format(id))
 					msg(id, 'Ожидайте... Скоро мои операторы свяжутся с Вами для уточнения деталей и оплаты заказа! &#8986;')
 				
 				elif states[id] == '{"command":"back_buy"}':
@@ -152,137 +163,137 @@ for event in longpoll.listen():
 					if not internet_text:
 						msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
 						news.refresh_internet()
-						internet_text, news_type = '', 'internet'
+						news_types[id] = 'internet'
 						for i in range(0, 8):
-							internet_text += str(i+1) + '. ' + news.headers_internet[i] + '\n'
+							internet_text += str(i+1) + '&#8419; ' + news.headers_internet[i] + '\n'
 					msg(id, 'Последние новости из мира интернета на сегодня: \n' + internet_text, keyboards.listboard())		
 
 				elif states[id] == '{"command":"news_gadgets"}':
 					if not gadgets_text:
 						msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
 						news.refresh_gadgets()
-						gadgets_text, news_type = '', 'gadgets'
+						news_types[id] = 'gadgets'
 						for i in range(0, 8):
-							gadgets_text += str(i+1) + '. ' + news.headers_gadgets[i] + '\n'
+							gadgets_text += str(i+1) + '&#8419; ' + news.headers_gadgets[i] + '\n'
 					msg(id, 'Последние новости из мира гаджетов на сегодня: \n' + gadgets_text, keyboards.listboard())
 
 				elif states[id] == '{"command":"news_games"}':
 					if not games_text:
 						msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
 						news.refresh_games()
-						games_text, news_type = '', 'games'
+						news_types[id] = 'games'
 						for i in range(0, 8):
-							games_text += str(i+1) + '. ' + news.headers_games[i] + '\n'
+							games_text += str(i+1) + '&#8419; ' + news.headers_games[i] + '\n'
 					msg(id, 'Последние новости из мира игр на сегодня: \n' + games_text, keyboards.listboard())
 
 				elif states[id] == '{"command":"1"}':
-					if news_type == 'internet':
+					if news_types[id] == 'internet':
 						header = news.headers_internet[0]
 						desc = news.descs_internet[0]
 						original = news.originals_internet[0]
-					elif news_type == 'gadgets':
+					elif news_types[id] == 'gadgets':
 						header = news.headers_gadgets[0]
 						desc = news.descs_gadgets[0]
 						original = news.originals_gadgets[0]
-					elif news_type == 'games':
+					elif news_types[id] == 'games':
 						header = news.headers_games[0]
 						desc = news.descs_games[0]
 						original = news.originals_games[0]
 					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif states[id] == '{"command":"2"}':
-					if news_type == 'internet':
+					if news_types[id] == 'internet':
 						header = news.headers_internet[1]
 						desc = news.descs_internet[1]
 						original = news.originals_internet[1]
-					elif news_type == 'gadgets':
+					elif news_types[id] == 'gadgets':
 						header = news.headers_gadgets[1]
 						desc = news.descs_gadgets[1]
 						original = news.originals_gadgets[1]
-					elif news_type == 'games':
+					elif news_types[id] == 'games':
 						header = news.headers_games[1]
 						desc = news.descs_games[1]
 						original = news.originals_games[1]
 					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif states[id] == '{"command":"3"}':
-					if news_type == 'internet':
+					if news_types[id] == 'internet':
 						header = news.headers_internet[2]
 						desc = news.descs_internet[2]
 						original = news.originals_internet[2]
-					elif news_type == 'gadgets':
+					elif news_types[id] == 'gadgets':
 						header = news.headers_gadgets[2]
 						desc = news.descs_gadgets[2]
 						original = news.originals_gadgets[2]
-					elif news_type == 'games':
+					elif news_types[id] == 'games':
 						header = news.headers_games[2]
 						desc = news.descs_games[2]
 						original = news.originals_games[2]
 					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif states[id] == '{"command":"4"}':
-					if news_type == 'internet':
+					if news_types[id] == 'internet':
 						header = news.headers_internet[3]
 						desc = news.descs_internet[3]
 						original = news.originals_internet[3]
-					elif news_type == 'gadgets':
+					elif news_types[id] == 'gadgets':
 						header = news.headers_gadgets[3]
 						desc = news.descs_gadgets[3]
 						original = news.originals_gadgets[3]
-					elif news_type == 'games':
+					elif news_types[id] == 'games':
 						header = news.headers_games[3]
 						desc = news.descs_games[3]
 						original = news.originals_games[3]
 					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif states[id] == '{"command":"5"}':
-					if news_type == 'internet':
+					if news_types[id] == 'internet':
 						header = news.headers_internet[4]
 						desc = news.descs_internet[4]
 						original = news.originals_internet[4]
-					elif news_type == 'gadgets':
+					elif news_types[id] == 'gadgets':
 						header = news.headers_gadgets[4]
 						desc = news.descs_gadgets[4]
 						original = news.originals_gadgets[4]
-					elif news_type == 'games':
+					elif news_types[id] == 'games':
 						header = news.headers_games[4]
 						desc = news.descs_games[4]
 						original = news.originals_games[4]
 					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif states[id] == '{"command":"6"}':
-					if news_type == 'internet':
+					if news_types[id] == 'internet':
 						header = news.headers_internet[5]
 						desc = news.descs_internet[5]
 						original = news.originals_internet[5]
-					elif news_type == 'gadgets':
+					elif news_types[id] == 'gadgets':
 						header = news.headers_gadgets[5]
 						desc = news.descs_gadgets[5]
 						original = news.originals_gadgets[5]
-					elif news_type == 'games':
+					elif news_types[id] == 'games':
 						header = news.headers_games[5]
 						desc = news.descs_games[5]
 						original = news.originals_games[5]
 					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif states[id] == '{"command":"7"}':
-					if news_type == 'internet':
+					if news_types[id] == 'internet':
 						header = news.headers_internet[6]
 						desc = news.descs_internet[6]
 						original = news.originals_internet[6]
-					elif news_type == 'gadgets':
+					elif news_types[id] == 'gadgets':
 						header = news.headers_gadgets[6]
 						desc = news.descs_gadgets[6]
 						original = news.originals_gadgets[6]
-					elif news_type == 'games':
+					elif news_types[id] == 'games':
 						header = news.headers_games[6]
 						desc = news.descs_games[6]
 						original = news.originals_games[6]
 					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif states[id] == '{"command":"8"}':
-					if news_type == 'internet':
+					if news_types[id] == 'internet':
 						header = news.headers_internet[7]
 						desc = news.descs_internet[7]
 						original = news.originals_internet[7]
-					elif news_type == 'gadgets':
+					elif news_types[id] == 'gadgets':
 						header = news.headers_gadgets[7]
 						desc = news.descs_gadgets[7]
 						original = news.originals_gadgets[7]
-					elif news_type == 'games':
+					elif news_types[id] == 'games':
 						header = news.headers_games[7]
 						desc = news.descs_games[7]
 						original = news.originals_games[7]
@@ -294,31 +305,31 @@ for event in longpoll.listen():
 					except Exception:
 						pass
 					msg(id, 'Обновляю список новостей... {}, ожидайте...'.format(name(id)['first_name']))
-					if news_type == 'internet':
+					if news_types[id] == 'internet':
 						news.refresh_internet()
 						internet_text = ''
 						for i in range(0,8):
-							internet_text += str(i+1) + '. ' + news.headers_internet[i] + '\n'
+							internet_text += str(i+1) + '&#8419; ' + news.headers_internet[i] + '\n'
 						msg(id, 'Последние новости из мира интернета на сегодня:\n' + internet_text)
-					elif news_type == 'gadgets':
+					elif news_types[id] == 'gadgets':
 						news.refresh_gadgets()
 						gadgets_text = ''
 						for i in range(0,8):
-							gadgets_text += str(i+1) + '. ' + news.headers_gadgets[i] + '\n'
+							gadgets_text += str(i+1) + '&#8419; ' + news.headers_gadgets[i] + '\n'
 						msg(id, 'Последние новости из мира гаджетов на сегодня:\n' + gadgets_text)
-					elif news_type == 'games':
+					elif news_types[id] == 'games':
 						news.refresh_games()
 						games_text = ''
 						for i in range(0,8):
-							games_text += str(i+1) + '. ' + news.headers_games[i] + '\n'
+							games_text += str(i+1) + '&#8419; ' + news.headers_games[i] + '\n'
 						msg(id, 'Последние новости из мира игр на сегодня:\n' + games_text)
 
 				elif states[id] == '{"command":"back_list"}':
-					if news_type == 'internet':
+					if news_types[id] == 'internet':
 						msg(id, 'Возвращаю Вас обратно к выбору новостей. \n\nПоследние новости из мира интернета на сегодня:\n' + internet_text, keyboards.listboard())
-					elif news_type == 'gadgets':
+					elif news_types[id] == 'gadgets':
 						msg(id, 'Возвращаю Вас обратно к выбору новостей. \n\nПоследние новости из мира гаджетов на сегодня:\n' + gadgets_text, keyboards.listboard())
-					elif news_type == 'games':
+					elif news_types[id] == 'games':
 						msg(id, 'Возвращаю Вас обратно к выбору новостей. \n\nПоследние новости из мира игр на сегодня:\n' + games_text, keyboards.listboard())
 					
 
@@ -331,6 +342,16 @@ for event in longpoll.listen():
 					msg(id, 'Я очень хочу кушать. Я голодный... &#128546; Дайте, пожалуйста, пару долларов, чтобы мне купили пончик &#127849; \nЕсли хотите поддержать наш проект, то лучше сделайте пожертвование через приложение — так Вы не просто поддержите нас, но и продвинете проект! &#128200;', keyboards.donateboard('action=transfer-to-group&group_id=132868814&aid=10', 6887721, -132868814, 'Пончик — наши донаты &#127849;'))
 
 
+
+				elif states[id] == '{"command":"unmail"}':
+					mails[id] = False
+					msg(id, 'Я отписал Вас от рассылок команды PTCodding. Если вдруг захотите подписаться обратно — ниже есть кнопка «Подписаться на рассылки» &#128071;', keyboards.menu(mails[id]))
+
+				elif states[id] == '{"command":"mail"}':
+					mails[id] = True
+					msg(id, 'Я подписал Вас на рассылки команды PTCodding. Если вдруг захотите отписаться — ниже есть кнопка «Отписаться от рассылок» &#128071;', keyboards.menu(mails[id]))
+
+
 				
 				elif states[id] == '{"command":"partners"}':
 					msg(id, 'Добро пожаловать в список партнёров команды PTCodding! Благодаря этим людям в PTCodding очень многое изменяется. Я как чат-бот сообщества наблюдаю за всем этим со стороны — PTCodding растёт на глазах! &#128079;', keyboards.partner)
@@ -341,245 +362,291 @@ for event in longpoll.listen():
 
 
 				elif states[id] == '{"command":"back"}':
-					msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопок: \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#news — последние новости из сферы IT \n#market — магазин услуг и покупки \n#team — вопросы к команде и о команде', keyboards.menu)
+					msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопок: \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#news — последние новости из сферы IT \n#market — магазин услуг и покупки \n#team — вопросы к команде и о команде', keyboards.menu(mails[id]))
 					internet_text, gadgets_text, games_text = '', '', ''
 
 
 
-			if id == 2000000002:
+			if id == id_chat:
 				if state_chat == '{"command":"news"}':
-					msg(id, 'Самый востребованный раздел PTBot — новости из мира IT прямо в этом чате! 😱💻 \nВыберите категорию и подождите 7 секунд, пока данные подгрузятся на сервера...\n\nДанные взяты из news.yandex.ru', keyboards.news, parse=False)
+					msg(id_chat, 'Самый востребованный раздел PTBot — новости из мира IT прямо в этом чате! 😱💻 \nВыберите категорию и подождите 7 секунд, пока данные подгрузятся на сервера...\n\nДанные взяты из news.yandex.ru', keyboards.news, parse=False)
 
 				elif state_chat == '{"command":"news_internet"}':
 					if not internet_text:
-						msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
+						msg(id_chat, 'Ждите! Скоро всё будет...')
 						news.refresh_internet()
-						internet_text, news_type = '', 'internet'
+						internet_text, news_types[id_chat] = '', 'internet'
 						for i in range(0, 8):
-							internet_text += str(i+1) + '. ' + news.headers_internet[i] + '\n'
-					msg(id, 'Последние новости из мира интернета на сегодня: \n' + internet_text, keyboards.listboard())	
+							internet_text += str(i+1) + '&#8419; ' + news.headers_internet[i] + '\n'
+					msg(id_chat, 'Последние новости из мира интернета на сегодня: \n' + internet_text, keyboards.listboard())	
 
 				elif state_chat == '{"command":"news_gadgets"}':
 					if not gadgets_text:
-						msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
+						msg(id_chat, 'Ждите! Скоро всё будет...')
 						news.refresh_gadgets()
-						gadgets_text, news_type = '', 'gadgets'
+						gadgets_text, news_types[id_chat] = '', 'gadgets'
 						for i in range(0, 8):
-							gadgets_text += str(i+1) + '. ' + news.headers_gadgets[i] + '\n'
-					msg(id, 'Последние новости из мира гаджетов на сегодня: \n' + gadgets_text, keyboards.listboard())
+							gadgets_text += str(i+1) + '&#8419; ' + news.headers_gadgets[i] + '\n'
+					msg(id_chat, 'Последние новости из мира гаджетов на сегодня: \n' + gadgets_text, keyboards.listboard())
 
 				elif state_chat == '{"command":"news_games"}':
 					if not games_text:
-						msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
+						msg(id_chat, 'Ждите! Скоро всё будет...')
 						news.refresh_games()
-						games_text, news_type = '', 'games'
+						games_text, news_types[id_chat] = '', 'games'
 						for i in range(0, 8):
-							games_text += str(i+1) + '. ' + news.headers_games[i] + '\n'
-					msg(id, 'Последние новости из мира игр на сегодня: \n' + games_text, keyboards.listboard())
+							games_text += str(i+1) + '&#8419; ' + news.headers_games[i] + '\n'
+					msg(id_chat, 'Последние новости из мира игр на сегодня: \n' + games_text, keyboards.listboard())
 
 				elif state_chat == '{"command":"1"}':
-					if news_type == 'internet':
+					if news_types[id_chat] == 'internet':
 						header = news.headers_internet[0]
 						desc = news.descs_internet[0]
 						original = news.originals_internet[0]
-					elif news_type == 'gadgets':
+					elif news_types[id_chat] == 'gadgets':
 						header = news.headers_gadgets[0]
 						desc = news.descs_gadgets[0]
 						original = news.originals_gadgets[0]
-					elif news_type == 'games':
+					elif news_types[id_chat] == 'games':
 						header = news.headers_games[0]
 						desc = news.descs_games[0]
 						original = news.originals_games[0]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif state_chat == '{"command":"2"}':
-					if news_type == 'internet':
+					if news_types[id_chat] == 'internet':
 						header = news.headers_internet[1]
 						desc = news.descs_internet[1]
 						original = news.originals_internet[1]
-					elif news_type == 'gadgets':
+					elif news_types[id_chat] == 'gadgets':
 						header = news.headers_gadgets[1]
 						desc = news.descs_gadgets[1]
 						original = news.originals_gadgets[1]
-					elif news_type == 'games':
+					elif news_types[id_chat] == 'games':
 						header = news.headers_games[1]
 						desc = news.descs_games[1]
 						original = news.originals_games[1]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif state_chat == '{"command":"3"}':
-					if news_type == 'internet':
+					if news_types[id_chat] == 'internet':
 						header = news.headers_internet[2]
 						desc = news.descs_internet[2]
 						original = news.originals_internet[2]
-					elif news_type == 'gadgets':
+					elif news_types[id_chat] == 'gadgets':
 						header = news.headers_gadgets[2]
 						desc = news.descs_gadgets[2]
 						original = news.originals_gadgets[2]
-					elif news_type == 'games':
+					elif news_types[id_chat] == 'games':
 						header = news.headers_games[2]
 						desc = news.descs_games[2]
 						original = news.originals_games[2]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif state_chat == '{"command":"4"}':
-					if news_type == 'internet':
+					if news_types[id_chat] == 'internet':
 						header = news.headers_internet[3]
 						desc = news.descs_internet[3]
 						original = news.originals_internet[3]
-					elif news_type == 'gadgets':
+					elif news_types[id_chat] == 'gadgets':
 						header = news.headers_gadgets[3]
 						desc = news.descs_gadgets[3]
 						original = news.originals_gadgets[3]
-					elif news_type == 'games':
+					elif news_types[id_chat] == 'games':
 						header = news.headers_games[3]
 						desc = news.descs_games[3]
 						original = news.originals_games[3]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif state_chat == '{"command":"5"}':
-					if news_type == 'internet':
+					if news_types[id_chat] == 'internet':
 						header = news.headers_internet[4]
 						desc = news.descs_internet[4]
 						original = news.originals_internet[4]
-					elif news_type == 'gadgets':
+					elif news_types[id_chat] == 'gadgets':
 						header = news.headers_gadgets[4]
 						desc = news.descs_gadgets[4]
 						original = news.originals_gadgets[4]
-					elif news_type == 'games':
+					elif news_types[id_chat] == 'games':
 						header = news.headers_games[4]
 						desc = news.descs_games[4]
 						original = news.originals_games[4]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif state_chat == '{"command":"6"}':
-					if news_type == 'internet':
+					if news_types[id_chat] == 'internet':
 						header = news.headers_internet[5]
 						desc = news.descs_internet[5]
 						original = news.originals_internet[5]
-					elif news_type == 'gadgets':
+					elif news_types[id_chat] == 'gadgets':
 						header = news.headers_gadgets[5]
 						desc = news.descs_gadgets[5]
 						original = news.originals_gadgets[5]
-					elif news_type == 'games':
+					elif news_types[id_chat] == 'games':
 						header = news.headers_games[5]
 						desc = news.descs_games[5]
 						original = news.originals_games[5]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif state_chat == '{"command":"7"}':
-					if news_type == 'internet':
+					if news_types[id_chat] == 'internet':
 						header = news.headers_internet[6]
 						desc = news.descs_internet[6]
 						original = news.originals_internet[6]
-					elif news_type == 'gadgets':
+					elif news_types[id_chat] == 'gadgets':
 						header = news.headers_gadgets[6]
 						desc = news.descs_gadgets[6]
 						original = news.originals_gadgets[6]
-					elif news_type == 'games':
+					elif news_types[id_chat] == 'games':
 						header = news.headers_games[6]
 						desc = news.descs_games[6]
 						original = news.originals_games[6]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 				elif state_chat == '{"command":"8"}':
-					if news_type == 'internet':
+					if news_types[id_chat] == 'internet':
 						header = news.headers_internet[7]
 						desc = news.descs_internet[7]
 						original = news.originals_internet[7]
-					elif news_type == 'gadgets':
+					elif news_types[id_chat] == 'gadgets':
 						header = news.headers_gadgets[7]
 						desc = news.descs_gadgets[7]
 						original = news.originals_gadgets[7]
-					elif news_type == 'games':
+					elif news_types[id_chat] == 'games':
 						header = news.headers_games[7]
 						desc = news.descs_games[7]
 						original = news.originals_games[7]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
 
 				elif state_chat == '{"command":"refresh"}':
 					try:
-						delete(get_id(id, 1))
+						delete(get_id(id_chat, 1))
 					except Exception:
 						pass
-					msg(id, 'Обновляю список новостей... Ждите...')
-					if news_type == 'internet':
+					msg(id_chat, 'Обновляю список новостей... Ждите...')
+					if news_types[id_chat] == 'internet':
 						news.refresh_internet()
 						internet_text = ''
 						for i in range(0,8):
-							internet_text += str(i+1) + '. ' + news.headers_internet[i] + '\n'
-						msg(id, 'Последние новости из мира интернета на сегодня:\n' + internet_text)
-					elif news_type == 'gadgets':
+							internet_text += str(i+1) + '&#8419; ' + news.headers_internet[i] + '\n'
+						msg(id_chat, 'Последние новости из мира интернета на сегодня:\n' + internet_text)
+					elif news_types[id_chat] == 'gadgets':
 						news.refresh_gadgets()
 						gadgets_text = ''
 						for i in range(0,8):
-							gadgets_text += str(i+1) + '. ' + news.headers_gadgets[i] + '\n'
-						msg(id, 'Последние новости из мира гаджетов на сегодня:\n' + gadgets_text)
-					elif news_type == 'games':
+							gadgets_text += str(i+1) + '&#8419; ' + news.headers_gadgets[i] + '\n'
+						msg(id_chat, 'Последние новости из мира гаджетов на сегодня:\n' + gadgets_text)
+					elif news_types[id_chat] == 'games':
 						news.refresh_games()
 						games_text = ''
 						for i in range(0,8):
-							games_text += str(i+1) + '. ' + news.headers_games[i] + '\n'
-						msg(id, 'Последние новости из мира игр на сегодня:\n' + games_text)
+							games_text += str(i+1) + '&#8419; ' + news.headers_games[i] + '\n'
+						msg(id_chat, 'Последние новости из мира игр на сегодня:\n' + games_text)
 
 				elif state_chat == '{"command":"back_list"}':
-					if news_type == 'internet':
-						msg(id, 'Возвращаю вас обратно к выбору новостей. \n\nПоследние новости из мира интернета на сегодня:\n' + internet_text, keyboards.listboard())
-					elif news_type == 'gadgets':
-						msg(id, 'Возвращаю вас обратно к выбору новостей. \n\nПоследние новости из мира гаджетов на сегодня:\n' + gadgets_text, keyboards.listboard())
-					elif news_type == 'games':
-						msg(id, 'Возвращаю вас обратно к выбору новостей. \n\nПоследние новости из мира игр на сегодня:\n' + games_text, keyboards.listboard())
+					if news_types[id_chat] == 'internet':
+						msg(id_chat, 'Возвращаю вас обратно к выбору новостей. \n\nПоследние новости из мира интернета на сегодня:\n' + internet_text, keyboards.listboard())
+					elif news_types[id_chat] == 'gadgets':
+						msg(id_chat, 'Возвращаю вас обратно к выбору новостей. \n\nПоследние новости из мира гаджетов на сегодня:\n' + gadgets_text, keyboards.listboard())
+					elif news_types[id_chat] == 'games':
+						msg(id_chat, 'Возвращаю вас обратно к выбору новостей. \n\nПоследние новости из мира игр на сегодня:\n' + games_text, keyboards.listboard())
 
 				elif state_chat == '{"command":"back_news"}':
-					msg(id, 'Возвращаю вас к выбору категории новостей. Выберите категорию: интернет, гаджеты или игры. \n\nДанные взяты из news.yandex.ru', keyboards.news)
+					msg(id_chat, 'Возвращаю вас к выбору категории новостей. Выберите категорию: интернет, гаджеты или игры. \n\nДанные взяты из news.yandex.ru', keyboards.news)
 
 
 				elif state_chat == '{"command":"request"}':
-					msg(id, 'Решили запросить у кого-то деньги? У кого? Отправьте id пользователя.', keyboards.back())
+					msg(id_chat, 'Решили запросить у кого-то деньги? У кого? Отправьте id пользователя.', keyboards.back())
 					state_chat = 'wait request_id'
 
 				elif state_chat == 'sending request_id':
 					request_id = text.split()[1]
-					msg(id, 'А какую сумму нужно запросить? Отправьте число.', keyboards.back())
+					msg(id_chat, 'А какую сумму нужно запросить? Отправьте число.', keyboards.back())
 					state_chat = 'wait amount'
 
 				elif state_chat == 'sending amount':
 					request_amount = text.split()[1]
-					msg(id, 'Какое описание к запросу? Отправьте текст.')
+					msg(id_chat, 'Какое описание к запросу? Отправьте текст.')
 					state_chat = 'wait description'
 
 				elif state_chat == 'sending description':
 					request_desc = ' '.join(text.split()[1:])
 					try:
 						msg(request_id, 'Меня попросили запросить у Вас оплату для «{}» на сумму в ₽{}. Подтвердите оплату...'.format(request_desc, request_amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(request_amount, urllib.parse.quote(request_desc))))
-						msg(id, 'Запрос оплаты у [id{0}|{1} {2}] прошёл успешно!'.format(request_id, name(request_id, 'gen')['first_name'], name(request_id, 'gen')['last_name']), keyboards.chat)
+						msg(id_chat, 'Запрос оплаты у [id{0}|{1} {2}] прошёл успешно!'.format(request_id, name(request_id, 'gen')['first_name'], name(request_id, 'gen')['last_name']), keyboards.chat)
 					except Exception as err:
-						msg(id, 'Возникла проблема при запросе оплаты у пользователя. \n\n@pavetranquil (Павел), загляните в консоль и повторите попытку: dashboard.heroku.com/apps/ptcodding-bot/logs', keyboards.chat)
+						msg(id_chat, 'Возникла проблема при запросе оплаты у пользователя. \n\n@pavetranquil (Павел), загляните в консоль и повторите попытку: dashboard.heroku.com/apps/ptcodding-bot/logs', keyboards.chat)
 						print(err)
 						print(traceback.format_exc())
 
 					
 				elif state_chat == '{"command":"restart"}':
-					msg(id, 'Решили перезапустить меня? У кого? Отправьте id пользователя.', keyboards.back())
+					msg(id_chat, 'Решили перезапустить меня? У кого? Отправьте id пользователей через запятую.', keyboards.back())
 					state_chat = 'wait restart_id'
 
 				elif state_chat == 'sending restart_id':
-					restart_id = text.split()[1]
-					msg(restart_id, 'Добрый день, {}! Видимо, наш PTBot где-то сломался, но сейчас уже всё хорошо. Приносим свои извинения, и перезапускаем его.\n\nС уважением, команда PTCodding.'.format(name(restart_id)['first_name']))
-					msg(restart_id, 'Привет, это снова я, Ваш любимый PTBot! &#128075; Добро пожаловать в старое доброе меню! &#128526;', keyboards.menu)
-					msg(id, 'Баг-перезапуск у [id{0}|{1} {2}] прошёл успешно!'.format(restart_id, name(restart_id, 'gen')['first_name'], name(restart_id, 'gen')['last_name']), keyboards.chat)
+					restart_ids = text.replace(' ', '')
+					restart_ids = restart_ids.split(',')
+					for i in range(1, len(restart_ids)):
+						restart_ids[i] =  int(restart_ids[i])
+						msg(restart_ids[i], 'Добрый день, {}! Видимо, наш PTBot где-то сломался, но сейчас уже всё хорошо. Приносим свои извинения, и перезапускаем его.\n\nС уважением, команда PTCodding.'.format(name(restart_ids[i])['first_name']))
+						msg(restart_ids[i], 'Привет, это снова я, Ваш любимый PTBot! &#128075; Добро пожаловать в старое доброе меню! &#128526;', keyboards.menu(mails[restart_ids[i]]))
+						msg(id_chat, 'Баг-перезапуск прошёл успешно!', keyboards.chat)
 
 
-				elif state_chat == '{"command":"back_to_start"}':
-					msg(id, 'Кого возвращаем к самому началу? Отправьте id пользователя.', keyboards.back())
+				elif state_chat == '{"command":"to_start"}':
+					msg(id_chat, 'Кого возвращаем к самому началу? Отправьте id пользователей через запятую', keyboards.back())
 					state_chat = 'wait start_id'
 
 				elif state_chat == 'sending start_id':
-					start_id = text.split()[1]
-					msg(start_id, 'Машина времени чудесна... С её помощью можно вернуть нас к тому моменту, когда мы ещё не были знакомы...', keyboards.start())
-					try:
-						delete(get_id(start_id, 0))
-					except Exception:
-						pass
-					msg(id, 'Возврат к началу у [id{0}|{1} {2}] прошёл успешно!'.format(start_id, name(start_id, 'gen')['first_name'], name(start_id, 'gen')['last_name']), keyboards.chat)
+					start_ids = text.replace(' ', '')
+					start_ids = start_ids.split(',')
+					for i in range(1, len(start_ids)):
+						start_ids[i] =  int(start_ids[i])
+						msg(start_ids[i], 'Машина времени чудесна... С её помощью можно вернуть нас к тому моменту, когда мы ещё не были знакомы...', keyboards.start())
+						try:
+							delete(get_id(start_ids[i], 0))
+						except Exception:
+							pass
+					msg(id_chat, 'Возврат к началу прошёл успешно!', keyboards.chat)
+
+				elif state_chat == '{"command":"mailing"}':
+					msg(id_chat, 'Какой текст рассылки отправляем пользователям? Отправьте сообщение в ответ на это и не забудьте про первую заглавную', keyboards.back())
+					state_chat = 'wait mail_text'
+
+				elif state_chat == 'sending mail_text':
+					mail_text = text
+					msg(id_chat, 'Итак, я отправляю рассылку со следующим текстом:\n\n{}\n\nПодтвердите отправку.'.format(mail_text), keyboards.back())
+					state_chat = 'wait mail_confirm'
+				
+				elif state_chat == 'sending mail_confirm':
+					msg(id_chat, 'Начинаю рассылку...')
+					dialog_ids = get_allow()
+					for id in dialog_ids:
+						if id not in mails:
+							mails[id] = True
+						if dialog_ids[id] and mails[id]:
+							msg(id, mail_text)
+					msg(id_chat, 'Рассылка завершена!', keyboards.chat)
+
+
+				elif state_chat == '{"command":"output"}':
+					msg(id_chat, 'Начинаю отправку...')
+					print('\nSTATES')
+					for id in states:
+						print(str(id) + '=' + states[id])
+					print('\nNEWS_TYPES')
+					for id in news_types:
+						print(str(id) + '=' + news_types[id])
+					print('\nMAILS')
+					for id in mails:
+						print(str(id) + '=' + str(mails[id]))
+					print('\nCARTS')
+					for id in keyboards.carts:
+						print(str(id) + '=' + keyboards.carts[id])
+					msg(id_chat, 'Все данные словарей states, news_types, mails, carts были выведены в консоль!', keyboards.chat)
 
 
 				elif state_chat == '{"command":"back"}':
-					msg(id, 'Возвращаю вас в главное меню.', keyboards.chat)
+					msg(id_chat, 'Возвращаю вас в главное меню.', keyboards.chat)
 					internet_text, gadgets_text, games_text = '', '', ''
+				
+
+				elif 'исчезн' in text.lower() or 'убер' in text.lower() or 'убр' in text.lower() or 'скр' in text.lower() or 'пок' in text.lower() or 'свидан' in text.lower() or 'увид' in text.lower():
+					msg(id_chat, 'Если захотите, чтобы я снова появилися — позовите меня по имени или напиши', keyboards.emptyboard())
 
 
 
@@ -588,52 +655,52 @@ for event in longpoll.listen():
 			amount = event.object.amount * 1000
 			if event.object.description:
 				if sex(id) == 1:
-					msg(2000000002, '[id{0}|{1} {2}] перевела ₽{3} с комментарием «{4}»'.format(id, name(id)['first_name'], name(id)['last_name'], amount, text))
+					msg(id_chat, '[id{0}|{1} {2}] перевела ₽{3} с комментарием «{4}»'.format(id, name(id)['first_name'], name(id)['last_name'], amount, text))
 				else:
-					msg(2000000002, '[id{0}|{1} {2}] перевёл ₽{3} с комментарием «{4}»'.format(id, name(id)['first_name'], name(id)['last_name'], amount, text))
+					msg(id_chat, '[id{0}|{1} {2}] перевёл ₽{3} с комментарием «{4}»'.format(id, name(id)['first_name'], name(id)['last_name'], amount, text))
 			else:
 				if sex(id) == 1:
-					msg(2000000002, '[id{0}|{1} {2}] пожертвовала ₽{3}'.format(id, name(id)['first_name'], name(id)['last_name'], amount))
+					msg(id_chat, '[id{0}|{1} {2}] пожертвовала ₽{3}'.format(id, name(id)['first_name'], name(id)['last_name'], amount))
 				else:
-					msg(2000000002, '[id{0}|{1} {2}] пожертвовал ₽{3}'.format(id, name(id)['first_name'], name(id)['last_name'], amount))
+					msg(id_chat, '[id{0}|{1} {2}] пожертвовал ₽{3}'.format(id, name(id)['first_name'], name(id)['last_name'], amount))
 
 
 		elif event.type == VkBotEventType.MESSAGE_ALLOW:
 			id = event.object.user_id
 			if sex(id) == 1:
-				msg(2000000002, '&#128236; [id{0}|{1} {2}] разрешила присылать сообщения. \nДиалог с подписчиком: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']))
+				msg(id_chat, '&#128236; [id{0}|{1} {2}] разрешила присылать сообщения. \nДиалог с подписчиком: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']))
 			else:
-				msg(2000000002, '&#128236; [id{0}|{1} {2}] разрешил присылать сообщения. \nДиалог с подписчиком: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']))
+				msg(id_chat, '&#128236; [id{0}|{1} {2}] разрешил присылать сообщения. \nДиалог с подписчиком: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']))
 		
 
 		elif event.type == VkBotEventType.MESSAGE_DENY:
 			id = event.object.user_id
 			if sex(id) == 1:
-				msg(2000000002, '&#128234; [id{0}|{1} {2}] запретил присылать сообщения.'.format(id, name(id)['first_name'], name(id)['last_name']))
+				msg(id_chat, '&#128234; [id{0}|{1} {2}] запретил присылать сообщения.'.format(id, name(id)['first_name'], name(id)['last_name']))
 			else:
-				msg(2000000002, '&#128234; [id{0}|{1} {2}] запретил присылать сообщения.'.format(id, name(id)['first_name'], name(id)['last_name']))
+				msg(id_chat, '&#128234; [id{0}|{1} {2}] запретил присылать сообщения.'.format(id, name(id)['first_name'], name(id)['last_name']))
 
 
 		elif event.type == VkBotEventType.GROUP_JOIN:
 			id = event.object.user_id
 			if sex(id) == 1:
-				msg(2000000002, '&#128150; [id{0}|{1} {2}] вступила в PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+				msg(id_chat, '&#128150; [id{0}|{1} {2}] вступила в PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
 			else:
-				msg(2000000002, '&#128150; [id{0}|{1} {2}] вступил в PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+				msg(id_chat, '&#128150; [id{0}|{1} {2}] вступил в PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
 
 
 		elif event.type == VkBotEventType.GROUP_LEAVE:
 			id = event.object.user_id
 			if event.object.self:
 				if sex(id) == 1:
-					msg(2000000002, '&#128148; [id{0}|{1} {2}] покинула PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+					msg(id_chat, '&#128148; [id{0}|{1} {2}] покинула PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
 				else:
-					msg(2000000002, '&#128148; [id{0}|{1} {2}] покинул PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+					msg(id_chat, '&#128148; [id{0}|{1} {2}] покинул PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
 			else:
 				if sex(id) == 1:
-					msg(2000000002, '&#128683; [id{0}|{1} {2}] удалёна из PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+					msg(id_chat, '&#128683; [id{0}|{1} {2}] удалёна из PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
 				else:
-					msg(2000000002, '&#128683; [id{0}|{1} {2}] удалён из PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+					msg(id_chat, '&#128683; [id{0}|{1} {2}] удалён из PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
 
 
 		elif event.type == VkBotEventType.WALL_REPOST:
@@ -641,9 +708,9 @@ for event in longpoll.listen():
 			wall_id = event.object.owner_id
 			post_id = event.object.id
 			if sex(id) == 1:
-				msg(2000000002, '&#128226; [id{0}|{1} {2}] сделала репост записи из PTCodding. \nСсылка на запись: vk.com/wall{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], wall_id, post_id))
+				msg(id_chat, '&#128226; [id{0}|{1} {2}] сделала репост записи из PTCodding. \nСсылка на запись: vk.com/wall{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], wall_id, post_id))
 			else:
-				msg(2000000002, '&#128226; [id{0}|{1} {2}] сделал репост записи из PTCodding. \nСсылка на запись: vk.com/wall{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], wall_id, post_id))
+				msg(id_chat, '&#128226; [id{0}|{1} {2}] сделал репост записи из PTCodding. \nСсылка на запись: vk.com/wall{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], wall_id, post_id))
 		
 
 		elif event.type == VkBotEventType.WALL_REPLY_NEW:
@@ -652,9 +719,9 @@ for event in longpoll.listen():
 			post_id = event.object.post_id
 			owner_id = event.object.owner_id
 			if sex(id) == 1:
-				msg(2000000002, '&#128196; [id{0}|{1} {2}] оставила комментарий к записи из PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
+				msg(id_chat, '&#128196; [id{0}|{1} {2}] оставила комментарий к записи из PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
 			else:
-				msg(2000000002, '&#128196; [id{0}|{1} {2}] оставил комментарий к записи из PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
+				msg(id_chat, '&#128196; [id{0}|{1} {2}] оставил комментарий к записи из PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
 
 
 		elif event.type == VkBotEventType.BOARD_POST_NEW:
@@ -663,9 +730,9 @@ for event in longpoll.listen():
 			topic_id = event.object.topic_id
 			owner_id = event.object.topic_owner_id
 			if sex(id) == 1:
-				msg(2000000002, '&#128196; [id{0}|{1} {2}] оставила комментарий в обсуждении PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=board{3}_{4}_?post={5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, topic_id, comment_id))
+				msg(id_chat, '&#128196; [id{0}|{1} {2}] оставила комментарий в обсуждении PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=board{3}_{4}_?post={5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, topic_id, comment_id))
 			else:
-				msg(2000000002, '&#128196; [id{0}|{1} {2}] оставил комментарий в обсуждении PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=board{3}_{4}_?post={5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, topic_id, comment_id))
+				msg(id_chat, '&#128196; [id{0}|{1} {2}] оставил комментарий в обсуждении PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=board{3}_{4}_?post={5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, topic_id, comment_id))
 
 
 		elif event.type == VkBotEventType.MARKET_COMMENT_NEW:
@@ -673,25 +740,25 @@ for event in longpoll.listen():
 			item_id = event.object.item_id
 			market_id = event.object.market_owner_id
 			if sex(id) == 1:
-				msg(2000000002, '&#128196; [id{0}|{1} {2}] оставила комментарий к товару PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=product{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], market_id, item_id))
+				msg(id_chat, '&#128196; [id{0}|{1} {2}] оставила комментарий к товару PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=product{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], market_id, item_id))
 			else:
-				msg(2000000002, '&#128196; [id{0}|{1} {2}] оставил комментарий к товару PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=product{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], market_id, item_id))
+				msg(id_chat, '&#128196; [id{0}|{1} {2}] оставил комментарий к товару PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=product{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], market_id, item_id))
 
 
 		elif event.type == VkBotEventType.USER_UNBLOCK and event.object.by_end_date:
 			id = event.object.user_id
 			if sex(id) == 1:
-				msg(2000000002, '&#127379; [id{0}|{1} {2}] удалёна из чёрного списка PTCodding по истечении срока блокировки.'.format(id, name(id)['first_name'], name(id)['last_name']))
+				msg(id_chat, '&#127379; [id{0}|{1} {2}] удалёна из чёрного списка PTCodding по истечении срока блокировки.'.format(id, name(id)['first_name'], name(id)['last_name']))
 			else:
-				msg(2000000002, '&#127379; [id{0}|{1} {2}] удалён из чёрного списка PTCodding по истечении срока блокировки.'.format(id, name(id)['first_name'], name(id)['last_name']))
+				msg(id_chat, '&#127379; [id{0}|{1} {2}] удалён из чёрного списка PTCodding по истечении срока блокировки.'.format(id, name(id)['first_name'], name(id)['last_name']))
 
 
 		elif event.type == VkBotEventType.POLL_VOTE_NEW:
 			id = event.object.user_id
 			if sex(id) == 1:
-				msg(2000000002, '&#128202; [id{0}|{1} {2}] проголосовала в опросе по ссылке: vk.com/poll{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], event.object.owner_id, event.object.poll_id))
+				msg(id_chat, '&#128202; [id{0}|{1} {2}] проголосовала в опросе по ссылке: vk.com/poll{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], event.object.owner_id, event.object.poll_id))
 			else:
-				msg(2000000002, '&#128202; [id{0}|{1} {2}] проголосовал в опросе по ссылке: vk.com/poll{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], event.object.owner_id, event.object.poll_id))
+				msg(id_chat, '&#128202; [id{0}|{1} {2}] проголосовал в опросе по ссылке: vk.com/poll{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], event.object.owner_id, event.object.poll_id))
 
 
 		elif event.type == VkBotEventType.GROUP_OFFICERS_EDIT:
@@ -700,15 +767,15 @@ for event in longpoll.listen():
 			levels = {0: 'Нет полномочий', 1: 'Модератор', 2: 'Редактор', 3: 'Администратор'}
 			level_old = levels[event.object.level_old]
 			level_new = levels[event.object.level_new]
-			msg(2000000002, '&#127385; [id{0}|{1} {2}] изменил полномочия участника команды PTCodding [id{3}|{4} {5}] с «{6}» на «{7}»'.format(id, name(id)['first_name'], name(id)['last_name'], change_id, name(change_id, 'gen')['first_name'], name(change_id, 'gen')['last_name'], level_old, level_new))
+			msg(id_chat, '&#127385; [id{0}|{1} {2}] изменил полномочия участника команды PTCodding [id{3}|{4} {5}] с «{6}» на «{7}»'.format(id, name(id)['first_name'], name(id)['last_name'], change_id, name(change_id, 'gen')['first_name'], name(change_id, 'gen')['last_name'], level_old, level_new))
 
 
 		elif event.type == VkBotEventType.GROUP_CHANGE_PHOTO:
 			id = event.object.user_id
-			msg(2000000002, '&#128444 [id{0}|{1} {2}] изменил главную фотографию PTCodding'.format(id, name(id)['first_name'], name(id)['last_name']))
+			msg(id_chat, '&#128444 [id{0}|{1} {2}] изменил главную фотографию PTCodding'.format(id, name(id)['first_name'], name(id)['last_name']))
 
 	except Exception as err:
-		msg(2000000002, 'PTBot споткнулся о событие {} пользователя {}! \n\n@pavetranquil (Павел), загляните в консоль и исправьте баг: dashboard.heroku.com/apps/ptcodding-bot/logs'.format(event.type, id))
+		msg(id_chat, 'PTBot споткнулся о событие {} пользователя {}! \n\n@pavetranquil (Павел), загляните в консоль и исправьте баг: dashboard.heroku.com/apps/ptcodding-bot/logs'.format(event.type, id))
 		print(err)
 		print(traceback.format_exc())
 	

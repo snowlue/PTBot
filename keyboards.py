@@ -1,7 +1,7 @@
 import vk_api, json
 from vk_api.keyboard import VkKeyboard
 
-chat, menu, buy, buyback, partner, team, about, news = VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False)
+chat, buy, buyback, partner, team, about, news = VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False)
 
 carts = dict()
 
@@ -29,10 +29,15 @@ def chatboard(chat):
 	chat.add_line()
 	chat.add_button('Баг-перезапуск', 'primary', '{"command":"restart"}')
 	chat.add_line()
-	chat.add_button('Вернуть к началу', 'primary', '{"command":"back_to_start"}')
+	chat.add_button('Вернуть к началу', 'primary', '{"command":"to_start"}')
+	chat.add_line()
+	chat.add_button('Отправить рассылку', 'primary', '{"command":"mailing"}')
+	chat.add_line()
+	chat.add_button('Вывести данные в консоль', 'primary', '{"command":"output"}')
 	return chat.get_keyboard()
 
-def menuboard(menu):
+def menu(mail):
+	menu = VkKeyboard(False)
 	menu.add_button('#news &#128240;', 'positive', '{"command":"news"}')
 	menu.add_line()
 	menu.add_button('#idea &#128161;', 'positive', '{"command":"idea"}')
@@ -43,7 +48,10 @@ def menuboard(menu):
 	menu.add_line()
 	menu.add_button('Пожертвовать &#9749;', payload='{"command":"donate"}')
 	menu.add_line()
-	menu.add_button('Наши партнёры &#128226;', payload='{"command":"partners"}')
+	if mail:
+		menu.add_button('Отписаться от рассылок &#10062;', payload='{"command":"unmail"}')
+	else:
+		menu.add_button('Подписаться на рассылки &#9989;', payload='{"command":"mail"}')
 	return menu.get_keyboard()
 
 def newsboard(news):
@@ -77,6 +85,8 @@ def teamboard(team):
 	team.add_button('Задать вопрос команде&#10067;', payload='{"command":"question"}')
 	team.add_line()
 	team.add_button('О команде &#128142;', payload='{"command":"about"}')
+	team.add_line()
+	team.add_button('Наши партнёры &#128226;', payload='{"command":"partners"}')
 	team.add_line()
 	team.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return team.get_keyboard()
@@ -144,10 +154,14 @@ def payboard(hash):
 def donateboard(hash, app_id, id, label):
 	return json.dumps({"one_time":False, "buttons":[[{"action":{"type":"vkpay", "hash":hash}}], [{"action":{"type":"open_app", "app_id": app_id, "owner_id": id, "label": label}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
 
+def emptyboard():
+	return json.dumps({"one_time":True, "buttons":[]})
+
 chat = chatboard(chat)
-menu = menuboard(menu)
 news = newsboard(news)
 team = teamboard(team)
 about = aboutboard(about)
 buy = buyboard(buy)
 partner = partnerboard(partner)
+
+print('keyboards.py started!')
