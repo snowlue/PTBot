@@ -1,10 +1,12 @@
 STATES
+165504240={"command":"unmail"}
 
 NEWS_TYPES
 84558994=internet
 186823615=internet
 
 MAILS
+165504240=False
 
 CARTS
 
