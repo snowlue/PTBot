@@ -1,0 +1,10 @@
+STATES
+
+NEWS_TYPES
+84558994=internet
+186823615=internet
+
+MAILS
+
+CARTS
+

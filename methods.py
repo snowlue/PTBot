@@ -36,6 +36,30 @@ def get_allow():
 		offset += 200
 	return allow_dict
 
+def read_data():
+	is_states, is_news, is_mails, is_carts = False, False, False, False
+	states, news_types, mails, carts = dict(), dict(), dict(), dict()
+	with open('data.txt', encoding='ascii') as file:
+		line = file.readline()
+		if line == 'STATES\n':
+			while line != 'NEWS_TYPES\n':
+				line = file.readline()
+				if '=' in line:
+					states[int(line.split('=')[0])] = line.split('=')[1].split('\n')[0]
+			while line != 'MAILS\n':
+				line = file.readline()
+				if '=' in line:
+					news_types[int(line.split('=')[0])] = line.split('=')[1].split('\n')[0]
+			while line != 'CARTS\n':
+				line = file.readline()
+				if '=' in line:
+					mails[int(line.split('=')[0])] = bool(line.split('=')[1].split('\n')[0])
+			carts_data = file.readlines()
+			for line in carts_data:
+				if '=' in line:
+					carts[int(line.split('=')[0])] = line.split('=')[1].split('\n')[0]
+		file.close()
+	return [states, news_types, mails, carts]
 
 vk_session = vk_api.VkApi(token='9dfd38af10a2e483ef4c15dadbb77d6b186e912afcdd58680fd5be588c25b1d8096f4a2038623d54a2cb5')
 

@@ -2,8 +2,10 @@
 import urllib.parse, traceback
 from methods import *
 
-payload, state_chat, states, news_types, mails, id_chat = '', '', dict(), dict(), dict(), 2000000006
+data = read_data()
+payload, state_chat, states, news_types, mails, id_chat = '', '', data[0], data[1], data[2], 2000000006
 internet_text, gadgets_text, games_text = '', '', ''
+keyboards.carts = data[3]
 
 print('main.py started!')
 
