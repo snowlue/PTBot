@@ -43,19 +43,19 @@ def read_data():
 			while line != 'NEWS_TYPES\n':
 				line = file.readline()
 				if '=' in line:
-					states[int(line.split('=')[0])] = line.split('=')[1][:-2]
+					states[int(line.split('=')[0])] = line.split('=')[1][:-1]
 			while line != 'MAILS\n':
 				line = file.readline()
 				if '=' in line:
-					news_types[int(line.split('=')[0])] = line.split('=')[1][:-2]
+					news_types[int(line.split('=')[0])] = line.split('=')[1][:-1]
 			while line != 'CARTS\n':
 				line = file.readline()
 				if '=' in line:
-					mails[int(line.split('=')[0])] = bool(line.split('=')[1][:-2])
+					mails[int(line.split('=')[0])] = bool(line.split('=')[1][:-1])
 			carts_data = file.readlines()
 			for line in carts_data:
 				if '=' in line:
-					carts[int(line.split('=')[0])] = line.split('=')[1][:-2]
+					carts[int(line.split('=')[0])] = line.split('=')[1][:-1]
 		file.close()
 	return [states, news_types, mails, carts]
 
