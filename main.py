@@ -3,9 +3,10 @@ import urllib.parse, traceback
 from methods import *
 
 data = read_data()
-payload, state_chat, states, news_types, mails, id_chat = '', '', data[0], data[1], data[2], 2000000006
-internet_text, gadgets_text, games_text = '', '', ''
+states, news_types, mails = data[0], data[1], data[2]
 keyboards.carts = data[3]
+payload, state_chat, id_chat = '', '', 2*10**9+6
+internet_text, gadgets_text, games_text = '', '', ''
 
 print('main.py started!')
 
@@ -42,7 +43,7 @@ for event in longpoll.listen():
 					state_chat = 'sending mail_confirm'	
 				else:
 					state_chat = payload
-			if id < 2000000000:
+			else:
 				if states[id] == 'wait idea' and text != 'Вернуться ↩':
 					states[id] = 'sending idea'
 				elif states[id] == 'wait question' and text != 'Вернуться ↩':
@@ -52,17 +53,18 @@ for event in longpoll.listen():
 				else:
 					states[id] = payload
 
-			try:
-				if id == id_chat and (state_chat == '{"command":"start"}' or 'нач' in text.lower().split()[1] or 'start' in text.lower().split()[1] or 'ptbot' in text.lower().split()[1] or 'поехали' in text.lower().split()[1] or 'появи' in text.lower().split()[1] or 'откр' in text.lower().split()[1] or 'эй' in text.lower().split()[1] or 'клавиатур' in text.lower().split()[1]):
-					msg(id, 'Привет, команда PTCodding! Рад вас видеть! Вижу, что этот чат — чат моих создателей. Включаю дополнительные функции &#128522; \n\n#news — последние новости из сферы IT \nЗапрос VK Pay — запрос средств с указанием amount, description и id \nБаг-перезапуск — перезапуск бота по id с сообщением о баге \nВернуть к началу — возвращает кнопку «Начать» у юзера по id \nОтправить рассылку — отправляет рассылку с заданными text и всем, кроме id \nВывести данные в консоль — выводит данные в консоль сервера', keyboards.chat)
-				elif id < 2000000000 and (states[id] == '{"command":"start"}' or 'начать' in text.lower()) and states[id] not in ['sending idea', 'sending question', 'sending partner']: 
-					msg(id, 'Привет, я PTBot, дворецкий команды PTCodding. \nНажмите на нужную Вам кнопку, чтобы команда нашла Вас и быстро ответила, а я не потерял Вас &#128522; \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#news — последние новости из сферы IT \n#market — магазин услуг и покупки \n#team — вопросы к команде и о команде', keyboards.menu(mails[id]))
-			except Exception:
-				pass
+			if id == id_chat and ('нач' in text.lower().split()[1] or 'start' in text.lower().split()[1] or 'ptbot' in text.lower().split()[1] or 'поехали' in text.lower().split()[1] or 'появи' in text.lower().split()[1] or 'откр' in text.lower().split()[1] or 'эй' in text.lower().split()[1] or 'клавиатур' in text.lower().split()[1]):
+				msg(id, 'Привет, команда PTCodding! Рад вас видеть! Вижу, что этот чат — чат моих создателей. Включаю дополнительные функции &#128522; \n\n#news — последние новости из сферы IT \nЗапрос VK Pay — запрос средств с указанием amount, description и id \nБаг-перезапуск — перезапуск бота по id с сообщением о баге \nВернуть к началу — возвращает кнопку «Начать» у юзера по id \nОтправить рассылку — отправляет рассылку с заданными text и всем, кроме id \nВывести данные в консоль — выводит данные в консоль сервера', keyboards.chat)
+			elif id < 2*10**9 and (states[id] == '{"command":"start"}' or 'нач' in text.lower().split()[0] or 'start' in text.lower().split()[0] or 'ptbot' in text.lower().split()[0] or 'поехали' in text.lower().split()[0] or 'появи' in text.lower().split()[0] or 'откр' in text.lower().split()[0] or 'эй' in text.lower().split()[0] or 'клавиатур' in text.lower().split()[0]) and states[id] not in ['sending idea', 'sending question', 'sending partner']: 
+				msg(id, 'Привет, я PTBot — дворецкий команды PTCodding. \nНажмите на нужную Вам кнопку, чтобы команда нашла Вас и быстро ответила, а я не потерял Вас &#128522; \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#news — последние новости из сферы IT \n#market — магазин услуг и покупки \n#team — вопросы к команде и о команде', keyboards.menu(mails[id]))
+				states[id] == '{"command":"start"}'
+			elif id > 2*10**9 and ('нач' in text.lower().split()[1] or 'start' in text.lower().split()[1] or 'ptbot' in text.lower().split()[1] or 'поехали' in text.lower().split()[1] or 'появи' in text.lower().split()[1] or 'откр' in text.lower().split()[1] or 'эй' in text.lower().split()[1] or 'клавиатур' in text.lower().split()[1]):
+				msg(id, 'Привет, я PTBot — чат-бот команды PTCodding. &#9995; С моей помощью вы можете узнать последние новости и задонатить на топовый функционал моим создателям — команде PTCodding. &#128176; Если вдруг я стану не нужен, напиши «скройся», «уберись», «исчезни», «пока» или что-нибудь в этом роде. &#128521;', keyboards.conversation(mails[id]))
+
 
 			print('{} отправляет сообщение с текстом "{}"'.format(id, text))
 
-			if id < 2000000000:
+			if id != 2*10**9+6:
 				if states[id] == '{"command":"idea"}':
 					msg(id, "Предложите свою идею для PTCodding! Я pассмотрю её, и команда PTCodding отпишется Вам в этом диалоге. \nСоблюдайте структуру: \n1. Название, отражающее суть идеи \n2. Собственно идея, её развёртка \n3. Расскажите, чем Ваша идея поможет сообществу \nНе забудьте — необходимо уместить всё в рамках одного сообщения. Спасибо за Вашу помощь!", keyboards.back())
 					states[id] = 'wait idea'
@@ -165,7 +167,10 @@ for event in longpoll.listen():
 
 				elif states[id] == '{"command":"news_internet"}':
 					if not internet_text:
-						msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
+						if id < 2*10**9:
+							msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
+						else:
+							msg(id, 'Ждите...')
 						news.refresh_internet()
 						news_types[id] = 'internet'
 						for i in range(0, 8):
@@ -174,7 +179,10 @@ for event in longpoll.listen():
 
 				elif states[id] == '{"command":"news_gadgets"}':
 					if not gadgets_text:
-						msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
+						if id < 2*10**9:
+							msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
+						else:
+							msg(id, 'Ждите...')
 						news.refresh_gadgets()
 						news_types[id] = 'gadgets'
 						for i in range(0, 8):
@@ -183,7 +191,10 @@ for event in longpoll.listen():
 
 				elif states[id] == '{"command":"news_games"}':
 					if not games_text:
-						msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
+						if id < 2*10**9:
+							msg(id, '{}, ожидайте...'.format(name(id)['first_name']))
+						else:
+							msg(id, 'Ждите...')
 						news.refresh_games()
 						news_types[id] = 'games'
 						for i in range(0, 8):
@@ -308,7 +319,10 @@ for event in longpoll.listen():
 						delete(get_id(id, 1))
 					except Exception:
 						pass
-					msg(id, 'Обновляю список новостей... {}, ожидайте...'.format(name(id)['first_name']))
+					if id < 2*10**9:
+						msg(id, 'Обновляю список новостей... {}, ожидайте...'.format(name(id)['first_name']))
+					else:
+						msg(id, 'Обновляю список новостей... Ждите...')
 					if news_types[id] == 'internet':
 						news.refresh_internet()
 						internet_text = ''
@@ -365,9 +379,16 @@ for event in longpoll.listen():
 				
 
 
-				elif states[id] == '{"command":"back"}':
+				elif states[id] == '{"command":"back"}' and id < 2*10**9:
 					msg(id, 'Возвращаю Вас в главное меню. Напоминаю назначение кнопок: \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#news — последние новости из сферы IT \n#market — магазин услуг и покупки \n#team — вопросы к команде и о команде', keyboards.menu(mails[id]))
 					internet_text, gadgets_text, games_text = '', '', ''
+				
+				elif states[id] == '{"command":"back"}' and id > 2*10**9:
+					msg(id, 'Возвращаю Вас в главное меню.', keyboards.conversation(mails[id]))
+					internet_text, gadgets_text, games_text = '', '', ''
+
+				elif id > 2*10**9 and ('исчезн' in text.lower() or 'убер' in text.lower() or 'убр' in text.lower() or 'скр' in text.lower() or 'пок' in text.lower() or 'св' in text.lower() or 'увид' in text.lower()):
+					msg(id_chat, 'Если захотите, чтобы я снова появился — позовите меня по имени', keyboards.emptyboard())
 
 
 
@@ -619,11 +640,16 @@ for event in longpoll.listen():
 				elif state_chat == 'sending mail_confirm':
 					msg(id_chat, 'Начинаю рассылку...')
 					dialog_ids = get_allow()
-					for id in dialog_ids:
-						if id not in mails:
-							mails[id] = True
-						if dialog_ids[id] and mails[id]:
-							msg(id, mail_text)
+					for i in dialog_ids:
+						if i not in mails:
+							mails[i] = dialog_ids[i]
+						if dialog_ids[i] and mails[i]:
+							msg(i, mail_text)
+						if mails[i] and i not in dialog_ids:
+							try:
+								msg(i, mail_text)
+							except Exception:
+								pass
 					msg(id_chat, 'Рассылка завершена!', keyboards.chat)
 
 
@@ -648,9 +674,8 @@ for event in longpoll.listen():
 					msg(id_chat, 'Возвращаю вас в главное меню.', keyboards.chat)
 					internet_text, gadgets_text, games_text = '', '', ''
 				
-
-				elif 'исчезн' in text.lower() or 'убер' in text.lower() or 'убр' in text.lower() or 'скр' in text.lower() or 'пок' in text.lower() or 'свидан' in text.lower() or 'увид' in text.lower():
-					msg(id_chat, 'Если захотите, чтобы я снова появилися — позовите меня по имени или напиши', keyboards.emptyboard())
+				elif 'исчезн' in text.lower() or 'убер' in text.lower() or 'убр' in text.lower() or 'скр' in text.lower() or 'пок' in text.lower() or 'св' in text.lower() or 'увид' in text.lower():
+					msg(id_chat, 'Если захотите, чтобы я снова появилися — позовите меня по имени', keyboards.emptyboard())
 
 
 

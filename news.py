@@ -57,3 +57,5 @@ def refresh_games():
 		article_soup = bs(article_site.text, 'html.parser')
 		descs_games.append(article_soup.find(class_='doc__text').contents[0])
 		originals_games.append(article_soup.find(class_='doc__content').find('a').get('href'))
+
+print('news.py started!')

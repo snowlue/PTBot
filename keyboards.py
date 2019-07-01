@@ -36,6 +36,18 @@ def chatboard(chat):
 	chat.add_button('Вывести данные в консоль', 'primary', '{"command":"output"}')
 	return chat.get_keyboard()
 
+def conversation(mail):
+	board = VkKeyboard(False)
+	board.add_button('Новости &#128240;', 'primary', '{"command":"news"}')
+	board.add_line()
+	board.add_button('Пожертвовать &#9749;', 'primary', '{"command":"donate"}')
+	board.add_line()
+	if mail:
+		board.add_button('Отписаться от рассылок &#10062;', payload='{"command":"unmail"}')
+	else:
+		board.add_button('Подписаться на рассылки &#9989;', payload='{"command":"mail"}')
+	return board.get_keyboard()
+
 def menu(mail):
 	menu = VkKeyboard(False)
 	menu.add_button('#news &#128240;', 'positive', '{"command":"news"}')
@@ -91,16 +103,6 @@ def teamboard(team):
 	team.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return team.get_keyboard()
 
-def aboutboard(about):
-	about.add_button('Павел Овчинников 👨🏽‍💻', 'primary', '{"command":"Pavel"}')
-	about.add_line()
-	about.add_button('Богдан Гусев 👨🏼‍💻', 'primary', '{"command":"Bogdan"}')
-	about.add_line()
-	about.add_button('Ксения Хубутия 👩🏻‍💼', 'primary', '{"command":"Kseno"}')
-	about.add_line()
-	about.add_button('Вернуться &#8617;', 'negative', '{"command":"back_team"}')
-	return about.get_keyboard()
-
 def buyboard(buy):
 	buy.add_button('Создание чат-бота &#129302;', 'primary', '{"command":"code"}')
 	buy.add_button('Создание дизайна &#128444;', 'primary', '{"command":"design"}')
@@ -138,6 +140,16 @@ def cartboard(id, item=''):
 	board.add_button('Вернуться &#8617;', 'negative', '{"command":"back_buy"}')
 	return board.get_keyboard()
 
+def aboutboard(about):
+	about.add_button('Павел Овчинников 👨🏽‍💻', 'primary', '{"command":"Pavel"}')
+	about.add_line()
+	about.add_button('Богдан Гусев 👨🏼‍💻', 'primary', '{"command":"Bogdan"}')
+	about.add_line()
+	about.add_button('Ксения Хубутия 👩🏻‍💼', 'primary', '{"command":"Kseno"}')
+	about.add_line()
+	about.add_button('Вернуться &#8617;', 'negative', '{"command":"back_team"}')
+	return about.get_keyboard()
+
 
 def partnerboard(partner):
 	partner.add_button('SAPOD — Подкаст из мира San Andreas&#127897;', 'primary', '{"command":"sapod"}')
@@ -156,6 +168,7 @@ def donateboard(hash, app_id, id, label):
 
 def emptyboard():
 	return json.dumps({"one_time":True, "buttons":[]})
+
 
 chat = chatboard(chat)
 news = newsboard(news)

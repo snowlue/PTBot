@@ -4,7 +4,6 @@ from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 def msg(id, message='', board=[], forward='', parse=True):
 	if board:
 		vk.messages.send(peer_id=id, random_id=random.randint(-2147483648, 2147483647), message=message, forward_messages=forward, keyboard=board, dont_parse_links=not parse)
-		
 	else:
 		vk_session.method('messages.send', {'peer_id': id, 'random_id': random.randint(-2147483648, 2147483647), 'message': message, 'forward_messages': forward, 'keyboard': board, 'dont_parse_links': not parse})
 	print('Сообщение для {} отправлено'.format(id))
@@ -37,27 +36,26 @@ def get_allow():
 	return allow_dict
 
 def read_data():
-	is_states, is_news, is_mails, is_carts = False, False, False, False
 	states, news_types, mails, carts = dict(), dict(), dict(), dict()
-	with open('data.txt', encoding='ascii') as file:
+	with open('data.txt', encoding='utf-8') as file:
 		line = file.readline()
-		if line == 'STATES\n':
+		if line == '\ufeffSTATES\n':
 			while line != 'NEWS_TYPES\n':
 				line = file.readline()
 				if '=' in line:
-					states[int(line.split('=')[0])] = line.split('=')[1].split('\n')[0]
+					states[int(line.split('=')[0])] = line.split('=')[1][:-2]
 			while line != 'MAILS\n':
 				line = file.readline()
 				if '=' in line:
-					news_types[int(line.split('=')[0])] = line.split('=')[1].split('\n')[0]
+					news_types[int(line.split('=')[0])] = line.split('=')[1][:-2]
 			while line != 'CARTS\n':
 				line = file.readline()
 				if '=' in line:
-					mails[int(line.split('=')[0])] = bool(line.split('=')[1].split('\n')[0])
+					mails[int(line.split('=')[0])] = bool(line.split('=')[1][:-2])
 			carts_data = file.readlines()
 			for line in carts_data:
 				if '=' in line:
-					carts[int(line.split('=')[0])] = line.split('=')[1].split('\n')[0]
+					carts[int(line.split('=')[0])] = line.split('=')[1][:-2]
 		file.close()
 	return [states, news_types, mails, carts]
 
