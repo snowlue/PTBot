@@ -663,7 +663,7 @@ for event in longpoll.listen():
 						print(str(id) + '=' + news_types[id])
 					print('\nMAILS')
 					for id in mails:
-						print(str(id) + '=' + str(mails[id]))
+						print(str(id) + '=' + str(int(mails[id])))
 					print('\nCARTS')
 					for id in keyboards.carts:
 						print(str(id) + '=' + keyboards.carts[id])

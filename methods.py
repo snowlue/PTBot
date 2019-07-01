@@ -51,7 +51,7 @@ def read_data():
 			while line != 'CARTS\n':
 				line = file.readline()
 				if '=' in line:
-					mails[int(line.split('=')[0])] = bool(line.split('=')[1][:-1])
+					mails[int(line.split('=')[0])] = bool(int(line.split('=')[1][:-1]))
 			carts_data = file.readlines()
 			for line in carts_data:
 				if '=' in line:
