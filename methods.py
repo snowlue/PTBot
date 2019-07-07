@@ -1,11 +1,11 @@
 import vk_api, random
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
-def msg(id, message='', board=[], forward='', parse=True):
+def msg(id, message='', board=[], forward='', attach='', parse=True):
 	if board:
-		vk.messages.send(peer_id=id, random_id=random.randint(-2147483648, 2147483647), message=message, forward_messages=forward, keyboard=board, dont_parse_links=not parse)
+		vk.messages.send(peer_id=id, random_id=random.randint(-2147483648, 2147483647), message=message, forward_messages=forward, keyboard=board, dont_parse_links=not parse, attachment=attach)
 	else:
-		vk_session.method('messages.send', {'peer_id': id, 'random_id': random.randint(-2147483648, 2147483647), 'message': message, 'forward_messages': forward, 'keyboard': board, 'dont_parse_links': not parse})
+		vk_session.method('messages.send', {'peer_id': id, 'random_id': random.randint(-2147483648, 2147483647), 'message': message, 'forward_messages': forward, 'keyboard': board, 'dont_parse_links': not parse, 'attachment': attach})
 	print('Сообщение для {} отправлено'.format(id))
 
 def name(id, case='nom'):
@@ -25,6 +25,15 @@ def online():
 
 def isMember(group, id):
 	return vk.groups.isMember(group_id=group, user_id=id)
+
+def get_attachs(msg_id):
+	attachs = []
+	for a in vk.messages.getById(message_ids=msg_id, extended=1)['items'][0]['attachments']:
+		type = a['type']
+		if 'access_key' in a[type]: attachs.append(type + str(a[type]['owner_id']) + '_' + str(a[type]['id']) + '_' + str(a[type]['access_key']))
+		else: attachs.append(type + str(a[type]['owner_id']) + '_' + str(a[type]['id']))
+	attachs = ', '.join(attachs)
+	return attachs
 
 def get_allow():
 	allow_dict, chats_arr, offset = dict(), True, 0

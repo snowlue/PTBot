@@ -640,14 +640,16 @@ for event in longpoll.listen():
 				elif state_chat == 'sending mail_confirm':
 					msg(id_chat, 'Начинаю рассылку...')
 					dialog_ids = get_allow()
+					attachs	= get_attachs(msg_id)
 					for i in dialog_ids:
 						if i not in mails:
 							mails[i] = dialog_ids[i]
 						if dialog_ids[i] and mails[i]:
-							msg(i, mail_text)
+							msg(i, mail_text, attach=attachs)
+					for i in mails:
 						if mails[i] and i not in dialog_ids:
 							try:
-								msg(i, mail_text)
+								msg(i, mail_text, attach=attachs)
 							except Exception:
 								pass
 					msg(id_chat, 'Рассылка завершена!', keyboards.chat)
