@@ -18,6 +18,7 @@ for event in longpoll.listen():
 			text = event.object.text
 			msg_id = event.object.id
 			payload = event.object.payload
+			attachments = event.object.attachments
 
 			if id not in states:
 				states[id] = ''
@@ -640,22 +641,22 @@ for event in longpoll.listen():
 
 				elif state_chat == 'sending mail_text':
 					mail_text = text
-					msg(id_chat, 'Итак, я отправляю рассылку со следующим текстом:\n\n{}\n\nПодтвердите отправку.'.format(mail_text), keyboards.back())
+					docs = parse_docs(attachments)
+					msg(id_chat, 'Итак, я отправляю рассылку со следующим текстом:\n\n{}\n\nПодтвердите отправку.'.format(mail_text), keyboards.back(), attach=docs)
 					state_chat = 'wait mail_confirm'
 				
 				elif state_chat == 'sending mail_confirm':
 					msg(id_chat, 'Начинаю рассылку...')
 					dialog_ids = get_allow()
-					attachs	= get_attachs(msg_id)
 					for i in dialog_ids:
 						if i not in mails:
 							mails[i] = dialog_ids[i]
 						if dialog_ids[i] and mails[i]:
-							msg(i, mail_text, attach=attachs)
+							msg(i, mail_text, attach=docs)
 					for i in mails:
 						if mails[i] and i not in dialog_ids:
 							try:
-								msg(i, mail_text, attach=attachs)
+								msg(i, mail_text, attach=docs)
 							except Exception:
 								pass
 					msg(id_chat, 'Рассылка завершена!', keyboards.chat)
@@ -665,16 +666,16 @@ for event in longpoll.listen():
 					msg(id_chat, 'Начинаю отправку...')
 					print('\nSTATES')
 					for id in states:
-						print(str(id) + '=' + states[id])
+						print(str(id) + '=' + str(states[id]))
 					print('\nNEWS_TYPES')
 					for id in news_types:
-						print(str(id) + '=' + news_types[id])
+						print(str(id) + '=' + str(news_types[id]))
 					print('\nMAILS')
 					for id in mails:
 						print(str(id) + '=' + str(int(mails[id])))
 					print('\nCARTS')
 					for id in keyboards.carts:
-						print(str(id) + '=' + keyboards.carts[id])
+						print(str(id) + '=' + str(keyboards.carts[id]))
 					msg(id_chat, 'Все данные словарей states, news_types, mails, carts были выведены в консоль!', keyboards.chat)
 
 

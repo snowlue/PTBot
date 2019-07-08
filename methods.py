@@ -1,4 +1,4 @@
-import vk_api, random
+import vk_api, random, requests
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
 def msg(id, message='', board=[], forward='', attach='', parse=True):
@@ -26,14 +26,15 @@ def online():
 def isMember(group, id):
 	return vk.groups.isMember(group_id=group, user_id=id)
 
-def get_attachs(msg_id):
-	attachs = []
-	for a in vk.messages.getById(message_ids=msg_id, extended=1)['items'][0]['attachments']:
-		type = a['type']
-		if 'access_key' in a[type]: attachs.append(type + str(a[type]['owner_id']) + '_' + str(a[type]['id']) + '_' + str(a[type]['access_key']))
-		else: attachs.append(type + str(a[type]['owner_id']) + '_' + str(a[type]['id']))
-	attachs = ', '.join(attachs)
-	return attachs
+def parse_docs(attachments):
+	docs_links = []
+	for attach in attachments:
+		type = attach['type']
+		object = attach[type]
+		if type == 'doc':
+			url = object['url']
+			docs_links.append(upload(url))
+	return ', '.join(docs_links)
 
 def get_allow():
 	allow_dict, chats_arr, offset = dict(), True, 0
@@ -43,6 +44,15 @@ def get_allow():
 			allow_dict[i['conversation']['peer']['id']] = i['conversation']['can_write']['allowed']
 		offset += 200
 	return allow_dict
+
+def upload(*args):
+	session = requests.Session()
+	photos = []
+	for arg in args:
+		image = session.get(arg, stream=True)
+		photo = vk_upload.photo_messages(photos=image.raw)[0]
+		photos.append('photo{}_{}_{}'.format(photo['owner_id'], photo['id'], photo['access_key']))
+	return ','.join(photos)
 
 def read_data():
 	states, news_types, mails, carts = dict(), dict(), dict(), dict()
@@ -72,5 +82,7 @@ vk_session = vk_api.VkApi(token='9dfd38af10a2e483ef4c15dadbb77d6b186e912afcdd586
 
 vk = vk_session.get_api()
 longpoll = VkBotLongPoll(vk_session, '132868814', 0)
+
+vk_upload = vk_api.upload.VkUpload(vk_session)
 
 print('methods.py started!')
