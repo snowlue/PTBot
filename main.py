@@ -52,14 +52,16 @@ for event in longpoll.listen():
 					states[id] = 'sending partner'
 				else:
 					states[id] = payload
-
-			if id == id_chat and ('нач' in text.lower().split()[1] or 'start' in text.lower().split()[1] or 'ptbot' in text.lower().split()[1] or 'поехали' in text.lower().split()[1] or 'появи' in text.lower().split()[1] or 'откр' in text.lower().split()[1] or 'эй' in text.lower().split()[1] or 'клавиатур' in text.lower().split()[1]):
-				msg(id, 'Привет, команда PTCodding! Рад вас видеть! Вижу, что этот чат — чат моих создателей. Включаю дополнительные функции &#128522; \n\n#news — последние новости из сферы IT \nЗапрос VK Pay — запрос средств с указанием amount, description и id \nБаг-перезапуск — перезапуск бота по id с сообщением о баге \nВернуть к началу — возвращает кнопку «Начать» у юзера по id \nОтправить рассылку — отправляет рассылку с заданными text и всем, кроме id \nВывести данные в консоль — выводит данные в консоль сервера', keyboards.chat)
-			elif id < 2*10**9 and (states[id] == '{"command":"start"}' or 'нач' in text.lower().split()[0] or 'start' in text.lower().split()[0] or 'ptbot' in text.lower().split()[0] or 'поехали' in text.lower().split()[0] or 'появи' in text.lower().split()[0] or 'откр' in text.lower().split()[0] or 'эй' in text.lower().split()[0] or 'клавиатур' in text.lower().split()[0]) and states[id] not in ['sending idea', 'sending question', 'sending partner']: 
-				msg(id, 'Привет, я PTBot — дворецкий команды PTCodding. \nНажмите на нужную Вам кнопку, чтобы команда нашла Вас и быстро ответила, а я не потерял Вас &#128522; \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#news — последние новости из сферы IT \n#market — магазин услуг и покупки \n#team — вопросы к команде и о команде', keyboards.menu(mails[id]))
-				states[id] == '{"command":"start"}'
-			elif id > 2*10**9 and ('нач' in text.lower().split()[1] or 'start' in text.lower().split()[1] or 'ptbot' in text.lower().split()[1] or 'поехали' in text.lower().split()[1] or 'появи' in text.lower().split()[1] or 'откр' in text.lower().split()[1] or 'эй' in text.lower().split()[1] or 'клавиатур' in text.lower().split()[1]):
-				msg(id, 'Привет, я PTBot — чат-бот команды PTCodding. &#9995; С моей помощью вы можете узнать последние новости и задонатить на топовый функционал моим создателям — команде PTCodding. &#128176; Если вдруг я стану не нужен, напиши «скройся», «уберись», «исчезни», «пока» или что-нибудь в этом роде. &#128521;', keyboards.conversation(mails[id]))
+			try:
+				if id == id_chat and ('нач' in text.lower().split()[1] or 'start' in text.lower().split()[1] or 'ptbot' in text.lower().split()[1] or 'поехали' in text.lower().split()[1] or 'появи' in text.lower().split()[1] or 'откр' in text.lower().split()[1] or 'эй' in text.lower().split()[1] or 'клавиатур' in text.lower().split()[1]):
+					msg(id, 'Привет, команда PTCodding! Рад вас видеть! Вижу, что этот чат — чат моих создателей. Включаю дополнительные функции &#128522; \n\n#news — последние новости из сферы IT \nЗапрос VK Pay — запрос средств с указанием amount, description и id \nБаг-перезапуск — перезапуск бота по id с сообщением о баге \nВернуть к началу — возвращает кнопку «Начать» у юзера по id \nОтправить рассылку — отправляет рассылку с заданными text и всем, кроме id \nВывести данные в консоль — выводит данные в консоль сервера', keyboards.chat)
+				elif id < 2*10**9 and (states[id] == '{"command":"start"}' or 'нач' in text.lower().split()[0] or 'start' in text.lower().split()[0] or 'ptbot' in text.lower().split()[0] or 'поехали' in text.lower().split()[0] or 'появи' in text.lower().split()[0] or 'откр' in text.lower().split()[0] or 'эй' in text.lower().split()[0] or 'клавиатур' in text.lower().split()[0]) and states[id] not in ['sending idea', 'sending question', 'sending partner']: 
+					msg(id, 'Привет, я PTBot — дворецкий команды PTCodding. \nНажмите на нужную Вам кнопку, чтобы команда нашла Вас и быстро ответила, а я не потерял Вас &#128522; \n\n#idea — идеи и предложения \n#partnership — партнёрство, сотрудничество, спонсорство \n#news — последние новости из сферы IT \n#market — магазин услуг и покупки \n#team — вопросы к команде и о команде', keyboards.menu(mails[id]))
+					states[id] == '{"command":"start"}'
+				elif id > 2*10**9 and ('нач' in text.lower().split()[1] or 'start' in text.lower().split()[1] or 'ptbot' in text.lower().split()[1] or 'поехали' in text.lower().split()[1] or 'появи' in text.lower().split()[1] or 'откр' in text.lower().split()[1] or 'эй' in text.lower().split()[1] or 'клавиатур' in text.lower().split()[1]):
+					msg(id, 'Привет, я PTBot — чат-бот команды PTCodding. &#9995; С моей помощью вы можете узнать последние новости и задонатить на топовый функционал моим создателям — команде PTCodding. &#128176; Если вдруг я стану не нужен, напиши «скройся», «уберись», «исчезни», «пока» или что-нибудь в этом роде. &#128521;', keyboards.conversation(mails[id]))
+			except Exception:
+				pass
 
 
 			print('{} отправляет сообщение с текстом "{}"'.format(id, text))
@@ -388,7 +390,11 @@ for event in longpoll.listen():
 					internet_text, gadgets_text, games_text = '', '', ''
 
 				elif id > 2*10**9 and ('исчезн' in text.lower() or 'убер' in text.lower() or 'убр' in text.lower() or 'скр' in text.lower() or 'пок' in text.lower() or 'св' in text.lower() or 'увид' in text.lower()):
-					msg(id_chat, 'Если захотите, чтобы я снова появился — позовите меня по имени', keyboards.emptyboard())
+					msg(id, 'Если захотите, чтобы я снова появился — позовите меня по имени', keyboards.emptyboard())
+				
+				elif states[id] == '':
+					msg(id, 'Извините, я не понимаю Вас. Если хотите начать заново, то напишите «начать» или позовите меня по имени &#129335;')
+
 
 
 
