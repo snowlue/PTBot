@@ -150,7 +150,7 @@ def aboutboard(about):
 def partnerboard(partner):
 	partner.add_button('SAPOD — подкаст из мира San Andreas&#127897;', 'primary', '{"command":"sapod"}')
 	partner.add_line()
-	partner.add_button('keksik.media — издание об IT-корпорациях &#128240;', 'primary', '{"command":"keksik"}')
+	partner.add_button('keksik.media — издание о соц.сетях и IT&#128240;', 'primary', '{"command":"keksik"}')
 	partner.add_line()
 	partner.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return partner.get_keyboard()
