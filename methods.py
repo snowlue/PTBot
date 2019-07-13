@@ -12,7 +12,8 @@ def name(id, case='nom'):
 	return vk.users.get(user_ids=id, fields='first_name, last_name', name_case=case)[0]
 
 def sex(id):
-	return vk.users.get(user_ids=id, fields='sex')[0]['sex']
+	if id > 0:
+		return vk.users.get(user_ids=id, fields='sex')[0]['sex']
 
 def get_id(id, offset=1):
 	return vk.messages.getHistory(offset=offset, count=1, user_id=id)['items'][0]['id']

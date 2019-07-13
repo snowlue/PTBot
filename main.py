@@ -154,7 +154,7 @@ for event in longpoll.listen():
 					msg(id, 'Корзина товаров, которые Вы добавили к заказу. \nТовары удаляются из корзины при нажатии на них. Если Вы добавили в корзину какие-то товары, то будет доступна кнопка оформления заказа — нажмите на неё, и с Вами в этом чате свяжутся мои операторы, которые обсудят все условия и цены &#128222;', keyboards.cartboard(id))
 						
 				elif states[id] == '{"command":"cart_ui"}':
-					msg(id, 'Загляните в привычный магазин, если мой Вам оказался не по душе: https://vk.com/market-132868814 &#128072;', keyboards.back('buy'))
+					msg(id, 'Загляните в привычный магазин, если мой Вам оказался не по душе: https://vk.com/market-132868814 &#128072;')
 
 				elif states[id] == '{"command":"order"}':
 					msg(id_chat, 'Вас вызывают для оформления заказа. Пройдите, пожалуйста, по этой ссылке: https://vk.com/gim132868814?sel={}'.format(id))
@@ -217,7 +217,7 @@ for event in longpoll.listen():
 						header = news.headers_games[0]
 						desc = news.descs_games[0]
 						original = news.originals_games[0]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original)
 				elif states[id] == '{"command":"2"}':
 					if news_types[id] == 'internet':
 						header = news.headers_internet[1]
@@ -231,7 +231,7 @@ for event in longpoll.listen():
 						header = news.headers_games[1]
 						desc = news.descs_games[1]
 						original = news.originals_games[1]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original)
 				elif states[id] == '{"command":"3"}':
 					if news_types[id] == 'internet':
 						header = news.headers_internet[2]
@@ -245,7 +245,7 @@ for event in longpoll.listen():
 						header = news.headers_games[2]
 						desc = news.descs_games[2]
 						original = news.originals_games[2]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original)
 				elif states[id] == '{"command":"4"}':
 					if news_types[id] == 'internet':
 						header = news.headers_internet[3]
@@ -259,7 +259,7 @@ for event in longpoll.listen():
 						header = news.headers_games[3]
 						desc = news.descs_games[3]
 						original = news.originals_games[3]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original)
 				elif states[id] == '{"command":"5"}':
 					if news_types[id] == 'internet':
 						header = news.headers_internet[4]
@@ -273,7 +273,7 @@ for event in longpoll.listen():
 						header = news.headers_games[4]
 						desc = news.descs_games[4]
 						original = news.originals_games[4]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original)
 				elif states[id] == '{"command":"6"}':
 					if news_types[id] == 'internet':
 						header = news.headers_internet[5]
@@ -287,7 +287,7 @@ for event in longpoll.listen():
 						header = news.headers_games[5]
 						desc = news.descs_games[5]
 						original = news.originals_games[5]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original)
 				elif states[id] == '{"command":"7"}':
 					if news_types[id] == 'internet':
 						header = news.headers_internet[6]
@@ -301,7 +301,7 @@ for event in longpoll.listen():
 						header = news.headers_games[6]
 						desc = news.descs_games[6]
 						original = news.originals_games[6]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original)
 				elif states[id] == '{"command":"8"}':
 					if news_types[id] == 'internet':
 						header = news.headers_internet[7]
@@ -315,7 +315,7 @@ for event in longpoll.listen():
 						header = news.headers_games[7]
 						desc = news.descs_games[7]
 						original = news.originals_games[7]
-					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original)
 
 				elif states[id] == '{"command":"refresh"}':
 					try:
@@ -344,14 +344,6 @@ for event in longpoll.listen():
 						for i in range(0,8):
 							games_text += str(i+1) + '&#8419; ' + news.headers_games[i] + '\n'
 						msg(id, 'Последние новости из мира игр на сегодня:\n' + games_text)
-
-				elif states[id] == '{"command":"back_list"}':
-					if news_types[id] == 'internet':
-						msg(id, 'Возвращаю Вас обратно к выбору новостей. \n\nПоследние новости из мира интернета на сегодня:\n' + internet_text, keyboards.listboard())
-					elif news_types[id] == 'gadgets':
-						msg(id, 'Возвращаю Вас обратно к выбору новостей. \n\nПоследние новости из мира гаджетов на сегодня:\n' + gadgets_text, keyboards.listboard())
-					elif news_types[id] == 'games':
-						msg(id, 'Возвращаю Вас обратно к выбору новостей. \n\nПоследние новости из мира игр на сегодня:\n' + games_text, keyboards.listboard())
 					
 
 				elif states[id] == '{"command":"back_news"}':
@@ -446,7 +438,7 @@ for event in longpoll.listen():
 						header = news.headers_games[0]
 						desc = news.descs_games[0]
 						original = news.originals_games[0]
-					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original)
 				elif state_chat == '{"command":"2"}':
 					if news_types[id_chat] == 'internet':
 						header = news.headers_internet[1]
@@ -460,7 +452,7 @@ for event in longpoll.listen():
 						header = news.headers_games[1]
 						desc = news.descs_games[1]
 						original = news.originals_games[1]
-					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original)
 				elif state_chat == '{"command":"3"}':
 					if news_types[id_chat] == 'internet':
 						header = news.headers_internet[2]
@@ -474,7 +466,7 @@ for event in longpoll.listen():
 						header = news.headers_games[2]
 						desc = news.descs_games[2]
 						original = news.originals_games[2]
-					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original)
 				elif state_chat == '{"command":"4"}':
 					if news_types[id_chat] == 'internet':
 						header = news.headers_internet[3]
@@ -488,7 +480,7 @@ for event in longpoll.listen():
 						header = news.headers_games[3]
 						desc = news.descs_games[3]
 						original = news.originals_games[3]
-					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original)
 				elif state_chat == '{"command":"5"}':
 					if news_types[id_chat] == 'internet':
 						header = news.headers_internet[4]
@@ -502,7 +494,7 @@ for event in longpoll.listen():
 						header = news.headers_games[4]
 						desc = news.descs_games[4]
 						original = news.originals_games[4]
-					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original)
 				elif state_chat == '{"command":"6"}':
 					if news_types[id_chat] == 'internet':
 						header = news.headers_internet[5]
@@ -516,7 +508,7 @@ for event in longpoll.listen():
 						header = news.headers_games[5]
 						desc = news.descs_games[5]
 						original = news.originals_games[5]
-					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original)
 				elif state_chat == '{"command":"7"}':
 					if news_types[id_chat] == 'internet':
 						header = news.headers_internet[6]
@@ -530,7 +522,7 @@ for event in longpoll.listen():
 						header = news.headers_games[6]
 						desc = news.descs_games[6]
 						original = news.originals_games[6]
-					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original)
 				elif state_chat == '{"command":"8"}':
 					if news_types[id_chat] == 'internet':
 						header = news.headers_internet[7]
@@ -544,7 +536,7 @@ for event in longpoll.listen():
 						header = news.headers_games[7]
 						desc = news.descs_games[7]
 						original = news.originals_games[7]
-					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.back('list'))
+					msg(id_chat, header + '\n\n' + desc + '\n\nЧитать далее: ' + original)
 
 				elif state_chat == '{"command":"refresh"}':
 					try:
@@ -571,14 +563,6 @@ for event in longpoll.listen():
 							games_text += str(i+1) + '&#8419; ' + news.headers_games[i] + '\n'
 						msg(id_chat, 'Последние новости из мира игр на сегодня:\n' + games_text)
 
-				elif state_chat == '{"command":"back_list"}':
-					if news_types[id_chat] == 'internet':
-						msg(id_chat, 'Возвращаю вас обратно к выбору новостей. \n\nПоследние новости из мира интернета на сегодня:\n' + internet_text, keyboards.listboard())
-					elif news_types[id_chat] == 'gadgets':
-						msg(id_chat, 'Возвращаю вас обратно к выбору новостей. \n\nПоследние новости из мира гаджетов на сегодня:\n' + gadgets_text, keyboards.listboard())
-					elif news_types[id_chat] == 'games':
-						msg(id_chat, 'Возвращаю вас обратно к выбору новостей. \n\nПоследние новости из мира игр на сегодня:\n' + games_text, keyboards.listboard())
-
 				elif state_chat == '{"command":"back_news"}':
 					msg(id_chat, 'Возвращаю вас к выбору категории новостей. Выберите категорию: интернет, гаджеты или игры. \n\nДанные взяты из news.yandex.ru', keyboards.news)
 
@@ -589,7 +573,7 @@ for event in longpoll.listen():
 
 				elif state_chat == 'sending request_id':
 					request_id = text.split()[1]
-					msg(id_chat, 'А какую сумму нужно запросить? Отправьте число.', keyboards.back())
+					msg(id_chat, 'А какую сумму нужно запросить? Отправьте число.')
 					state_chat = 'wait amount'
 
 				elif state_chat == 'sending amount':
@@ -645,7 +629,7 @@ for event in longpoll.listen():
 				elif state_chat == 'sending mail_text':
 					mail_text = text
 					docs = parse_docs(attachments)
-					msg(id_chat, 'Итак, я отправляю рассылку со следующим текстом:\n\n{}\n\nПодтвердите отправку.'.format(mail_text), keyboards.back(), attach=docs)
+					msg(id_chat, 'Итак, я отправляю рассылку со следующим текстом:\n\n{}\n\nПодтвердите отправку.'.format(mail_text), attach=docs)
 					state_chat = 'wait mail_confirm'
 				
 				elif state_chat == 'sending mail_confirm':

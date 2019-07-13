@@ -7,12 +7,8 @@ carts = dict()
 
 def back(state=''):
 	back = VkKeyboard(False)
-	if state == 'buy':
-		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back_buy"}')
-	elif state == 'team':
-		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back_team"}')
-	elif state == 'list':
-		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back_list"}')
+	if state:
+		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back_' + state + '"}')
 	else:
 		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return back.get_keyboard()
