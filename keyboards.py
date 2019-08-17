@@ -159,13 +159,23 @@ def itemboard(item_name):
 	return json.dumps({"one_time":False, "buttons":[[{"color":"primary", "action":{"type":"text", "payload":'{"command":"add_' + item_name + '"}', "label":"Добавить в корзину &#10133;"}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back_buy\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
 
 def payboard(hash):
-	return json.dumps({"one_time":False, "buttons":[[{"action":{"type":"vkpay", "hash":hash}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
+	keyboard = VkKeyboard(False)
+	keyboard.add_vkpay_button(hash)
+	keyboard.add_line()
+	keyboard.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
+	return keyboard.get_keyboard()
 
 def donateboard(hash, app_id, id, label):
-	return json.dumps({"one_time":False, "buttons":[[{"action":{"type":"vkpay", "hash":hash}}], [{"action":{"type":"open_app", "app_id": app_id, "owner_id": id, "label": label}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
+	keyboard = VkKeyboard(False)
+	keyboard.add_vkapps_button(app_id, id, label, '')
+	keyboard.add_line()
+	keyboard.add_vkpay_button(hash)
+	keyboard.add_line()
+	keyboard.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
+	return keyboard.get_keyboard()
 
 def emptyboard():
-	return json.dumps({"one_time":True, "buttons":[]})
+	return VkKeyboard.get_empty_keyboard()
 
 
 chat = chatboard(chat)
