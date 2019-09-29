@@ -8,12 +8,12 @@ headers_games, links_games, descs_games, originals_games = [], [], [], []
 def refresh_gadgets():
 	global headers_gadgets, links_gadgets, descs_gadgets, originals_gadgets
 	headers_gadgets, links_gadgets, descs_gadgets, originals_gadgets = [], [], [], []
-	site = requests.get('https://m.news.yandex.ru/gadgets.html')
+	site = requests.get('https://news.yandex.ru/gadgets.html')
 	soup = bs(site.text, 'html.parser')
 	code_headers = soup.find(class_='page-content').find_all(class_='link link_theme_black i-bem')
 
 	for i in range(0, 8):
-		links_gadgets.append('https://m.news.yandex.ru' + code_headers[i].get('href'))
+		links_gadgets.append('https://yandex.ru' + code_headers[i].get('href'))
 		headers_gadgets.append(code_headers[i].contents[0])
 
 	for i in range(0, 8):
@@ -26,12 +26,12 @@ def refresh_gadgets():
 def refresh_internet():
 	global headers_internet, links_internet, descs_internet, originals_internet
 	headers_internet, links_internet, descs_internet, originals_internet = [], [], [], []
-	site = requests.get('https://m.news.yandex.ru/internet.html')
+	site = requests.get('https://news.yandex.ru/internet.html')
 	soup = bs(site.text, 'html.parser')
 	code_headers = soup.find(class_='page-content').find_all(class_='link link_theme_black i-bem')
 
 	for i in range(0, 8):
-		links_internet.append('https://m.news.yandex.ru' + code_headers[i].get('href'))
+		links_internet.append('https://yandex.ru' + code_headers[i].get('href'))
 		headers_internet.append(code_headers[i].contents[0])
 
 	for i in range(0, 8):
@@ -44,12 +44,12 @@ def refresh_internet():
 def refresh_games():
 	global headers_games, links_games, descs_games, originals_games
 	headers_games, links_games, descs_games, originals_games = [], [], [], []
-	site = requests.get('https://m.news.yandex.ru/games.html')
+	site = requests.get('https://news.yandex.ru/games.html')
 	soup = bs(site.text, 'html.parser')
 	code_headers = soup.find(class_='page-content').find_all(class_='link link_theme_black i-bem')
 
 	for i in range(0, 8):
-		links_games.append('https://m.news.yandex.ru' + code_headers[i].get('href'))
+		links_games.append('https://yandex.ru' + code_headers[i].get('href'))
 		headers_games.append(code_headers[i].contents[0])
 
 	for i in range(0, 8):
