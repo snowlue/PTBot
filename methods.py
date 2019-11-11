@@ -9,7 +9,16 @@ def msg(id, message='', board=[], forward='', attach='', parse=True):
 	print('Сообщение для {} отправлено'.format(id))
 
 def name(id, case='nom'):
-	return vk.users.get(user_ids=id, fields='first_name, last_name', name_case=case)[0]
+	if id > 0:
+		return vk.users.get(user_ids=id, fields='first_name, last_name', name_case=case)[0]
+	else:
+		return {'first_name': vk.groups.getById(group_id=id)[0]['name'], 'last_name': ''}
+
+def link(id):
+	if id > 0:
+		return vk.users.get(user_ids=id, fields='domain', name_case=case)[0]['domain']
+	else:
+		return vk.groups.getById(group_id=id)[0]['screen_name']
 
 def sex(id):
 	if id > 0:

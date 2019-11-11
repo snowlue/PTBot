@@ -680,127 +680,141 @@ for event in longpoll.listen():
 
 		elif event.type == VkBotEventType.VKPAY_TRANSACTION:
 			id = event.object.from_id
+			domain = link(id)
 			amount = event.object.amount * 1000
 			if event.object.description:
 				if sex(id) == 1:
-					msg(id_chat, '[id{0}|{1} {2}] перевела ₽{3} с комментарием «{4}»'.format(id, name(id)['first_name'], name(id)['last_name'], amount, text))
+					msg(id_chat, '@{0} ({1} {2}) перевела ₽{3} с комментарием «{4}»'.format(domain, name(id)['first_name'], name(id)['last_name'], amount, text))
 				else:
-					msg(id_chat, '[id{0}|{1} {2}] перевёл ₽{3} с комментарием «{4}»'.format(id, name(id)['first_name'], name(id)['last_name'], amount, text))
+					msg(id_chat, '@{0} ({1} {2}) перевёл ₽{3} с комментарием «{4}»'.format(domain, name(id)['first_name'], name(id)['last_name'], amount, text))
 			else:
 				if sex(id) == 1:
-					msg(id_chat, '[id{0}|{1} {2}] пожертвовала ₽{3}'.format(id, name(id)['first_name'], name(id)['last_name'], amount))
+					msg(id_chat, '@{0} ({1} {2}) пожертвовала ₽{3}'.format(domain, name(id)['first_name'], name(id)['last_name'], amount))
 				else:
-					msg(id_chat, '[id{0}|{1} {2}] пожертвовал ₽{3}'.format(id, name(id)['first_name'], name(id)['last_name'], amount))
+					msg(id_chat, '@{0} ({1} {2}) пожертвовал ₽{3}'.format(domain, name(id)['first_name'], name(id)['last_name'], amount))
 
 
 		elif event.type == VkBotEventType.MESSAGE_ALLOW:
 			id = event.object.user_id
+			domain = link(id)
 			if sex(id) == 1:
-				msg(id_chat, '&#128236; [id{0}|{1} {2}] разрешила присылать сообщения. \nДиалог с подписчиком: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']))
+				msg(id_chat, '&#128236; @{0} ({1} {2}) разрешила присылать сообщения. \nДиалог с подписчиком: https://vk.com/gim132868814?sel={3}'.format(domain, name(id)['first_name'], name(id)['last_name'], id))
 			else:
-				msg(id_chat, '&#128236; [id{0}|{1} {2}] разрешил присылать сообщения. \nДиалог с подписчиком: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']))
+				msg(id_chat, '&#128236; @{0} ({1} {2}) разрешил присылать сообщения. \nДиалог с подписчиком: https://vk.com/gim132868814?sel={3}'.format(domain, name(id)['first_name'], name(id)['last_name'], id))
 		
 
 		elif event.type == VkBotEventType.MESSAGE_DENY:
 			id = event.object.user_id
+			domain = link(id)
 			if sex(id) == 1:
-				msg(id_chat, '&#128234; [id{0}|{1} {2}] запретил присылать сообщения.'.format(id, name(id)['first_name'], name(id)['last_name']))
+				msg(id_chat, '&#128234; @{0} ({1} {2}) запретил присылать сообщения.'.format(domain, name(id)['first_name'], name(id)['last_name']))
 			else:
-				msg(id_chat, '&#128234; [id{0}|{1} {2}] запретил присылать сообщения.'.format(id, name(id)['first_name'], name(id)['last_name']))
+				msg(id_chat, '&#128234; @{0} ({1} {2}) запретил присылать сообщения.'.format(domain, name(id)['first_name'], name(id)['last_name']))
 
 
 		elif event.type == VkBotEventType.GROUP_JOIN:
 			id = event.object.user_id
+			domain = link(id)
 			if sex(id) == 1:
-				msg(id_chat, '&#128150; [id{0}|{1} {2}] вступила в PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+				msg(id_chat, '&#128150; @{0} ({1} {2}) вступила в PTCodding.'.format(domain, name(id)['first_name'], name(id)['last_name']))
 			else:
-				msg(id_chat, '&#128150; [id{0}|{1} {2}] вступил в PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+				msg(id_chat, '&#128150; @{0} ({1} {2}) вступил в PTCodding.'.format(domain, name(id)['first_name'], name(id)['last_name']))
 
 
 		elif event.type == VkBotEventType.GROUP_LEAVE:
 			id = event.object.user_id
+			domain = link(id)
 			if event.object.self:
 				if sex(id) == 1:
-					msg(id_chat, '&#128148; [id{0}|{1} {2}] покинула PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+					msg(id_chat, '&#128148; @{0} ({1} {2}) покинула PTCodding.'.format(domain, name(id)['first_name'], name(id)['last_name']))
 				else:
-					msg(id_chat, '&#128148; [id{0}|{1} {2}] покинул PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+					msg(id_chat, '&#128148; @{0} ({1} {2}) покинул PTCodding.'.format(domain, name(id)['first_name'], name(id)['last_name']))
 			else:
 				if sex(id) == 1:
-					msg(id_chat, '&#128683; [id{0}|{1} {2}] удалёна из PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+					msg(id_chat, '&#128683; @{0} ({1} {2}) удалёна из PTCodding.'.format(domain, name(id)['first_name'], name(id)['last_name']))
 				else:
-					msg(id_chat, '&#128683; [id{0}|{1} {2}] удалён из PTCodding.'.format(id, name(id)['first_name'], name(id)['last_name']))
+					msg(id_chat, '&#128683; @{0} ({1} {2}) удалён из PTCodding.'.format(domain, name(id)['first_name'], name(id)['last_name']))
 
 
 		elif event.type == VkBotEventType.WALL_REPOST:
 			id = event.object.from_id
+			domain = link(id)
 			wall_id = event.object.owner_id
 			post_id = event.object.id
 			if sex(id) == 1:
-				msg(id_chat, '&#128226; [id{0}|{1} {2}] сделала репост записи из PTCodding. \nСсылка на запись: vk.com/wall{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], wall_id, post_id))
+				msg(id_chat, '&#128226; @{0} ({1} {2}) сделала репост записи из PTCodding. \nСсылка на запись: vk.com/wall{3}_{4}'.format(domain, name(id)['first_name'], name(id)['last_name'], wall_id, post_id))
 			else:
-				msg(id_chat, '&#128226; [id{0}|{1} {2}] сделал репост записи из PTCodding. \nСсылка на запись: vk.com/wall{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], wall_id, post_id))
+				msg(id_chat, '&#128226; @{0} ({1} {2}) сделал репост записи из PTCodding. \nСсылка на запись: vk.com/wall{3}_{4}'.format(domain, name(id)['first_name'], name(id)['last_name'], wall_id, post_id))
 		
 
 		elif event.type == VkBotEventType.WALL_REPLY_NEW:
 			id = event.object.from_id
+			domain = link(id)
 			comment_id = event.object.id
 			post_id = event.object.post_id
 			owner_id = event.object.owner_id
 			if sex(id) == 1:
-				msg(id_chat, '&#128196; [id{0}|{1} {2}] оставила комментарий к записи из PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
+				msg(id_chat, '&#128196; @{0} ({1} {2}) оставила комментарий к записи из PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'.format(domain, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
 			else:
-				msg(id_chat, '&#128196; [id{0}|{1} {2}] оставил комментарий к записи из PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
+				msg(id_chat, '&#128196; @{0} ({1} {2}) оставил комментарий к записи из PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'.format(domain, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
 
 
 		elif event.type == VkBotEventType.BOARD_POST_NEW:
 			id = event.object.from_id
+			domain = link(id)
 			comment_id = event.object.id
 			topic_id = event.object.topic_id
 			owner_id = event.object.topic_owner_id
 			if sex(id) == 1:
-				msg(id_chat, '&#128196; [id{0}|{1} {2}] оставила комментарий в обсуждении PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=board{3}_{4}_?post={5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, topic_id, comment_id))
+				msg(id_chat, '&#128196; @{0} ({1} {2}) оставила комментарий в обсуждении PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=board{3}_{4}_?post={5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, topic_id, comment_id))
 			else:
-				msg(id_chat, '&#128196; [id{0}|{1} {2}] оставил комментарий в обсуждении PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=board{3}_{4}_?post={5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, topic_id, comment_id))
+				msg(id_chat, '&#128196; @{0} ({1} {2}) оставил комментарий в обсуждении PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=board{3}_{4}_?post={5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, topic_id, comment_id))
 
 
 		elif event.type == VkBotEventType.MARKET_COMMENT_NEW:
 			id = event.object.from_id
+			domain = link(id)
 			item_id = event.object.item_id
 			market_id = event.object.market_owner_id
 			if sex(id) == 1:
-				msg(id_chat, '&#128196; [id{0}|{1} {2}] оставила комментарий к товару PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=product{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], market_id, item_id))
+				msg(id_chat, '&#128196; @{0} ({1} {2}) оставила комментарий к товару PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=product{3}_{4}'.format(domain, name(id)['first_name'], name(id)['last_name'], market_id, item_id))
 			else:
-				msg(id_chat, '&#128196; [id{0}|{1} {2}] оставил комментарий к товару PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=product{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], market_id, item_id))
+				msg(id_chat, '&#128196; @{0} ({1} {2}) оставил комментарий к товару PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=product{3}_{4}'.format(domain, name(id)['first_name'], name(id)['last_name'], market_id, item_id))
 
 
 		elif event.type == VkBotEventType.USER_UNBLOCK and event.object.by_end_date:
 			id = event.object.user_id
+			domain = link(id)
 			if sex(id) == 1:
-				msg(id_chat, '&#127379; [id{0}|{1} {2}] удалёна из чёрного списка PTCodding по истечении срока блокировки.'.format(id, name(id)['first_name'], name(id)['last_name']))
+				msg(id_chat, '&#127379; @{0} ({1} {2}) удалёна из чёрного списка PTCodding по истечении срока блокировки.'.format(domain, name(id)['first_name'], name(id)['last_name']))
 			else:
-				msg(id_chat, '&#127379; [id{0}|{1} {2}] удалён из чёрного списка PTCodding по истечении срока блокировки.'.format(id, name(id)['first_name'], name(id)['last_name']))
+				msg(id_chat, '&#127379; @{0} ({1} {2}) удалён из чёрного списка PTCodding по истечении срока блокировки.'.format(domain, name(id)['first_name'], name(id)['last_name']))
 
 
 		elif event.type == VkBotEventType.POLL_VOTE_NEW:
 			id = event.object.user_id
+			domain = link(id)
 			if sex(id) == 1:
-				msg(id_chat, '&#128202; [id{0}|{1} {2}] проголосовала в опросе по ссылке: vk.com/poll{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], event.object.owner_id, event.object.poll_id))
+				msg(id_chat, '&#128202; @{0} ({1} {2}) проголосовала в опросе по ссылке: vk.com/poll{3}_{4}'.format(domain, name(id)['first_name'], name(id)['last_name'], event.object.owner_id, event.object.poll_id))
 			else:
-				msg(id_chat, '&#128202; [id{0}|{1} {2}] проголосовал в опросе по ссылке: vk.com/poll{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], event.object.owner_id, event.object.poll_id))
+				msg(id_chat, '&#128202; @{0} ({1} {2}) проголосовал в опросе по ссылке: vk.com/poll{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], event.object.owner_id, event.object.poll_id))
 
 
 		elif event.type == VkBotEventType.GROUP_OFFICERS_EDIT:
 			id = event.object.admin_id
+			domain = link(id)
 			change_id = event.object.user_id
+			change_domain = link(change_id)
 			levels = {0: 'Нет полномочий', 1: 'Модератор', 2: 'Редактор', 3: 'Администратор'}
 			level_old = levels[event.object.level_old]
 			level_new = levels[event.object.level_new]
-			msg(id_chat, '&#127385; [id{0}|{1} {2}] изменил полномочия участника команды PTCodding [id{3}|{4} {5}] с «{6}» на «{7}»'.format(id, name(id)['first_name'], name(id)['last_name'], change_id, name(change_id, 'gen')['first_name'], name(change_id, 'gen')['last_name'], level_old, level_new))
+			msg(id_chat, '&#127385; @{0} ({1} {2}) изменил полномочия участника команды PTCodding @{3} ({4} {5}) с «{6}» на «{7}»'.format(domain, name(id)['first_name'], name(id)['last_name'], change_domain, name(change_id, 'gen')['first_name'], name(change_id, 'gen')['last_name'], level_old, level_new))
 
 
 		elif event.type == VkBotEventType.GROUP_CHANGE_PHOTO:
 			id = event.object.user_id
-			msg(id_chat, '&#128444 [id{0}|{1} {2}] изменил главную фотографию PTCodding'.format(id, name(id)['first_name'], name(id)['last_name']))
+			domain = link(id)
+			msg(id_chat, '&#128444; @{0} ({1} {2}) изменил главную фотографию PTCodding'.format(domain, name(id)['first_name'], name(id)['last_name']))
 
 	except Exception as err:
 		msg(id_chat, 'PTBot споткнулся о событие {} пользователя {}! \n\n@pavetranquil (Павел), загляните в консоль и исправьте баг: dashboard.heroku.com/apps/ptcodding-bot/logs'.format(event.type, id))
