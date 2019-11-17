@@ -16,7 +16,7 @@ def name(id, case='nom'):
 
 def link(id):
 	if id > 0:
-		return vk.users.get(user_ids=id, fields='domain', name_case=case)[0]['domain']
+		return vk.users.get(user_ids=id, fields='domain')[0]['domain']
 	else:
 		return vk.groups.getById(group_id=id)[0]['screen_name']
 
