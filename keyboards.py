@@ -94,8 +94,8 @@ def teamboard(team):
 	team.add_line()
 	team.add_button('О команде &#128142;', payload='{"command":"about"}')
 	team.add_line()
-	team.add_button('Наши партнёры &#128226;', payload='{"command":"partners"}')
-	team.add_line()
+	# team.add_button('Наши партнёры &#128226;', payload='{"command":"partners"}')
+	# team.add_line()
 	team.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return team.get_keyboard()
 
@@ -141,7 +141,7 @@ def aboutboard(about):
 	about.add_line()
 	about.add_button('Богдан Гусев 👨🏼‍💻', 'primary', '{"command":"Bogdan"}')
 	about.add_line()
-	about.add_button('Ксения Хубутия 👩🏻‍💼', 'primary', '{"command":"Kseno"}')
+	about.add_button('Дмитрий Якунин 👨🏼‍💼', 'primary', '{"command":"Dima"}')
 	about.add_line()
 	about.add_button('Вернуться &#8617;', 'negative', '{"command":"back_team"}')
 	return about.get_keyboard()
@@ -150,8 +150,9 @@ def aboutboard(about):
 def partnerboard(partner):
 	# partner.add_button('SAPOD — подкаст из мира San Andreas&#127897;', 'primary', '{"command":"sapod"}')
 	# partner.add_line()
-	partner.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
-	return partner.get_keyboard()
+	# partner.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
+	# return partner.get_keyboard()
+	pass
 
 def itemboard(item_name):
 	return json.dumps({"one_time":False, "buttons":[[{"color":"primary", "action":{"type":"text", "payload":'{"command":"add_' + item_name + '"}', "label":"Добавить в корзину &#10133;"}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back_buy\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
@@ -181,6 +182,6 @@ news = newsboard(news)
 team = teamboard(team)
 about = aboutboard(about)
 buy = buyboard(buy)
-partner = partnerboard(partner)
+# partner = partnerboard(partner)
 
 print('keyboards.py started!')
