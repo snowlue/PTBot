@@ -19,8 +19,6 @@ def start():
 	return start.get_keyboard()
 
 def chatboard(chat):
-	chat.add_button('#news &#128240;', 'primary', '{"command":"news"}')
-	chat.add_line()
 	chat.add_button('Запрос VK Pay', 'primary', '{"command":"request"}')
 	chat.add_line()
 	chat.add_button('Баг-перезапуск', 'primary', '{"command":"restart"}')
