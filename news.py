@@ -61,4 +61,7 @@ def refresh_games():
 		except:
 			originals_games.append(article_soup.find(class_='news-story__content').find('a').get('href'))
 
+refresh_games()
+refresh_gadgets()
+refresh_internet()
 print('news.py started!')

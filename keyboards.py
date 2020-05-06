@@ -83,8 +83,6 @@ def listboard():
 	board.add_button('7&#8419;', 'primary', '{"command":"7"}')
 	board.add_button('8&#8419;', 'primary', '{"command":"8"}')
 	board.add_line()
-	board.add_button('Обновить &#128260;', payload='{"command":"refresh"}')
-	board.add_line()
 	board.add_button('Вернуться &#8617;', 'negative', '{"command":"back_news"}')
 	return board.get_keyboard()
 
