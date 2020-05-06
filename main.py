@@ -25,7 +25,6 @@ for event in longpoll.listen():
 			if id not in news_types:
 				news_types[id] = ''
 			if id not in mails:
-				mails[id] = True
 
 			if id == id_chat:
 				if state_chat == 'wait request_id' and ' '.join(text.split()[1:]) != 'Вернуться ↩':
@@ -67,15 +66,6 @@ for event in longpoll.listen():
 
 			print('{} отправляет сообщение с текстом "{}"'.format(id, text))
 
-			if id != 2*10**9+6:
-				if states[id] == '{"command":"idea"}':
-					msg(id, "Предложите свою идею для PTCodding! Я pассмотрю её, и команда PTCodding отпишется Вам в этом диалоге. \nСоблюдайте структуру: \n1. Название, отражающее суть идеи \n2. Собственно идея, её развёртка \n3. Расскажите, чем Ваша идея поможет сообществу \nНе забудьте — необходимо уместить всё в рамках одного сообщения. Спасибо за Вашу помощь!", keyboards.back())
-					states[id] = 'wait idea'
-
-				elif states[id] == 'sending idea':
-					print('{} отправляет идею'.format(id))
-					msg(id_chat, '#botidea \n[id{0}|{1} {2}] предлагает идею.\n\nОтветить пользователю: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']), forward=str(msg_id))
-					msg(id, 'Ваша идея будет доставлена команде PTCodding в аккуратном конвертике с Вашей печатью. Ожидайте ответа! &#8986;', keyboards.menu(mails[id]))
 
 
 
@@ -691,7 +681,6 @@ for event in longpoll.listen():
 			id = event.object.user_id
 			domain = link(id)
 			if sex(id) == 1:
-				msg(id_chat, '&#128234; @{0} ({1} {2}) запретил присылать сообщения.'.format(domain, name(id)['first_name'], name(id)['last_name']))
 			else:
 				msg(id_chat, '&#128234; @{0} ({1} {2}) запретил присылать сообщения.'.format(domain, name(id)['first_name'], name(id)['last_name']))
 
@@ -715,7 +704,6 @@ for event in longpoll.listen():
 					msg(id_chat, '&#128148; @{0} ({1} {2}) покинул PTCodding.'.format(domain, name(id)['first_name'], name(id)['last_name']))
 			else:
 				if sex(id) == 1:
-					msg(id_chat, '&#128683; @{0} ({1} {2}) удалёна из PTCodding.'.format(domain, name(id)['first_name'], name(id)['last_name']))
 				else:
 					msg(id_chat, '&#128683; @{0} ({1} {2}) удалён из PTCodding.'.format(domain, name(id)['first_name'], name(id)['last_name']))
 
@@ -770,7 +758,6 @@ for event in longpoll.listen():
 			id = event.object.user_id
 			domain = link(id)
 			if sex(id) == 1:
-				msg(id_chat, '&#127379; @{0} ({1} {2}) удалёна из чёрного списка PTCodding по истечении срока блокировки.'.format(domain, name(id)['first_name'], name(id)['last_name']))
 			else:
 				msg(id_chat, '&#127379; @{0} ({1} {2}) удалён из чёрного списка PTCodding по истечении срока блокировки.'.format(domain, name(id)['first_name'], name(id)['last_name']))
 
@@ -805,6 +792,7 @@ for event in longpoll.listen():
 		print(err)
 		print(traceback.format_exc())
 	                elif states[id] == '{"command":"about"}':
+                mails[id] = True if id < 2*10**6 else False
                     msg(id, 'PTCodding появился 11 ноября 2016 года. За период с момента создания до 1 сентября 2018 года было сделано много крупных проектов: текстовая игра «Кто хочет стать миллионером?», «Мы — люди этой Земли!» и другие. \nА уже с 1 сентября начался активный прирост подписчиков, команда начала работать над медиа и активно развивалась в этом направлении. Был опубликован промо-ролик о митапе VK×Junction, 11 ноября на своё двухлетие PTCodding выпустил первый выпуск подкаста «Взгляд в неделю». \n2 февраля 2019 года PTCodding переехал на платформу подкастов ВКонтакте и начал активно распространяться на других. С марта по май в PTCodding публиковался экспериментальный подкаст «Игродайджест». В мае появился подкаст «IT-кухня». \n\nСейчас PTCodding — узнаваемый бренд, известный как команда молодых энтузиастов, которые делают качественный и уникальный IT-контент. Они записывают подкасты, пишут лонгриды, делают музыкальные подборки, популяризуя программирование и IT-технологии в массы. !\n\nВы можете подробнее почитать о каждом участнике команды ниже, нажав на кнопку с именем участника! &#128071;', keyboards.about)
 
                 elif states[id] == '{"command":"Pavel"}':
@@ -822,3 +810,6 @@ for event in longpoll.listen():
                 
                 # elif states[id] == '{"command":"sapod"}':
                 # 	msg(id, '@sapod (SAPOD) — первый и единственный подкаст из мира San Andreas. \n\nВедущий подкаста Стич часто появляется и в подкастах от PTCodding. Вместе с Павлом они обсуждают новости уходящего месяца в IT-кухне и жарко спорят, кто лучше: iOS или Android &#128521;\n\nСлушайте Стича в его подкасте SAPOD — vk.com/sapod &#128072;')
+                msg(id_chat, '&#128234; @{0} ({1} {2}) запретила присылать сообщения.'.format(domain, name(id)['first_name'], name(id)['last_name']))
+                    msg(id_chat, '&#128683; @{0} ({1} {2}) удалена из PTCodding.'.format(domain, name(id)['first_name'], name(id)['last_name']))
+                msg(id_chat, '&#127379; @{0} ({1} {2}) удалена из чёрного списка PTCodding по истечении срока блокировки.'.format(domain, name(id)['first_name'], name(id)['last_name']))

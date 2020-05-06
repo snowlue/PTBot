@@ -3,7 +3,7 @@ from vk_api.keyboard import VkKeyboard
 
 chat, buy, buyback, partner, team, about, news = VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False)
 
-carts = dict()
+carts = {}
 
 def back(state=''):
 	back = VkKeyboard(False)
@@ -48,7 +48,6 @@ def menu(mail):
 	menu = VkKeyboard(False)
 	menu.add_button('#news &#128240;', 'positive', '{"command":"news"}')
 	menu.add_line()
-	menu.add_button('#idea &#128161;', 'positive', '{"command":"idea"}')
 	menu.add_button('#partnership &#129309;', 'positive', '{"command":"partnership"}')
 	menu.add_line()
 	menu.add_button('#market &#128717;', 'positive', '{"command":"buy"}')
@@ -164,10 +163,8 @@ def payboard(hash):
 	keyboard.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return keyboard.get_keyboard()
 
-def donateboard(hash, app_id, id, label):
+def donateboard(hash):
 	keyboard = VkKeyboard(False)
-	keyboard.add_vkapps_button(app_id, id, label, '')
-	keyboard.add_line()
 	keyboard.add_vkpay_button(hash)
 	keyboard.add_line()
 	keyboard.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
