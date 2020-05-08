@@ -30,9 +30,6 @@ def get_id(id, offset=1):
 def delete(msg_id):
 	vk.messages.delete(message_ids=msg_id, delete_for_all=True)
 
-def online():
-	vk.groups.enableOnline(group_id=132868814)
-
 def isMember(group, id):
 	return vk.groups.isMember(group_id=group, user_id=id)
 

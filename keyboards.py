@@ -71,15 +71,15 @@ def newsboard(news):
 
 def listboard():
 	board = VkKeyboard(False)
-	board.add_button('1&#8419;', 'primary', '{"command":"1"}')
-	board.add_button('2&#8419;', 'primary', '{"command":"2"}')
-	board.add_button('3&#8419;', 'primary', '{"command":"3"}')
-	board.add_button('4&#8419;', 'primary', '{"command":"4"}')
+	board.add_button('1&#8419;', '{"command":"1"}')
+	board.add_button('2&#8419;', '{"command":"2"}')
+	board.add_button('3&#8419;', '{"command":"3"}')
+	board.add_button('4&#8419;', '{"command":"4"}')
 	board.add_line()
-	board.add_button('5&#8419;', 'primary', '{"command":"5"}')
-	board.add_button('6&#8419;', 'primary', '{"command":"6"}')
-	board.add_button('7&#8419;', 'primary', '{"command":"7"}')
-	board.add_button('8&#8419;', 'primary', '{"command":"8"}')
+	board.add_button('5&#8419;', '{"command":"5"}')
+	board.add_button('6&#8419;', '{"command":"6"}')
+	board.add_button('7&#8419;', '{"command":"7"}')
+	board.add_button('8&#8419;', '{"command":"8"}')
 	board.add_line()
 	board.add_button('Вернуться &#8617;', 'negative', '{"command":"back_news"}')
 	return board.get_keyboard()
@@ -150,16 +150,13 @@ def partnerboard(partner):
 	pass
 
 def itemboard(item_name):
-	return json.dumps({"one_time":False, "buttons":[[{"color":"primary", "action":{"type":"text", "payload":'{"command":"add_' + item_name + '"}', "label":"Добавить в корзину &#10133;"}}], [{"color":"negative","action":{"type":"text","payload":"{\"command\":\"back_buy\"}","label":"Вернуться &#8617;"}}]]}, ensure_ascii=False)
-
-def payboard(hash):
 	keyboard = VkKeyboard(False)
-	keyboard.add_vkpay_button(hash)
+	keyboard.add_button('Добавить в корзину &#10133;', 'primary', '{"command":"add_%s"}' % item_name)
 	keyboard.add_line()
-	keyboard.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
+	keyboard.add_button('Вернуться &#8617;', 'negative', '{"command":"back_buy"}')
 	return keyboard.get_keyboard()
 
-def donateboard(hash):
+def payboard(hash):
 	keyboard = VkKeyboard(False)
 	keyboard.add_vkpay_button(hash)
 	keyboard.add_line()
