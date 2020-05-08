@@ -3,8 +3,8 @@ import urllib.parse, traceback, time
 from methods import *
 
 data = read_data()
-states, news_types, mails = data[0], data[1], data[2]
-keyboards.carts = data[3]
+states, news_types, mails, mute = data[0], data[1], data[2], data[3]
+keyboards.carts = data[4]
 payload, state_chat, id_chat = '', '', 2*10**9+6
 internet_text, gadgets_text, games_text = '', '', ''
 last_request = time.time()
@@ -12,7 +12,7 @@ last_request = time.time()
 print('main.py started!')
 
 def main():
-    global event, internet_text, gadgets_text, games_text, payload, state_chat, id_chat, states, news_types, mails
+    global event, internet_text, gadgets_text, games_text, payload, state_chat, id_chat, states, news_types, mails, mute
     try:
         print('\nЛовлю события... Поймал {}'.format(event.type))
         if event.type == VkBotEventType.MESSAGE_NEW:
@@ -76,8 +76,9 @@ def main():
 
                 elif states[id] == 'sending partner':
                     print('{} предлагает партнёрство'.format(id))
-                    msg(id_chat, '#botpartner \n[id{0}|{1} {2}] предлагает партнёрство.\n\nОтветить пользователю: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']), forward=str(msg_id))
-                    msg(id, 'Ждите ответа! Скоро с Вами свяжутся мои операторы! &#8986;', keyboards.menu(mails[id]))
+                    if id not in mute:
+                        msg(id_chat, '#botpartner \n[id{0}|{1} {2}] предлагает партнёрство.\n\nОтветить пользователю: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']), forward=str(msg_id))
+                        msg(id, 'Ждите ответа! Скоро с Вами свяжутся мои операторы! &#8986;', keyboards.menu(mails[id]))
 
 
 
@@ -90,8 +91,9 @@ def main():
 
                 elif states[id] == 'sending question':
                     print('{} отправляет вопрос'.format(id))
-                    msg(id_chat, '#botquestion \n[id{0}|{1} {2}] задаёт вопрос.\n\nОтветить пользователю: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']), forward=str(msg_id))
-                    msg(id, 'Ждите ответа на свой вопрос от команды PTCodding! &#8986;', keyboards.team)
+                    if id not in mute:
+                        msg(id_chat, '#botquestion \n[id{0}|{1} {2}] задаёт вопрос.\n\nОтветить пользователю: https://vk.com/gim132868814?sel={0}'.format(id, name(id)['first_name'], name(id)['last_name']), forward=str(msg_id))
+                        msg(id, 'Ждите ответа на свой вопрос от команды PTCodding! &#8986;', keyboards.team)
 
                 elif states[id] == '{"command":"about"}':
                     msg(id, 'PTCodding появился 11 ноября 2016 года. За период с момента создания до 1 сентября 2018 года было сделано много крупных проектов: текстовая игра «Кто хочет стать миллионером?», «Мы — люди этой Земли!» и другие. \nА уже с 1 сентября начался активный прирост подписчиков, команда начала работать над медиа и активно развивалась в этом направлении. Был опубликован промо-ролик о митапе VK×Junction, 11 ноября на своё двухлетие PTCodding выпустил первый выпуск подкаста «Взгляд в неделю». \n2 февраля 2019 года PTCodding переехал на платформу подкастов ВКонтакте и начал активно распространяться на других. С марта по май в PTCodding публиковался экспериментальный подкаст «Игродайджест». В мае появился подкаст «IT-кухня». \n\nСейчас PTCodding — узнаваемый бренд, известный как команда молодых энтузиастов, которые делают качественный и уникальный IT-контент. Они записывают подкасты, пишут лонгриды, делают музыкальные подборки, популяризуя программирование и IT-технологии в массы. !\n\nВы можете подробнее почитать о каждом участнике команды ниже, нажав на кнопку с именем участника! &#128071;', keyboards.about)
@@ -148,8 +150,9 @@ def main():
                     msg(id, 'Загляните в привычный магазин, если мой Вам оказался не по душе: https://vk.com/market-132868814 &#128072;')
 
                 elif states[id] == '{"command":"order"}':
-                    msg(id_chat, 'Вас вызывают для оформления заказа. Пройдите, пожалуйста, по этой ссылке: https://vk.com/gim132868814?sel={}'.format(id))
-                    msg(id, 'Ожидайте... Скоро мои операторы свяжутся с Вами для уточнения деталей и оплаты заказа! &#8986;')
+                    if id not in mute:
+                        msg(id_chat, '#order \nВас вызывают для оформления заказа. Пройдите, пожалуйста, по этой ссылке: https://vk.com/gim132868814?sel={}'.format(id))
+                        msg(id, 'Ожидайте... Скоро мои операторы свяжутся с Вами для уточнения деталей и оплаты заказа! &#8986;', keyboards.cartboard(id))
                 
                 elif states[id] == '{"command":"back_buy"}':
                     msg(id, 'Возвращаю Вас в меню товаров.', keyboards.buy)
@@ -295,6 +298,12 @@ def main():
                     msg(id_chat, 'Возвращаю вас к выбору категории новостей. Выберите категорию: интернет, гаджеты или игры. \n\nДанные взяты из news.yandex.ru', keyboards.news)
 
 
+                if text.split()[1].lower() == 'мут':
+                    mute += [int(i) for i in text.split()[2:]]
+                
+                elif text.split()[1].lower() == 'анмут':
+                    mute = list(set(mute) - set([int(i) for i in text.split()[2:]]))
+                        
                 elif state_chat == '{"command":"request"}':
                     msg(id_chat, 'Решили запросить у кого-то деньги? У кого? Отправьте id пользователя.', keyboards.back())
                     state_chat = 'wait request_id'
@@ -388,6 +397,8 @@ def main():
                     print('\nMAILS')
                     for id in mails:
                         print(str(id) + '=' + str(int(mails[id])))
+                    print('\nMUTE')
+                    print(*mute, sep=',')
                     print('\nCARTS')
                     for id in keyboards.carts:
                         print(str(id) + '=' + str(keyboards.carts[id]))
@@ -423,38 +434,38 @@ def main():
         elif event.type == VkBotEventType.MESSAGE_ALLOW:
             id = event.object.user_id
             domain = link(id)
-            if sex(id) == 1:
                 msg(id_chat, '&#128236; @{0} ({1} {2}) разрешила присылать сообщения. \nДиалог с подписчиком: https://vk.com/gim132868814?sel={3}'.format(domain, name(id)['first_name'], name(id)['last_name'], id))
-            else:
                 msg(id_chat, '&#128236; @{0} ({1} {2}) разрешил присылать сообщения. \nДиалог с подписчиком: https://vk.com/gim132868814?sel={3}'.format(domain, name(id)['first_name'], name(id)['last_name'], id))
+            if sex(id) == 1 and id not in mute:
+            elif id not in mute:
         
 
         elif event.type == VkBotEventType.MESSAGE_DENY:
             id = event.object.user_id
             domain = link(id)
-            if sex(id) == 1:
                 msg(id_chat, '&#128234; @{0} ({1} {2}) запретила присылать сообщения.'.format(domain, name(id)['first_name'], name(id)['last_name']))
-            else:
                 msg(id_chat, '&#128234; @{0} ({1} {2}) запретил присылать сообщения.'.format(domain, name(id)['first_name'], name(id)['last_name']))
+            if sex(id) == 1 and id not in mute:
+            elif id not in mute:
 
 
         elif event.type == VkBotEventType.GROUP_JOIN:
             id = event.object.user_id
             domain = link(id)
-            if sex(id) == 1:
                 msg(id_chat, '&#128150; @{0} ({1} {2}) вступила в PTCodding.'.format(domain, name(id)['first_name'], name(id)['last_name']))
-            else:
                 msg(id_chat, '&#128150; @{0} ({1} {2}) вступил в PTCodding.'.format(domain, name(id)['first_name'], name(id)['last_name']))
+            if sex(id) == 1 and id not in mute:
+            elif id not in mute:
 
 
         elif event.type == VkBotEventType.GROUP_LEAVE:
             id = event.object.user_id
             domain = link(id)
             if event.object.self:
-                if sex(id) == 1:
                     msg(id_chat, '&#128148; @{0} ({1} {2}) покинула PTCodding.'.format(domain, name(id)['first_name'], name(id)['last_name']))
-                else:
                     msg(id_chat, '&#128148; @{0} ({1} {2}) покинул PTCodding.'.format(domain, name(id)['first_name'], name(id)['last_name']))
+                if sex(id) == 1 and id not in mute:
+                elif id not in mute:
             else:
                 if sex(id) == 1:
                     msg(id_chat, '&#128683; @{0} ({1} {2}) удалена из PTCodding.'.format(domain, name(id)['first_name'], name(id)['last_name']))
@@ -479,10 +490,10 @@ def main():
             comment_id = event.object.id
             post_id = event.object.post_id
             owner_id = event.object.owner_id
-            if sex(id) == 1:
                 msg(id_chat, '&#128196; @{0} ({1} {2}) оставила комментарий к записи из PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'.format(domain, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
-            else:
                 msg(id_chat, '&#128196; @{0} ({1} {2}) оставил комментарий к записи из PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'.format(domain, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
+            if sex(id) == 1 and id not in mute:
+            elif id not in mute:
 
 
         elif event.type == VkBotEventType.BOARD_POST_NEW:
@@ -491,10 +502,10 @@ def main():
             comment_id = event.object.id
             topic_id = event.object.topic_id
             owner_id = event.object.topic_owner_id
-            if sex(id) == 1:
                 msg(id_chat, '&#128196; @{0} ({1} {2}) оставила комментарий в обсуждении PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=board{3}_{4}_?post={5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, topic_id, comment_id))
-            else:
                 msg(id_chat, '&#128196; @{0} ({1} {2}) оставил комментарий в обсуждении PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=board{3}_{4}_?post={5}'.format(id, name(id)['first_name'], name(id)['last_name'], owner_id, topic_id, comment_id))
+            if sex(id) == 1 and id not in mute:
+            elif id not in mute:
 
 
         elif event.type == VkBotEventType.MARKET_COMMENT_NEW:
@@ -502,10 +513,10 @@ def main():
             domain = link(id)
             item_id = event.object.item_id
             market_id = event.object.market_owner_id
-            if sex(id) == 1:
                 msg(id_chat, '&#128196; @{0} ({1} {2}) оставила комментарий к товару PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=product{3}_{4}'.format(domain, name(id)['first_name'], name(id)['last_name'], market_id, item_id))
-            else:
                 msg(id_chat, '&#128196; @{0} ({1} {2}) оставил комментарий к товару PTCodding. \nСсылка на комментарий: vk.com/ptcodding?w=product{3}_{4}'.format(domain, name(id)['first_name'], name(id)['last_name'], market_id, item_id))
+            if sex(id) == 1 and id not in mute:
+            elif id not in mute:
 
 
         elif event.type == VkBotEventType.USER_UNBLOCK and event.object.by_end_date:
@@ -520,10 +531,10 @@ def main():
         elif event.type == VkBotEventType.POLL_VOTE_NEW:
             id = event.object.user_id
             domain = link(id)
-            if sex(id) == 1:
                 msg(id_chat, '&#128202; @{0} ({1} {2}) проголосовала в опросе по ссылке: vk.com/poll{3}_{4}'.format(domain, name(id)['first_name'], name(id)['last_name'], event.object.owner_id, event.object.poll_id))
-            else:
                 msg(id_chat, '&#128202; @{0} ({1} {2}) проголосовал в опросе по ссылке: vk.com/poll{3}_{4}'.format(id, name(id)['first_name'], name(id)['last_name'], event.object.owner_id, event.object.poll_id))
+            if sex(id) == 1 and id not in mute:
+            elif id not in mute:
 
 
         elif event.type == VkBotEventType.GROUP_OFFICERS_EDIT:

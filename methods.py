@@ -65,7 +65,7 @@ def upload(*args):
 	return ','.join(photos)
 
 def read_data():
-	states, news_types, mails, carts = dict(), dict(), dict(), dict()
+	states, news_types, mails, mute, carts = dict(), dict(), dict(), [], dict()
 	with open('data.txt', encoding='utf-8') as file:
 		line = file.readline()
 		if line == '\ufeffSTATES\n':
@@ -77,16 +77,21 @@ def read_data():
 				line = file.readline()
 				if '=' in line:
 					news_types[int(line.split('=')[0])] = line.split('=')[1][:-1]
-			while line != 'CARTS\n':
+			while line != 'MUTE\n':
 				line = file.readline()
 				if '=' in line:
 					mails[int(line.split('=')[0])] = bool(int(line.split('=')[1][:-1]))
+			line = file.readline().strip()
+			if ',' in line:
+				mute = list(map(int, line.split(',')))
+			file.readline()
+			file.readline()
 			carts_data = file.readlines()
 			for line in carts_data:
 				if '=' in line:
 					carts[int(line.split('=')[0])] = line.split('=')[1][:-1]
 		file.close()
-	return [states, news_types, mails, carts]
+	return [states, news_types, mails, mute, carts]
 
 vk_session = vk_api.VkApi(token='9dfd38af10a2e483ef4c15dadbb77d6b186e912afcdd58680fd5be588c25b1d8096f4a2038623d54a2cb5')
 
