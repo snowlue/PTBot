@@ -7,6 +7,7 @@ headers_games, links_games, descs_games, originals_games = [], [], [], []
 
 def refresh_gadgets():
 	global headers_gadgets, links_gadgets, descs_gadgets, originals_gadgets
+	headers_gadgets, links_gadgets, descs_gadgets, originals_gadgets = [], [], [], []
 	site = requests.get('https://news.yandex.ru/gadgets.html')
 	soup = bs(site.text, 'html.parser')
 	code_headers = soup.find(class_='page-content').find_all(class_='link link_theme_black i-bem')
@@ -24,6 +25,7 @@ def refresh_gadgets():
 
 def refresh_internet():
 	global headers_internet, links_internet, descs_internet, originals_internet
+	headers_internet, links_internet, descs_internet, originals_internet = [], [], [], []
 	site = requests.get('https://news.yandex.ru/internet.html')
 	soup = bs(site.text, 'html.parser')
 	code_headers = soup.find(class_='page-content').find_all(class_='link link_theme_black i-bem')
@@ -41,6 +43,7 @@ def refresh_internet():
 
 def refresh_games():
 	global headers_games, links_games, descs_games, originals_games
+	headers_games, links_games, descs_games, originals_games = [], [], [], []
 	site = requests.get('https://yandex.ru/news/rubric/games')
 	soup = bs(site.text, 'html.parser')
 	code_headers = soup.find_all(class_='link link_theme_black i-bem')
