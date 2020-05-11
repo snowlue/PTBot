@@ -164,22 +164,22 @@ def main():
                     msg(id, 'Самый востребованный раздел PTBot — новости из мира IT прямо в этом чате! 😱💻 \nВыберите категорию: интернет, гаджеты или игры — и читайте топ-8 новостей!\n\nОбновление каждые 10 минут.\nДанные взяты из news.yandex.ru', keyboards.news, parse=False)
 
                 elif states[id] == '{"command":"news_internet"}':
+                    news_types[id] = 'internet'
                     if not internet_text:
-                        news_types[id] = 'internet'
                         for i in range(0, 8):
                             internet_text += str(i+1) + '&#8419; ' + news.headers_internet[i] + '\n'
                     msg(id, 'Последние новости из мира интернета на сегодня: \n' + internet_text, keyboards.listboard())		
 
                 elif states[id] == '{"command":"news_gadgets"}':
+                    news_types[id] = 'gadgets'
                     if not gadgets_text:
-                        news_types[id] = 'gadgets'
                         for i in range(0, 8):
                             gadgets_text += str(i+1) + '&#8419; ' + news.headers_gadgets[i] + '\n'
                     msg(id, 'Последние новости из мира гаджетов на сегодня: \n' + gadgets_text, keyboards.listboard())
 
                 elif states[id] == '{"command":"news_games"}':
+                    news_types[id] = 'games'
                     if not games_text:
-                        news_types[id] = 'games'
                         for i in range(0, 8):
                             games_text += str(i+1) + '&#8419; ' + news.headers_games[i] + '\n'
                     msg(id, 'Последние новости из мира игр на сегодня: \n' + games_text, keyboards.listboard())
