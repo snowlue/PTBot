@@ -13,10 +13,12 @@ def back(state=''):
 		back.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return back.get_keyboard()
 
+
 def start():
 	start = VkKeyboard(False)
 	start.add_button('Начать', payload='{"command":"start"}')
 	return start.get_keyboard()
+
 
 def chatboard(chat):
 	chat.add_button('Запрос VK Pay', 'primary', '{"command":"request"}')
@@ -30,6 +32,7 @@ def chatboard(chat):
 	chat.add_button('Вывести данные в консоль', 'primary', '{"command":"output"}')
 	return chat.get_keyboard()
 
+
 def conversation(mail):
 	board = VkKeyboard(False)
 	board.add_button('Новости &#128240;', 'primary', '{"command":"news"}')
@@ -41,6 +44,7 @@ def conversation(mail):
 	else:
 		board.add_button('Подписаться на рассылки &#9989;', payload='{"command":"mail"}')
 	return board.get_keyboard()
+
 
 def menu(mail):
 	menu = VkKeyboard(False)
@@ -59,6 +63,7 @@ def menu(mail):
 		menu.add_button('Подписаться на рассылки &#9989;', payload='{"command":"mail"}')
 	return menu.get_keyboard()
 
+
 def newsboard(news):
 	news.add_button('Интернет', 'primary', '{"command":"news_internet"}')
 	news.add_line()
@@ -68,6 +73,7 @@ def newsboard(news):
 	news.add_line()
 	news.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return news.get_keyboard()
+
 
 def listboard():
 	board = VkKeyboard(False)
@@ -84,6 +90,7 @@ def listboard():
 	board.add_button('Вернуться &#8617;', 'negative', '{"command":"back_news"}')
 	return board.get_keyboard()
 
+
 def teamboard(team):
 	team.add_button('Задать вопрос команде&#10067;', payload='{"command":"question"}')
 	team.add_line()
@@ -93,6 +100,7 @@ def teamboard(team):
 	# team.add_line()
 	team.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return team.get_keyboard()
+
 
 def buyboard(buy):
 	buy.add_button('Создание чат-бота &#129302;', 'primary', '{"command":"code"}')
@@ -107,6 +115,7 @@ def buyboard(buy):
 	buy.add_line()
 	buy.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return buy.get_keyboard()
+
 
 def cartboard(id, item=''):
 	if id not in carts:
@@ -131,6 +140,7 @@ def cartboard(id, item=''):
 	board.add_button('Вернуться &#8617;', 'negative', '{"command":"back_buy"}')
 	return board.get_keyboard()
 
+
 def aboutboard(about):
 	about.add_button('Павел Овчинников 👨🏽‍💻', 'primary', '{"command":"Pavel"}')
 	about.add_line()
@@ -149,19 +159,18 @@ def partnerboard(partner):
 	# return partner.get_keyboard()
 	pass
 
+
 def itemboard(item_name):
-	keyboard = VkKeyboard(False)
+	keyboard = VkKeyboard(False, True)
 	keyboard.add_button('Добавить в корзину &#10133;', 'primary', '{"command":"add_%s"}' % item_name)
-	keyboard.add_line()
-	keyboard.add_button('Вернуться &#8617;', 'negative', '{"command":"back_buy"}')
 	return keyboard.get_keyboard()
 
+
 def payboard(hash):
-	keyboard = VkKeyboard(False)
+	keyboard = VkKeyboard(False, True)
 	keyboard.add_vkpay_button(hash)
-	keyboard.add_line()
-	keyboard.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
 	return keyboard.get_keyboard()
+
 
 def emptyboard():
 	return VkKeyboard.get_empty_keyboard()
