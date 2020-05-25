@@ -250,7 +250,7 @@ def main():
                     msg(id, 'Если захотите, чтобы я снова появился — позовите меня по имени', keyboards.emptyboard())
                 
                 elif states[id] == '':
-                    msg(id, 'Извините, я не понимаю Вас. Если хотите начать заново, то напишите «начать» или позовите меня по имени &#129335;')
+                    msg(id, 'Извините, я не понимаю Вас. Чтобы вернуться в главное меню, напишите «начать» или позовите меня по имени &#129335;')
 
 
 
@@ -335,15 +335,15 @@ def main():
                     text.sort()
                     if len(text) == 1:
                         if text[0].split()[0].lower() == 'только':
-                            for i in text[0].split()[1].split(','):
+                            for i in text[0].split()[1].replace(' ', '').split(','):
                                 only.append(int(i))
                         elif text[0].split()[0].lower() == 'кроме':
-                            for i in text[0].split()[1].split(','):
+                            for i in text[0].split()[1].replace(' ', '').split(','):
                                 exceptly.append(int(i))
                     elif len(text) == 2:
-                        for i in text[0].split()[1].split(','):
+                        for i in text[0].split(maxsplit=1)[1].replace(' ', '').split(','):
                             exceptly.append(int(i))
-                        for i in text[1].split()[1].split(','):
+                        for i in text[1].split(maxsplit=1)[1].replace(' ', '').split(','):
                             only.append(int(i))
 
                     msg(id_chat, 'Начинаю рассылку...')
@@ -541,8 +541,7 @@ def main():
             msg(id_chat, '#photo\n&#128444; @{0} ({1} {2}) изменил главную фотографию PTCodding'.format(domain, name(id)['first_name'], name(id)['last_name']))
 
     except Exception as err:
-        msg(id_chat, '#log\nPTBot споткнулся о событие «{}» пользователя {}!\n\nТрейсбек:\n{}\n\n@pavetranquil (Павел), загляните в консоль и исправьте баг: dashboard.heroku.com/apps/ptcodding-bot/logs'.format(event.type, id, traceback.format_exc()))
-        print(err)
+        msg(id_chat, '#log\nPTBot споткнулся о событие «{}» пользователя {}!\n\nТрейсбэк:\n{}\n\n@pavetranquil (Павел), загляните в консоль и исправьте баг: dashboard.heroku.com/apps/ptcodding-bot/logs'.format(event.type, id, '\n'.join(traceback.format_exc().split('\n')[1:])))
         print(traceback.format_exc())
 
 while True:
