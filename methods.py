@@ -79,7 +79,7 @@ def read_data():
 				if '=' in line:
 					mails[int(line.split('=')[0])] = bool(int(line.split('=')[1][:-1]))
 			line = file.readline().strip()
-			if ',' in line:
+			if line:
 				mute = list(map(int, line.split(',')))
 			file.readline()
 			file.readline()

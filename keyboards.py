@@ -1,9 +1,10 @@
 import vk_api, json
 from vk_api.keyboard import VkKeyboard
 
-chat, buy, buyback, partner, team, about, news = VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False)
+buy, buyback, partner, team, about, news = VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False)
 
 carts = {}
+
 
 def back(state=''):
 	back = VkKeyboard(False)
@@ -14,23 +15,15 @@ def back(state=''):
 	return back.get_keyboard()
 
 
+def cancel():
+	cancel = VkKeyboard(True)
+	cancel.add_button('Отменить ❎', 'negative', '{"command":"cancel"}')
+	return cancel.get_keyboard()
+
 def start():
 	start = VkKeyboard(False)
 	start.add_button('Начать', payload='{"command":"start"}')
 	return start.get_keyboard()
-
-
-def chatboard(chat):
-	chat.add_button('Запрос VK Pay', 'primary', '{"command":"request"}')
-	chat.add_line()
-	chat.add_button('Баг-перезапуск', 'primary', '{"command":"restart"}')
-	chat.add_line()
-	chat.add_button('Вернуть к началу', 'primary', '{"command":"to_start"}')
-	chat.add_line()
-	chat.add_button('Отправить рассылку', 'primary', '{"command":"mailing"}')
-	chat.add_line()
-	chat.add_button('Вывести данные в консоль', 'primary', '{"command":"output"}')
-	return chat.get_keyboard()
 
 
 def conversation(mail):
@@ -176,7 +169,6 @@ def emptyboard():
 	return VkKeyboard.get_empty_keyboard()
 
 
-chat = chatboard(chat)
 news = newsboard(news)
 team = teamboard(team)
 about = aboutboard(about)

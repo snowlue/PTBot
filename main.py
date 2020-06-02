@@ -32,19 +32,17 @@ def main():
                 keyboards.carts[id] = []
 
             if id == id_chat:
-                if state_chat == 'wait request_id' and payload != '{"command":"back"}':
+                if state_chat == 'wait request_id' and payload != '{"command":"cancel"}':
                     state_chat = 'sending request_id'
-                elif state_chat == 'wait amount' and payload != '{"command":"back"}':
+                elif state_chat == 'wait amount' and payload != '{"command":"cancel"}':
                     state_chat = 'sending amount'
-                elif state_chat == 'wait description' and payload != '{"command":"back"}':
+                elif state_chat == 'wait description' and payload != '{"command":"cancel"}':
                     state_chat = 'sending description'
-                elif state_chat == 'wait restart_id' and payload != '{"command":"back"}':
+                elif state_chat == 'wait restart_id' and payload != '{"command":"cancel"}':
                     state_chat = 'sending restart_id'
-                elif state_chat == 'wait start_id' and payload != '{"command":"back"}':
-                    state_chat = 'sending start_id'
-                elif state_chat == 'wait mail_text' and payload != '{"command":"back"}':
+                elif state_chat == 'wait mail_text' and payload != '{"command":"cancel"}':
                     state_chat = 'sending mail_text'
-                elif state_chat == 'wait mail_confirm' and payload != '{"command":"back"}':
+                elif state_chat == 'wait mail_confirm' and payload != '{"command":"cancel"}}':
                     state_chat = 'sending mail_confirm'	
                 else:
                     state_chat = payload
@@ -58,9 +56,7 @@ def main():
                 else:
                     states[id] = payload
             try:
-                if id == id_chat and ('нач' in text.lower().split()[1] or 'start' in text.lower().split()[1] or 'ptbot' in text.lower().split()[1] or 'поехали' in text.lower().split()[1] or 'появи' in text.lower().split()[1] or 'откр' in text.lower().split()[1] or 'эй' in text.lower().split()[1] or 'клавиатур' in text.lower().split()[1]):
-                    msg(id, 'Привет, команда PTCodding! Рад вас видеть! Включаю дополнительные функции &#128522; \n\nЗапрос VK Pay — запрос средств с указанием amount, description и id \nБаг-перезапуск — перезапуск бота по id с сообщением о баге \nВернуть к началу — возвращает кнопку «Начать» у юзера по id \nОтправить рассылку — отправляет рассылку с заданными text и всем, кроме id \nВывести данные в консоль — выводит данные в консоль сервера', keyboards.chat)
-                elif id < 2*10**9 and (states[id] == '{"command":"start"}' or 'нач' in text.lower().split()[0] or 'start' in text.lower().split()[0] or 'ptbot' in text.lower().split()[0] or 'поехали' in text.lower().split()[0] or 'появи' in text.lower().split()[0] or 'откр' in text.lower().split()[0] or 'эй' in text.lower().split()[0] or 'клавиатур' in text.lower().split()[0]) and states[id] not in ['sending idea', 'sending question', 'sending partner']: 
+                if id < 2*10**9 and (states[id] == '{"command":"start"}' or 'нач' in text.lower().split()[0] or 'start' in text.lower().split()[0] or 'ptbot' in text.lower().split()[0] or 'поехали' in text.lower().split()[0] or 'появи' in text.lower().split()[0] or 'откр' in text.lower().split()[0] or 'эй' in text.lower().split()[0] or 'клавиатур' in text.lower().split()[0]) and states[id] not in ['sending idea', 'sending question', 'sending partner']: 
                     msg(id, 'Привет, я PTBot — дворецкий команды PTCodding. \nНажмите на нужную Вам кнопку, чтобы команда нашла Вас и быстро ответила, а я не потерял Вас &#128522; \n\n#news — последние новости из сферы IT \n#partnership — партнёрство, сотрудничество, спонсорство \n#market — магазин услуг и покупки \n#team — вопросы к команде и о команде', keyboards.menu(mails[id]))
                 elif id > 2*10**9 and ('нач' in text.lower().split()[1] or 'start' in text.lower().split()[1] or 'ptbot' in text.lower().split()[1] or 'поехали' in text.lower().split()[1] or 'появи' in text.lower().split()[1] or 'откр' in text.lower().split()[1] or 'эй' in text.lower().split()[1] or 'клавиатур' in text.lower().split()[1]):
                     msg(id, 'Привет, я PTBot — чат-бот команды PTCodding. &#9995; С моей помощью вы можете узнать последние новости и задонатить на топовый функционал моим создателям — команде PTCodding. &#128176; Если вдруг я стану не нужен, напиши «скройся», «уберись», «исчезни», «пока» или что-нибудь в этом роде. &#128521;', keyboards.conversation(mails[id]))
@@ -270,17 +266,8 @@ def main():
 
 
             if id == id_chat:
-                if text.split()[1].lower() == 'мут':
-                    mute += [int(i) for i in text.split()[2:]]
-                    msg(id_chat, 'На всех, кого вы написали, наложил великую печать бана! 😈')
-                
-                elif text.split()[1].lower() == 'анмут':
-                    mute = list(set(mute) - set([int(i) for i in text.split()[2:]]))
-                    msg(id_chat, 'Великая печать бана снята. Удачи спамерам! 😎')
-                        
-                elif state_chat == '{"command":"request"}':
-                    msg(id_chat, 'Решили запросить у кого-то деньги? У кого? Отправьте id пользователя.', keyboards.back())
-                    state_chat = 'wait request_id'
+                if state_chat == '{"command":"cancel"}':
+                    msg(id_chat, 'Отменяю и исчезаю...')
 
                 elif state_chat == 'sending request_id':
                     request_id = text.split()[1]
@@ -296,46 +283,22 @@ def main():
                     request_desc = ' '.join(text.split()[1:])
                     try:
                         msg(request_id, 'Меня попросили запросить у Вас оплату для «{}» на сумму в ₽{}. Подтвердите оплату...'.format(request_desc, request_amount), keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(request_amount, urllib.parse.quote(request_desc))))
-                        msg(id_chat, 'Запрос оплаты у [id{0}|{1} {2}] прошёл успешно!'.format(request_id, name(request_id, 'gen')['first_name'], name(request_id, 'gen')['last_name']), keyboards.chat)
+                        msg(id_chat, 'Запрос оплаты у [id{0}|{1} {2}] прошёл успешно!'.format(request_id, name(request_id, 'gen')['first_name'], name(request_id, 'gen')['last_name']))
                     except Exception as err:
-                        msg(id_chat, 'Возникла проблема при запросе оплаты у пользователя. \n\n@pavetranquil (Павел), загляните в консоль и повторите попытку: dashboard.heroku.com/apps/ptcodding-bot/logs', keyboards.chat)
+                        msg(id_chat, 'Возникла проблема при запросе оплаты у пользователя. \n\nЗагляните в консоль и повторите попытку: dashboard.heroku.com/apps/ptcodding-bot/logs')
                         print(err)
                         print(traceback.format_exc())
 
-                    
-                elif state_chat == '{"command":"restart"}':
-                    msg(id_chat, 'Решили перезапустить меня? У кого? Отправьте id пользователей через запятую.', keyboards.back())
-                    state_chat = 'wait restart_id'
 
                 elif state_chat == 'sending restart_id':
                     restart_ids = text.replace(' ', '')
                     restart_ids = restart_ids.split(',')
                     for i in range(1, len(restart_ids)):
                         restart_ids[i] =  int(restart_ids[i])
-                        msg(restart_ids[i], 'Добрый день, {}! Видимо, наш PTBot где-то сломался, но сейчас уже всё хорошо. Приносим свои извинения, и перезапускаем его.\n\nС уважением, команда PTCodding.'.format(name(restart_ids[i])['first_name']))
+                        msg(restart_ids[i], 'Здравстуйте, {}! Наш PTBot где-то сломался, но мы его починили. Приносим свои извинения.\n\nС уважением, команда PTCodding.'.format(name(restart_ids[i])['first_name']))
                         msg(restart_ids[i], 'Привет, это снова я, Ваш любимый PTBot! &#128075; Добро пожаловать в старое доброе меню! &#128526;', keyboards.menu(mails[restart_ids[i]]))
-                        msg(id_chat, 'Баг-перезапуск прошёл успешно!', keyboards.chat)
+                        msg(id_chat, 'Баг-перезапуск прошёл успешно!')
 
-
-                elif state_chat == '{"command":"to_start"}':
-                    msg(id_chat, 'Кого возвращаем к самому началу? Отправьте id пользователей через запятую', keyboards.back())
-                    state_chat = 'wait start_id'
-
-                elif state_chat == 'sending start_id':
-                    start_ids = text.replace(' ', '')
-                    start_ids = start_ids.split(',')
-                    for i in range(1, len(start_ids)):
-                        start_ids[i] =  int(start_ids[i])
-                        msg(start_ids[i], 'Машина времени чудесна... С её помощью можно вернуть нас к тому моменту, когда мы ещё не были знакомы...', keyboards.start())
-                        try:
-                            delete(get_id(start_ids[i], 0))
-                        except Exception:
-                            pass
-                    msg(id_chat, 'Возврат к началу прошёл успешно!', keyboards.chat)
-
-                elif state_chat == '{"command":"mailing"}':
-                    msg(id_chat, 'Какой текст рассылки отправляем пользователям? Отправьте сообщение в ответ на это и не забудьте про первую заглавную', keyboards.back())
-                    state_chat = 'wait mail_text'
 
                 elif state_chat == 'sending mail_text':
                     mail_text = text
@@ -384,10 +347,31 @@ def main():
                                     msg(i, mail_text, attach=docs)
                             except Exception:
                                 pass
-                    msg(id_chat, 'Рассылка завершена!', keyboards.chat)
+                    msg(id_chat, 'Рассылка завершена!')
 
+                
+                elif 'анмут' in text:
+                    mute = list(set(mute) - set([int(i) for i in text.split()[2:]]))
+                    paste = 'пуст' if not ', '.join(map(str, mute)) else ', '.join(map(str, mute))
+                    msg(id_chat, 'Великая печать бана снята. Удачи спамерам! 😎\nСписок мутированных: ' + paste)
 
-                elif state_chat == '{"command":"output"}':
+                elif 'мут' in text:
+                    mute += [int(i) for i in text.split()[2:]]
+                    msg(id_chat, 'На всех, кого вы написали, наложил великую печать бана! 😈\nСписок мутированных: ' + ', '.join(map(str, mute)))
+
+                elif 'vk pay' in text:
+                    msg(id_chat, 'Решили запросить у кого-то деньги? У кого? Отправьте id пользователя.', keyboards.cancel())
+                    state_chat = 'wait request_id'
+                        
+                elif 'перезапуск' in text:
+                    msg(id_chat, 'Решили перезапустить меня? У кого? Отправьте id пользователей через запятую.', keyboards.cancel())
+                    state_chat = 'wait restart_id'
+
+                elif 'рассылка' in text:
+                    msg(id_chat, 'Какой текст рассылки отправляем пользователям? Отправьте сообщение в ответ на это и не забудьте про первую заглавную', keyboards.cancel())
+                    state_chat = 'wait mail_text'
+
+                elif 'консоль' in text:
                     msg(id_chat, 'Начинаю отправку...')
                     print('\nSTATES')
                     for id in states:
@@ -403,15 +387,7 @@ def main():
                     print('\nCARTS')
                     for id in keyboards.carts:
                         print(str(id) + '=' + str(keyboards.carts[id]))
-                    msg(id_chat, 'Все данные словарей states, news_types, mails, carts были выведены в консоль!', keyboards.chat)
-
-
-                elif state_chat == '{"command":"back"}':
-                    msg(id_chat, 'Возвращаю вас в главное меню.', keyboards.chat)
-                    internet_text, gadgets_text, games_text = '', '', ''
-                
-                elif 'исчезн' in text.lower() or 'убер' in text.lower() or 'убр' in text.lower() or 'скр' in text.lower() or 'пок' in text.lower() or 'св' in text.lower() or 'увид' in text.lower():
-                    msg(id_chat, 'Если захотите, чтобы я снова появилися — позовите меня по имени', keyboards.emptyboard())
+                    msg(id_chat, 'Все данные словарей states, news_types, mails, carts и списка mute были выведены в консоль!')
 
 
 
