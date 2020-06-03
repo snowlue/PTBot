@@ -1,8 +1,9 @@
-import vk_api, json
+import vk_api
+import json
 from vk_api.keyboard import VkKeyboard
 
-buy, buyback, partner, team, about, news = VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False), VkKeyboard(False)
-
+buy, buyback, partner = VkKeyboard(False), VkKeyboard(False), VkKeyboard(False)
+team, about, news = VkKeyboard(False), VkKeyboard(False), VkKeyboard(False)
 carts = {}
 
 
@@ -19,6 +20,7 @@ def cancel():
 	cancel = VkKeyboard(True)
 	cancel.add_button('Отменить ❎', 'negative', '{"command":"cancel"}')
 	return cancel.get_keyboard()
+
 
 def start():
 	start = VkKeyboard(False)
@@ -124,7 +126,8 @@ def cartboard(id, item=''):
 			cart.remove(item)
 
 	for it in cart:
-		board.add_button(it.split('.')[0]+' &#10134;', payload='{"command":"delete_' + it.split('.')[1] + '"}')
+		board.add_button(it.split('.')[0]+' &#10134;',
+						 payload='{"command":"delete_' + it.split('.')[1] + '"}')
 		board.add_line()
 	if cart:
 		board.add_button('Оформить заказ &#128222;', 'positive', '{"command":"order"}')

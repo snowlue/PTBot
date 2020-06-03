@@ -5,6 +5,7 @@ headers_gadgets, links_gadgets, descs_gadgets, originals_gadgets = [], [], [], [
 headers_internet, links_internet, descs_internet, originals_internet = [], [], [], []
 headers_games, links_games, descs_games, originals_games = [], [], [], []
 
+
 def refresh_gadgets():
 	global headers_gadgets, links_gadgets, descs_gadgets, originals_gadgets
 	headers_gadgets, links_gadgets, descs_gadgets, originals_gadgets = [], [], [], []
@@ -63,6 +64,7 @@ def refresh_games():
 			originals_games.append(article_soup.find(class_='doc__content').find('a').get('href'))
 		except:
 			originals_games.append(article_soup.find(class_='news-story__content').find('a').get('href'))
+
 
 refresh_games()
 refresh_gadgets()
