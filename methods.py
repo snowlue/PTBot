@@ -57,7 +57,7 @@ def parse_docs(attachments):
 			links.append(upload(url))
 		elif type == 'video':
 			links.append('video{}_{}_{}'.format(object['owner_id'], object['id'], object['access_key']))
-	return ', '.join(links)
+	return ','.join(links)
 
 
 def get_allow():

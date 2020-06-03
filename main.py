@@ -54,11 +54,9 @@ def main():
                 else:
                     state_chat = payload
             else:
-                if states[id] == 'wait idea' and text != 'Вернуться ↩':
-                    states[id] = 'sending idea'
-                elif states[id] == 'wait question' and text != 'Вернуться ↩':
+                if states[id] == 'wait question' and payload != '{"command":"back_team"}':
                     states[id] = 'sending question'
-                elif states[id] == 'wait partner' and text != 'Вернуться ↩':
+                elif states[id] == 'wait partner' and payload != '{"command":"back"}':
                     states[id] = 'sending partner'
                 else:
                     states[id] = payload
@@ -73,9 +71,11 @@ def main():
 #market — магазин услуг и покупки
 #team — вопросы к команде и о команде''',
                     keyboards.menu(mails[id]))
+                    states[id] = '{"command":"start"}'
                 elif id > 2*10**9 and ('нач' in text.lower().split()[1] or 'start' in text.lower().split()[1] or 'ptbot' in text.lower().split()[1] or 'поехали' in text.lower().split()[1] or 'появи' in text.lower().split()[1] or 'откр' in text.lower().split()[1] or 'эй' in text.lower().split()[1] or 'клавиатур' in text.lower().split()[1]):
-                    msg(id, 'Привет, я PTBot — чат-бот команды PTCodding. &#9995; С моей помощью вы можете узнать последние новости и задонатить на топовый функционал моим создателям — команде PTCodding. Если вдруг я стану не нужен, напиши «скройся», «уберись», «исчезни», «пока» или что-нибудь в этом роде.',
+                    msg(id, 'Привет, я PTBot — чат-бот команды PTCodding. &#9995; С моей помощью вы можете узнать последние новости и задонатить на топовый функционал моим создателям — @ptcodding (команде PTCodding). Если вдруг я стану не нужен, напишите «увидимся», «пока» или что-нибудь в этом роде.',
                         keyboards.conversation(mails[id]))
+                    states[id] = '{"command":"start"}'
             except Exception:
                 pass
 
@@ -355,7 +355,7 @@ def main():
                     msg(id, 'Возвращаюсь в главное меню.', keyboards.conversation(mails[id]))
                     internet_text, gadgets_text, games_text = '', '', ''
 
-                elif id > 2*10**9 and ('исчезн' in text.lower() or 'убер' in text.lower() or 'убр' in text.lower() or 'скр' in text.lower() or 'пок' in text.lower() or 'св' in text.lower() or 'увид' in text.lower() or 'уй' in text.lower() or 'уш' in text.lower()):
+                elif id > 2*10**9 and ('исчез' in text.lower() or 'убер' in text.lower() or 'убр' in text.lower() or 'скр' in text.lower() or 'пок' in text.lower() or 'св' in text.lower() or 'увид' in text.lower() or 'уй' in text.lower() or 'уш' in text.lower()):
                     msg(id, 'Если захотите, чтобы я снова появился — позовите меня по имени', keyboards.emptyboard())
 
                 elif states[id] == '':
@@ -406,13 +406,14 @@ def main():
                 elif state_chat == 'sending mail_text':
                     mail_text = text
                     mail_docs = parse_docs(attachments)
+                    paste = 'вложением.' if not mail_text else 'текстом:'
                     msg(id_chat,
-'''Итак, я отправляю рассылку со следующим текстом:
+'''Итак, я отправляю рассылку со следующим {}
 
 {}
 
 Подтвердите отправку или пропишите id через запятую с ключевыми словами «только» или «кроме».'''.format(
-                        mail_text), keyboards.cancel(), attach=mail_docs)
+                        paste, mail_text), keyboards.cancel(), attach=mail_docs)
                     state_chat = 'wait mail_confirm'
 
                 elif state_chat == 'sending mail_confirm':
@@ -421,10 +422,10 @@ def main():
                     text.sort()
                     if len(text) == 1:
                         if text[0].split()[0].lower() == 'только':
-                            for i in text[0].split()[1].replace(' ', '').split(','):
+                            for i in text[0].split(maxsplit=1)[1].replace(' ', '').split(','):
                                 only.append(int(i))
                         elif text[0].split()[0].lower() == 'кроме':
-                            for i in text[0].split()[1].replace(' ', '').split(','):
+                            for i in text[0].split(maxsplit=1)[1].replace(' ', '').split(','):
                                 exceptly.append(int(i))
                     elif len(text) == 2:
                         for i in text[0].split(maxsplit=1)[1].replace(' ', '').split(','):
