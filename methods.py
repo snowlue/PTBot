@@ -43,14 +43,22 @@ def isMember(group, id):
 
 
 def parse_docs(attachments):
-	docs_links = []
+	links = []
 	for attach in attachments:
 		type = attach['type']
 		object = attach[type]
 		if type == 'doc':
-			url = object['url']
-			docs_links.append(upload(url))
-	return ', '.join(docs_links)
+			is_photo = True if object['type'] == 4 else False
+			if is_photo:
+				url = object['url']
+				links.append(upload(url))
+		elif type == 'photo':
+			url = object['sizes'][-1]['url']
+			links.append(upload(url))
+		elif type == 'video':
+			links.append('video{}_{}_{}'.format(object['owner_id'], object['id'], object['access_key']))
+	return ', '.join(links)
+
 
 def get_allow():
 	allow_dict, chats_arr, offset = dict(), True, 0

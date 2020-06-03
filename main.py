@@ -10,6 +10,7 @@ states, news_types, mails, mute = data[0], data[1], data[2], data[3]
 keyboards.carts = data[4]
 payload, state_chat, id_chat = '', '', 2*10**9+6
 internet_text, gadgets_text, games_text = '', '', ''
+request_id, request_amount, request_desc, mail_text, mail_docs = '', '', '', '', ''
 last_request = time.time()
 
 print('main.py started!\n---------------------')
@@ -18,6 +19,7 @@ print('main.py started!\n---------------------')
 def main():
     global event, payload, state_chat, id_chat, states, news_types, mails, mute
     global internet_text, gadgets_text, games_text
+    global request_id, request_amount, request_desc, mail_text, mail_docs
     try:
         print('\nЛовлю события... Поймал {}'.format(event.type))
         if event.type == VkBotEventType.MESSAGE_NEW:
