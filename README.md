@@ -5,6 +5,7 @@
 PTBot – многофункциональный бот команды PTCodding, с помощью которого можно узнать последние новости интернета, гаджетов и игр, организовать партнёрство с командой, заказать услуги. Также можно узнать о каждом участнике команды немного нового, пожертвовать нам на кофе и подписаться на рассылки команды.
 
 ## Релизы:
+* ### [v2.2 (05.06.20)](https://github.com/PaveTranquil/ptbot/releases/tag/v2.2)
 * ### [v2.1 (30.09.19)](https://github.com/PaveTranquil/ptbot/releases/tag/v2.1)
 * ### [v2.0 (03.07.19)](https://github.com/PaveTranquil/ptbot/releases/tag/v2.0)
 * ### [v2.0-beta (22.06.19)](https://github.com/PaveTranquil/ptbot/releases/tag/v2.0-beta)
