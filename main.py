@@ -759,8 +759,17 @@ while True:
             main()
     elif time.time() - last_request >= 600:
         print('\nОбновляю новости...')
-        news.refresh_internet()
-        news.refresh_games()
-        news.refresh_gadgets()
+        try:
+            news.refresh_internet()
+        except Exception:
+            print('Новости интернета не обновлены!')
+        try:
+            news.refresh_games()
+        except Exception:
+            print('Новости игр не обновлены!')
+        try:
+            news.refresh_gadgets()
+        except Exception:
+            print('Новости гаджетов не обновлены!')
         print('Закончил!\n')
         last_request = time.time()
