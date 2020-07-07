@@ -366,21 +366,20 @@ def main():
                     msg(id_chat, 'Отменяю и исчезаю...')
 
                 elif state_chat == 'sending request_id':
-                    request_id = text.split()[1]
-                    msg(id_chat, 'А какую сумму нужно запросить? Отправьте число.')
+                    request_id = text
+                    msg(id_chat, 'А какую сумму нужно запросить? Отправьте число в ответ на это сообщение.')
                     state_chat = 'wait amount'
 
                 elif state_chat == 'sending amount':
-                    request_amount = text.split()[1]
-                    msg(id_chat, 'Какое описание к запросу? Отправьте текст.')
+                    request_amount = text
+                    msg(id_chat, 'Какое описание к запросу? Отправьте текст в ответ на это сообщение.')
                     state_chat = 'wait description'
 
                 elif state_chat == 'sending description':
-                    request_desc = ' '.join(text.split()[1:])
                     try:
-                        msg(request_id, 'Меня попросили запросить у Вас оплату для «{}» на сумму в ₽{}. Подтвердите оплату...'.format(request_desc, request_amount),
+                        msg(request_id, 'Меня попросили запросить у Вас оплату для «{}» на сумму в ₽{}. Подтвердите оплату...'.format(text, request_amount),
                             keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(
-                                               request_amount, urllib.parse.quote(request_desc))))
+                                               request_amount, urllib.parse.quote(text))))
                         msg(id_chat, 'Запрос оплаты у [id{0}|{1} {2}] прошёл успешно!'.format(
                             request_id, name(request_id, 'gen')['first_name'], name(request_id, 'gen')['last_name']))
                     except Exception:
@@ -391,8 +390,7 @@ def main():
                         print(traceback.format_exc())
 
                 elif state_chat == 'sending restart_id':
-                    restart_ids = text.replace(' ', '')
-                    restart_ids = restart_ids.split(',')
+                    restart_ids = text.replace(' ', '').split(',')
                     for i in range(1, len(restart_ids)):
                         restart_ids[i] = int(restart_ids[i])
                         msg(restart_ids[i],
@@ -463,20 +461,21 @@ def main():
                     msg(id_chat, 'Рассылка завершена!')
 
                 elif 'анмут' in text.lower():
-                    mute = list(set(mute) - set([int(i) for i in text.split()[2:]]))
+                    mute = list(set(mute) - set([int(i) for i in text.replace(' ', '').split(',')[2:]]))
                     paste = 'пуст' if not ', '.join(map(str, mute)) else ', '.join(map(str, mute))
                     msg(id_chat,
 '''Великая печать бана снята. Удачи спамерам! 😎
 Список мутированных: ''' + paste + '.')
 
                 elif 'мут' in text.lower():
-                    mute += [int(i) for i in text.split()[2:]]
+                    mute += [int(i) for i in text.replace(' ', '').split(',')[2:]]
+                    mute = list(set(mute))
                     msg(id_chat,
 '''На всех, кого вы написали, наложил великую печать бана! 😈
-Список мутированных: ''' + ', '.join(map(str, mute))) + '.'
+Список мутированных: ''' + ', '.join(map(str, mute)) + '.')
 
                 elif 'vk pay' in text.lower() or 'vkpay' in text.lower():
-                    msg(id_chat, 'Решили запросить у кого-то деньги? У кого? Отправьте id пользователя.', keyboards.cancel())
+                    msg(id_chat, 'Решили запросить у кого-то деньги? У кого? Отправьте id пользователя в ответ на это сообщение.', keyboards.cancel())
                     state_chat = 'wait request_id'
 
                 elif 'перезапуск' in text.lower():
@@ -505,6 +504,20 @@ def main():
                         print(str(id) + '=' + str(keyboards.carts[id]))
                     msg(id_chat, 'Все данные словарей states, news_types, mails, carts и списка mute были выведены в консоль!')
 
+                elif 'помощь' in text.lower():
+                    msg(id_chat,
+'''
+Список команд:
+- мут/анмут [числа через запятую] – отключает/включает оповещения о событиях от юзера
+- vk pay/vkpay – активирует диалог запроса оплаты у юзера по id
+- перезапуск – активирует диалог для перезапуска бота у юзеров по id
+- рассылка – активирует диалог для создания и отправки рассылок
+- консоль – выводит данные бота в консоль
+- помощь – выводит этот список команд.
+
+Не благодарите 😎
+''')
+        
         elif event.type == VkBotEventType.VKPAY_TRANSACTION:
             id = event.object.from_id
             domain = link(id)
