@@ -761,15 +761,15 @@ while True:
         print('\nОбновляю новости...')
         try:
             news.refresh_internet()
-        except Exception:
+        except:
             print('Новости интернета не обновлены!')
         try:
             news.refresh_games()
-        except Exception:
+        except:
             print('Новости игр не обновлены!')
         try:
             news.refresh_gadgets()
-        except Exception:
+        except:
             print('Новости гаджетов не обновлены!')
         print('Закончил!\n')
         last_request = time.time()
