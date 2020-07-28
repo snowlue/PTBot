@@ -10,6 +10,10 @@ def msg(id, message='', board=[], forward='', attach='', parse=True):
 										'dont_parse_links': not parse, 'attachment': attach})
 	print('Сообщение для {} отправлено'.format(id))
 
+def msg_edit(id, m_id, message='', board=[]):
+	vk_session.method('messages.edit', {'peer_id': id, 'message': message, 
+										'keyboard': board, 'conversation_message_id': m_id, 'dont_parse_links': True})
+	print('Сообщение для {} изменено'.format(id))
 
 def name(id, case='nom'):
 	if int(id) > 0:

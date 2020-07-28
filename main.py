@@ -3,7 +3,7 @@ import news
 import urllib.parse
 import traceback
 import time
-from methods import msg, name, link, sex, get_id, delete, isMember, parse_docs, get_allow, upload, read_data, VkBotEventType, longpoll
+from methods import msg, msg_edit, name, link, sex, get_id, delete, isMember, parse_docs, get_allow, upload, read_data, VkBotEventType, longpoll
 
 data = read_data()
 states, news_types, mails, mute = data[0], data[1], data[2], data[3]
@@ -21,13 +21,22 @@ def main():
     global internet_text, gadgets_text, games_text
     global request_id, request_amount, request_desc, mail_text, mail_docs
     try:
-        print('\nЛовлю события... Поймал {}'.format(event.type))
-        if event.type == VkBotEventType.MESSAGE_NEW:
-            id = event.object['message']['peer_id']  # всегда число!
-            text = event.object['message']['text']
-            msg_id = event.object['message']['id']
-            payload = event.object['message']['payload'] if 'payload' in event.object['message'] else ''
-            attachments = event.object['message']['attachments']
+        if event.type not in [VkBotEventType.MESSAGE_REPLY, VkBotEventType.MESSAGE_EDIT]:
+            print('\nЛовлю события... Поймал {}'.format(event.type))
+        if event.type in [VkBotEventType.MESSAGE_NEW, 'message_event']:
+            if event.type == VkBotEventType.MESSAGE_NEW:
+                id = event.object['message']['peer_id']  # всегда число!
+                payload = event.object['message']['payload'] if 'payload' in event.object['message'] else ''
+                text = event.object['message']['text']
+                msg_id = event.object['message']['id']
+                attachments = event.object['message']['attachments']
+                print('{} отправляет сообщение с текстом "{}"'.format(id, text))
+            else:
+                id = event.object['peer_id']
+                payload = str(event.object['payload']) if 'payload' in event.object else ''
+                cb_msg_id = event.object['conversation_message_id']
+                print('{} нажимает на Callback-кнопку'.format(id))
+                
 
             if id not in states:
                 states[id] = ''
@@ -79,7 +88,6 @@ def main():
             except Exception:
                 pass
 
-            print('{} отправляет сообщение с текстом "{}"'.format(id, text))
 
             if id != admin_chat:
 
@@ -270,7 +278,7 @@ def main():
                     if not internet_text:
                         for i in range(0, 8):
                             internet_text += str(i+1) + '&#8419; ' + news.headers_internet[i] + '\n'
-                    msg(id, 'Последние новости из мира интернета на сегодня: \n' +
+                    msg_edit(id, cb_msg_id, 'Последние новости из мира интернета на сегодня: \n' +
                         internet_text, keyboards.listboard())
 
                 elif states[id] == "{'command': 'news_gadgets'}":
@@ -278,7 +286,7 @@ def main():
                     if not gadgets_text:
                         for i in range(0, 8):
                             gadgets_text += str(i+1) + '&#8419; ' + news.headers_gadgets[i] + '\n'
-                    msg(id, 'Последние новости из мира гаджетов на сегодня: \n' +
+                    msg_edit(id, cb_msg_id, 'Последние новости из мира гаджетов на сегодня: \n' +
                         gadgets_text, keyboards.listboard())
 
                 elif states[id] == "{'command': 'news_games'}":
@@ -286,7 +294,7 @@ def main():
                     if not games_text:
                         for i in range(0, 8):
                             games_text += str(i+1) + '&#8419; ' + news.headers_games[i] + '\n'
-                    msg(id, 'Последние новости из мира игр на сегодня: \n' +
+                    msg_edit(id, cb_msg_id, 'Последние новости из мира игр на сегодня: \n' +
                         games_text, keyboards.listboard())
 
                 elif states[id] in ["{'command': '1'}", "{'command': '2'}", "{'command': '3'}", "{'command': '4'}", "{'command': '5'}", "{'command': '6'}", "{'command': '7'}", "{'command': '8'}"]:
@@ -303,10 +311,10 @@ def main():
                         header = news.headers_games[indx]
                         desc = news.descs_games[indx]
                         original = news.originals_games[indx]
-                    msg(id, header + '\n\n' + desc + '\n\nЧитать далее: ' + original)
+                    msg_edit(id, cb_msg_id, str(indx+1) + '&#8419; ' + header + '\n\n' + desc + '\n\nЧитать далее: ' + original, keyboards.listboard())
 
-                elif states[id] == '{"command":"back_news"}':
-                    msg(id,
+                elif states[id] == "{'command': 'back_news'}":
+                    msg_edit(id, cb_msg_id,
 '''Возвращаю Вас к выбору категории новостей. Выберите категорию: интернет, гаджеты или игры.
 Данные взяты из news.yandex.ru''',
                         keyboards.news)

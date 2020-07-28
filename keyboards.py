@@ -41,17 +41,6 @@ def conversation(mail):
 
 
 def menu(mail):
-
-
-def newsboard(news):
-	news.add_button('Интернет', 'primary', '{"command":"news_internet"}')
-	news.add_line()
-	news.add_button('Гаджеты', 'primary', '{"command":"news_gadgets"}')
-	news.add_line()
-	news.add_button('Игры', 'primary', '{"command":"news_games"}')
-	news.add_line()
-	news.add_button('Вернуться &#8617;', 'negative', '{"command":"back"}')
-	return news.get_keyboard()
     board = VkKeyboard(False)
     board.add_button('#news &#128240;', 'positive', '{"command":"news"}')
     board.add_line()
@@ -69,20 +58,76 @@ def newsboard(news):
     return board.get_keyboard()
 
 
+def newsboard():
+    board = {
+        'one_time': False,
+        'buttons': [
+            [{
+                'action': {'type': 'callback', 'label': 'Интернет 🌐', 'payload': '{"command":"news_internet"}'},
+                'color': 'primary'
+            }],
+            [{
+                'action': {'type': 'callback', 'label': 'Гаджеты 📱', 'payload': '{"command":"news_gadgets"}'},
+                'color': 'primary'
+            }],
+            [{
+                'action': {'type': 'callback', 'label': 'Игры 🎮', 'payload': '{"command":"news_games"}'},
+                'color': 'primary'
+            }]
+        ],
+        'inline': True
+    }
+    return json.dumps(board)
+
+
 def listboard():
-	board = VkKeyboard(False)
-	board.add_button('1&#8419;', payload='{"command":"1"}')
-	board.add_button('2&#8419;', payload='{"command":"2"}')
-	board.add_button('3&#8419;', payload='{"command":"3"}')
-	board.add_button('4&#8419;', payload='{"command":"4"}')
-	board.add_line()
-	board.add_button('5&#8419;', payload='{"command":"5"}')
-	board.add_button('6&#8419;', payload='{"command":"6"}')
-	board.add_button('7&#8419;', payload='{"command":"7"}')
-	board.add_button('8&#8419;', payload='{"command":"8"}')
-	board.add_line()
-	board.add_button('Вернуться &#8617;', 'negative', '{"command":"back_news"}')
-	return board.get_keyboard()
+    board = {
+        'one_time': False,
+        'buttons': [
+            [
+                {
+                    'action': {'type': 'callback', 'label': '1&#8419;', 'payload': '{"command":"1"}'},
+                    'color': 'secondary'
+                },
+                {
+                    'action': {'type': 'callback', 'label': '2&#8419;', 'payload': '{"command":"2"}'},
+                    'color': 'secondary'
+                },
+                {
+                    'action': {'type': 'callback', 'label': '3&#8419;', 'payload': '{"command":"3"}'},
+                    'color': 'secondary'
+                },
+                {
+                    'action': {'type': 'callback', 'label': '4&#8419;', 'payload': '{"command":"4"}'},
+                    'color': 'secondary'
+                }
+            ],
+            [
+                {
+                    'action': {'type': 'callback', 'label': '5&#8419;', 'payload': '{"command":"5"}'},
+                    'color': 'secondary'
+                },
+                {
+                    'action': {'type': 'callback', 'label': '6&#8419;', 'payload': '{"command":"6"}'},
+                    'color': 'secondary'
+                },
+                {
+                    'action': {'type': 'callback', 'label': '7&#8419;', 'payload': '{"command":"7"}'},
+                    'color': 'secondary'
+                },
+                {
+                    'action': {'type': 'callback', 'label': '8&#8419;', 'payload': '{"command":"8"}'},
+                    'color': 'secondary'
+                }
+            ],
+            [{
+                'action': {'type': 'callback', 'label': 'Вернуться &#8617;', 'payload': '{"command":"back_news"}'},
+                'color': 'negative'
+            }]
+        ],
+        'inline': True
+        }
+    return json.dumps(board)
 
 
 def teamboard():
