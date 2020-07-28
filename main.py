@@ -8,7 +8,7 @@ from methods import msg, name, link, sex, get_id, delete, isMember, parse_docs, 
 data = read_data()
 states, news_types, mails, mute = data[0], data[1], data[2], data[3]
 keyboards.carts = data[4]
-payload, state_chat, id_chat = '', '', 2*10**9+6
+payload, state_chat, admin_chat = '', '', 2*10**9+6
 internet_text, gadgets_text, games_text = '', '', ''
 request_id, request_amount, request_desc, mail_text, mail_docs = '', '', '', '', ''
 last_request = time.time()
@@ -17,7 +17,7 @@ print('main.py started!\n---------------------')
 
 
 def main():
-    global event, payload, state_chat, id_chat, states, news_types, mails, mute
+    global event, payload, state_chat, admin_chat, states, news_types, mails, mute
     global internet_text, gadgets_text, games_text
     global request_id, request_amount, request_desc, mail_text, mail_docs
     try:
@@ -38,7 +38,7 @@ def main():
             if id not in keyboards.carts:
                 keyboards.carts[id] = []
 
-            if id == id_chat:
+            if id == admin_chat:
                 if state_chat == 'wait request_id' and payload != '{"command":"cancel"}':
                     state_chat = 'sending request_id'
                 elif state_chat == 'wait amount' and payload != '{"command":"cancel"}':
@@ -81,7 +81,8 @@ def main():
 
             print('{} отправляет сообщение с текстом "{}"'.format(id, text))
 
-            if id != 2*10**9+6:
+            if id != admin_chat:
+
                 if states[id] == '{"command":"partnership"}':
                     msg(id,
 '''Станьте партнёрами PTCodding! Отправьте заявку сюда, и моё начальство рассмотрит её в ближайшие сроки. Следуйте моим советам:
@@ -97,7 +98,7 @@ def main():
                 elif states[id] == 'sending partner':
                     print('{} предлагает партнёрство'.format(id))
                     if id not in mute:
-                        msg(id_chat,
+                        msg(admin_chat,
 '''#botpartner
 [id{0}|{1} {2}] предлагает партнёрство.
 
@@ -119,7 +120,7 @@ def main():
                 elif states[id] == 'sending question':
                     print('{} отправляет вопрос'.format(id))
                     if id not in mute:
-                        msg(id_chat,
+                        msg(admin_chat,
 '''#botquestion
 [id{0}|{1} {2}] задаёт вопрос.
 
@@ -245,7 +246,7 @@ def main():
                 elif states[id] == '{"command":"order"}':
                     print('{} оформляет заказ.'.format(id))
                     if id not in mute:
-                        msg(id_chat,
+                        msg(admin_chat,
 '''#order
 Вас вызывают для оформления заказа. Пройдите, пожалуйста, по этой ссылке: https://vk.com/gim132868814?sel={}'''.format(id))
                         keyboards.carts[id] = []
@@ -264,7 +265,7 @@ def main():
 Данные взяты из news.yandex.ru''',
                         keyboards.news, parse=False)
 
-                elif states[id] == '{"command":"news_internet"}':
+                elif states[id] == "{'command': 'news_internet'}":
                     news_types[id] = 'internet'
                     if not internet_text:
                         for i in range(0, 8):
@@ -272,7 +273,7 @@ def main():
                     msg(id, 'Последние новости из мира интернета на сегодня: \n' +
                         internet_text, keyboards.listboard())
 
-                elif states[id] == '{"command":"news_gadgets"}':
+                elif states[id] == "{'command': 'news_gadgets'}":
                     news_types[id] = 'gadgets'
                     if not gadgets_text:
                         for i in range(0, 8):
@@ -280,7 +281,7 @@ def main():
                     msg(id, 'Последние новости из мира гаджетов на сегодня: \n' +
                         gadgets_text, keyboards.listboard())
 
-                elif states[id] == '{"command":"news_games"}':
+                elif states[id] == "{'command': 'news_games'}":
                     news_types[id] = 'games'
                     if not games_text:
                         for i in range(0, 8):
@@ -288,8 +289,8 @@ def main():
                     msg(id, 'Последние новости из мира игр на сегодня: \n' +
                         games_text, keyboards.listboard())
 
-                elif states[id] in ['{"command":"1"}', '{"command":"2"}', '{"command":"3"}', '{"command":"4"}', '{"command":"5"}', '{"command":"6"}', '{"command":"7"}', '{"command":"8"}']:
-                    indx = int(states[id].split('"')[3]) - 1
+                elif states[id] in ["{'command': '1'}", "{'command': '2'}", "{'command': '3'}", "{'command': '4'}", "{'command': '5'}", "{'command': '6'}", "{'command': '7'}", "{'command': '8'}"]:
+                    indx = int(states[id].split("'")[3]) - 1
                     if news_types[id] == 'internet':
                         header = news.headers_internet[indx]
                         desc = news.descs_internet[indx]
@@ -335,7 +336,6 @@ def main():
 
                 # elif states[id] == '{"command":"partners"}':
                 # 	msg(id, 'Добро пожаловать в список партнёров команды PTCodding! Благодаря этим людям в PTCodding очень многое изменяется. Я как чат-бот сообщества наблюдаю за всем этим со стороны — PTCodding растёт на глазах! &#128079;', keyboards.partner)
-                # 	msg(id, 'Добро пожаловать в список партнёров команды PTCodding! Партнёров совсем не осталось, но вы можете стать первым в этом списке — нажмите на #partnership и будьте вместе с нами! &#128079;', keyboards.partner)
 
                 # elif states[id] == '{"command":"sapod"}':
                 # 	msg(id, '@sapod (SAPOD) — первый и единственный подкаст из мира San Andreas. \n\nВедущий подкаста Стич часто появляется и в подкастах от PTCodding. Вместе с Павлом они обсуждают новости уходящего месяца в IT-кухне и жарко спорят, кто лучше: iOS или Android &#128521;\n\nСлушайте Стича в его подкасте SAPOD — vk.com/sapod &#128072;')
@@ -361,18 +361,18 @@ def main():
                 elif states[id] == '':
                     msg(id, 'Извините, я не понимаю Вас. Чтобы вернуться в главное меню, напишите «начать» или позовите меня по имени &#129335;')
 
-            if id == id_chat:
+            if id == admin_chat:
                 if state_chat == '{"command":"cancel"}':
-                    msg(id_chat, 'Отменяю и исчезаю...')
+                    msg(admin_chat, 'Отменяю и исчезаю...')
 
                 elif state_chat == 'sending request_id':
                     request_id = text
-                    msg(id_chat, 'А какую сумму нужно запросить? Отправьте число в ответ на это сообщение.')
+                    msg(admin_chat, 'А какую сумму нужно запросить? Отправьте число в ответ на это сообщение.')
                     state_chat = 'wait amount'
 
                 elif state_chat == 'sending amount':
                     request_amount = text
-                    msg(id_chat, 'Какое описание к запросу? Отправьте текст в ответ на это сообщение.')
+                    msg(admin_chat, 'Какое описание к запросу? Отправьте текст в ответ на это сообщение.')
                     state_chat = 'wait description'
 
                 elif state_chat == 'sending description':
@@ -380,10 +380,10 @@ def main():
                         msg(request_id, 'Меня попросили запросить у Вас оплату для «{}» на сумму в ₽{}. Подтвердите оплату...'.format(text, request_amount),
                             keyboards.payboard('action=pay-to-group&amount={}&description={}&group_id=132868814&aid=10'.format(
                                                request_amount, urllib.parse.quote(text))))
-                        msg(id_chat, 'Запрос оплаты у [id{0}|{1} {2}] прошёл успешно!'.format(
+                        msg(admin_chat, 'Запрос оплаты у [id{0}|{1} {2}] прошёл успешно!'.format(
                             request_id, name(request_id, 'gen')['first_name'], name(request_id, 'gen')['last_name']))
                     except Exception:
-                        msg(id_chat,
+                        msg(admin_chat,
 '''Возникла проблема при запросе оплаты у пользователя.
 
 Загляните в консоль и повторите попытку: dashboard.heroku.com/apps/ptcodding-bot/logs''')
@@ -399,13 +399,13 @@ def main():
 С уважением, команда PTCodding.'''.format(name(restart_ids[i])['first_name']))
                         msg(restart_ids[i], 'Привет, это снова я, Ваш любимый PTBot! &#128075; Добро пожаловать в старое доброе меню! &#128526;',
                             keyboards.menu(mails[restart_ids[i]]))
-                        msg(id_chat, 'Баг-перезапуск для {} прошёл успешно!'.format(restart_ids[i]))
+                        msg(admin_chat, 'Баг-перезапуск для {} прошёл успешно!'.format(restart_ids[i]))
 
                 elif state_chat == 'sending mail_text':
                     mail_text = text
                     mail_docs = parse_docs(attachments)
                     paste = 'вложением.' if not mail_text else 'текстом:'
-                    msg(id_chat,
+                    msg(admin_chat,
 '''Итак, я отправляю рассылку со следующим {}
 
 {}
@@ -431,7 +431,7 @@ def main():
                         for i in text[1].split(maxsplit=1)[1].replace(' ', '').split(','):
                             only.append(int(i))
 
-                    msg(id_chat, 'Начинаю рассылку...')
+                    msg(admin_chat, 'Начинаю рассылку...')
                     dialog_ids = get_allow()
                     for i in dialog_ids:
                         if i not in mails:
@@ -458,36 +458,36 @@ def main():
                                     msg(i, mail_text, attach=mail_docs)
                             except Exception:
                                 pass
-                    msg(id_chat, 'Рассылка завершена!')
+                    msg(admin_chat, 'Рассылка завершена!')
 
                 elif 'анмут' in text.lower():
                     mute = list(set(mute) - set([int(i) for i in text.replace(' ', '').split(',')[2:]]))
                     paste = 'пуст' if not ', '.join(map(str, mute)) else ', '.join(map(str, mute))
-                    msg(id_chat,
+                    msg(admin_chat,
 '''Великая печать бана снята. Удачи спамерам! 😎
 Список мутированных: ''' + paste + '.')
 
                 elif 'мут' in text.lower():
                     mute += [int(i) for i in text.replace(' ', '').split(',')[2:]]
                     mute = list(set(mute))
-                    msg(id_chat,
+                    msg(admin_chat,
 '''На всех, кого вы написали, наложил великую печать бана! 😈
 Список мутированных: ''' + ', '.join(map(str, mute)) + '.')
 
                 elif 'vk pay' in text.lower() or 'vkpay' in text.lower():
-                    msg(id_chat, 'Решили запросить у кого-то деньги? У кого? Отправьте id пользователя в ответ на это сообщение.', keyboards.cancel())
+                    msg(admin_chat, 'Решили запросить у кого-то деньги? У кого? Отправьте id пользователя в ответ на это сообщение.', keyboards.cancel())
                     state_chat = 'wait request_id'
 
                 elif 'перезапуск' in text.lower():
-                    msg(id_chat, 'Решили перезапустить меня? У кого? Отправьте id пользователей через запятую.', keyboards.cancel())
+                    msg(admin_chat, 'Решили перезапустить меня? У кого? Отправьте id пользователей через запятую.', keyboards.cancel())
                     state_chat = 'wait restart_id'
 
                 elif 'рассылка' in text.lower():
-                    msg(id_chat, 'Какой текст рассылки отправляем пользователям? Отправьте сообщение в ответ на это и не забудьте про первую заглавную', keyboards.cancel())
+                    msg(admin_chat, 'Какой текст рассылки отправляем пользователям? Отправьте сообщение в ответ на это и не забудьте про первую заглавную', keyboards.cancel())
                     state_chat = 'wait mail_text'
 
                 elif 'консоль' in text.lower():
-                    msg(id_chat, 'Начинаю отправку...')
+                    msg(admin_chat, 'Начинаю отправку...')
                     print('\nSTATES')
                     for id in states:
                         print(str(id) + '=' + str(states[id]))
@@ -502,10 +502,10 @@ def main():
                     print('\nCARTS')
                     for id in keyboards.carts:
                         print(str(id) + '=' + str(keyboards.carts[id]))
-                    msg(id_chat, 'Все данные словарей states, news_types, mails, carts и списка mute были выведены в консоль!')
+                    msg(admin_chat, 'Все данные словарей states, news_types, mails, carts и списка mute были выведены в консоль!')
 
                 elif 'помощь' in text.lower():
-                    msg(id_chat,
+                    msg(admin_chat,
 '''
 Список команд:
 - мут/анмут [числа через запятую] – отключает/включает оповещения о событиях от юзера
@@ -524,23 +524,23 @@ def main():
             amount = event.object.amount * 1000
             if event.object.description:
                 if sex(id) == 1:
-                    msg(id_chat,
+                    msg(admin_chat,
 '''#pay
 @{0} ({1} {2}) перевела ₽{3} с комментарием «{4}»'''.format(
                         domain, name(id)['first_name'], name(id)['last_name'], amount / 1000000, text))
                 else:
-                    msg(id_chat,
+                    msg(admin_chat,
 '''#pay
 @{0} ({1} {2}) перевёл ₽{3} с комментарием «{4}»'''.format(
                         domain, name(id)['first_name'], name(id)['last_name'], amount / 1000000, text))
             else:
                 if sex(id) == 1:
-                    msg(id_chat,
+                    msg(admin_chat,
 '''#pay
 @{0} ({1} {2}) пожертвовала ₽{3}'''.format(
                         domain, name(id)['first_name'], name(id)['last_name'], amount / 1000000))
                 else:
-                    msg(id_chat,
+                    msg(admin_chat,
 '''#pay
 @{0} ({1} {2}) пожертвовал ₽{3}'''.format(
                         domain, name(id)['first_name'], name(id)['last_name'], amount / 1000000))
@@ -550,13 +550,13 @@ def main():
             id = event.object.user_id
             domain = link(id)
             if sex(id) == 1 and id not in mute:
-                msg(id_chat,
+                msg(admin_chat,
 '''#open
 &#128236; @{0} ({1} {2}) разрешила присылать сообщения.
 Диалог с подписчиком: https://vk.com/gim132868814?sel={3}'''.format(
                     domain, name(id)['first_name'], name(id)['last_name'], id))
             elif id not in mute:
-                msg(id_chat,
+                msg(admin_chat,
 '''#open
 &#128236; @{0} ({1} {2}) разрешил присылать сообщения.
 Диалог с подписчиком: https://vk.com/gim132868814?sel={3}'''.format(
@@ -566,12 +566,12 @@ def main():
             id = event.object.user_id
             domain = link(id)
             if sex(id) == 1 and id not in mute:
-                msg(id_chat,
+                msg(admin_chat,
 '''#close
 &#128234; @{0} ({1} {2}) запретила присылать сообщения.'''.format(
                     domain, name(id)['first_name'], name(id)['last_name']))
             elif id not in mute:
-                msg(id_chat,
+                msg(admin_chat,
 '''#close
 &#128234; @{0} ({1} {2}) запретил присылать сообщения.'''.format(
                     domain, name(id)['first_name'], name(id)['last_name']))
@@ -580,12 +580,12 @@ def main():
             id = event.object.user_id
             domain = link(id)
             if sex(id) == 1 and id not in mute:
-                msg(id_chat,
+                msg(admin_chat,
 '''#join
 &#128150; @{0} ({1} {2}) вступила в PTCodding.'''.format(
                     domain, name(id)['first_name'], name(id)['last_name']))
             elif id not in mute:
-                msg(id_chat,
+                msg(admin_chat,
 '''#join
 &#128150; @{0} ({1} {2}) вступил в PTCodding.'''.format(
                     domain, name(id)['first_name'], name(id)['last_name']))
@@ -595,23 +595,23 @@ def main():
             domain = link(id)
             if event.object.self:
                 if sex(id) == 1 and id not in mute:
-                    msg(id_chat,
+                    msg(admin_chat,
 '''#leave
 &#128148; @{0} ({1} {2}) покинула PTCodding.'''.format(
                         domain, name(id)['first_name'], name(id)['last_name']))
                 elif id not in mute:
-                    msg(id_chat,
+                    msg(admin_chat,
 '''#leave
 &#128148; @{0} ({1} {2}) покинул PTCodding.'''.format(
                         domain, name(id)['first_name'], name(id)['last_name']))
             else:
                 if sex(id) == 1:
-                    msg(id_chat,
+                    msg(admin_chat,
 '''#delete
 &#128683; @{0} ({1} {2}) удалена из PTCodding.'''.format(
                         domain, name(id)['first_name'], name(id)['last_name']))
                 else:
-                    msg(id_chat,
+                    msg(admin_chat,
 '''#delete
 &#128683; @{0} ({1} {2}) удалён из PTCodding.'''.format(
                         domain, name(id)['first_name'], name(id)['last_name']))
@@ -622,13 +622,13 @@ def main():
             wall_id = event.object.owner_id
             post_id = event.object.id
             if sex(id) == 1:
-                msg(id_chat,
+                msg(admin_chat,
 '''#repost
 &#128226; @{0} ({1} {2}) сделала репост записи из PTCodding.
 Ссылка на запись: vk.com/wall{3}_{4}'''.format(
                     domain, name(id)['first_name'], name(id)['last_name'], wall_id, post_id))
             else:
-                msg(id_chat,
+                msg(admin_chat,
 '''#repost
 &#128226; @{0} ({1} {2}) сделал репост записи из PTCodding.
 Ссылка на запись: vk.com/wall{3}_{4}'''.format(
@@ -641,13 +641,13 @@ def main():
             post_id = event.object.post_id
             owner_id = event.object.owner_id
             if sex(id) == 1 and id not in mute:
-                msg(id_chat,
+                msg(admin_chat,
 '''#comment
 &#128196; @{0} ({1} {2}) оставила комментарий к записи из PTCodding.
 Ссылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'''.format(
                     domain, name(id)['first_name'], name(id)['last_name'], owner_id, post_id, comment_id))
             elif id not in mute:
-                msg(id_chat,
+                msg(admin_chat,
 '''#comment
 &#128196; @{0} ({1} {2}) оставил комментарий к записи из PTCodding.
 Ссылка на комментарий: vk.com/ptcodding?w=wall{3}_{4}_r{5}'''.format(
@@ -660,13 +660,13 @@ def main():
             topic_id = event.object.topic_id
             owner_id = event.object.topic_owner_id
             if sex(id) == 1 and id not in mute:
-                msg(id_chat,
+                msg(admin_chat,
 '''#comment
 &#128196; @{0} ({1} {2}) оставила комментарий в обсуждении PTCodding.
 Ссылка на комментарий: vk.com/ptcodding?w=board{3}_{4}_?post={5}'''.format(
                     domain, name(id)['first_name'], name(id)['last_name'], owner_id, topic_id, comment_id))
             elif id not in mute:
-                msg(id_chat,
+                msg(admin_chat,
 '''#comment
 &#128196; @{0} ({1} {2}) оставил комментарий в обсуждении PTCodding.
 Ссылка на комментарий: vk.com/ptcodding?w=board{3}_{4}_?post={5}'''.format(
@@ -678,13 +678,13 @@ def main():
             item_id = event.object.item_id
             market_id = event.object.market_owner_id
             if sex(id) == 1 and id not in mute:
-                msg(id_chat,
+                msg(admin_chat,
 '''#comment
 &#128196; @{0} ({1} {2}) оставила комментарий к товару PTCodding.
 Ссылка на комментарий: vk.com/ptcodding?w=product{3}_{4}'''.format(
                     domain, name(id)['first_name'], name(id)['last_name'], market_id, item_id))
             elif id not in mute:
-                msg(id_chat,
+                msg(admin_chat,
 '''#comment
 &#128196; @{0} ({1} {2}) оставил комментарий к товару PTCodding.
 Ссылка на комментарий: vk.com/ptcodding?w=product{3}_{4}'''.format(
@@ -694,12 +694,12 @@ def main():
             id = event.object.user_id
             domain = link(id)
             if sex(id) == 1:
-                msg(id_chat,
+                msg(admin_chat,
 '''#unban
 &#127379; @{0} ({1} {2}) удалена из чёрного списка PTCodding по истечении срока блокировки.'''.format(
                     domain, name(id)['first_name'], name(id)['last_name']))
             else:
-                msg(id_chat,
+                msg(admin_chat,
 '''#unban
 &#127379; @{0} ({1} {2}) удалён из чёрного списка PTCodding по истечении срока блокировки.'''.format(
                     domain, name(id)['first_name'], name(id)['last_name']))
@@ -708,12 +708,12 @@ def main():
             id = event.object.user_id
             domain = link(id)
             if sex(id) == 1 and id not in mute:
-                msg(id_chat,
+                msg(admin_chat,
 '''#vote
 &#128202; @{0} ({1} {2}) проголосовала в опросе по ссылке: vk.com/poll{3}_{4}'''.format(
                     domain, name(id)['first_name'], name(id)['last_name'], event.object.owner_id, event.object.poll_id))
             elif id not in mute:
-                msg(id_chat,
+                msg(admin_chat,
 '''#vote
 &#128202; @{0} ({1} {2}) проголосовал в опросе по ссылке: vk.com/poll{3}_{4}'''.format(
                     domain, name(id)['first_name'], name(id)['last_name'], event.object.owner_id, event.object.poll_id))
@@ -726,7 +726,7 @@ def main():
             levels = {0: 'Нет полномочий', 1: 'Модератор', 2: 'Редактор', 3: 'Администратор'}
             level_old = levels[event.object.level_old]
             level_new = levels[event.object.level_new]
-            msg(id_chat,
+            msg(admin_chat,
 '''#permission
 &#127385; @{0} ({1} {2}) изменил полномочия участника команды PTCodding @{3} ({4} {5}) с «{6}» на «{7}»'''.format(
                 domain, name(id)['first_name'], name(id)['last_name'], change_domain, name(change_id, 'gen')['first_name'], name(change_id, 'gen')['last_name'], level_old, level_new))
@@ -734,18 +734,19 @@ def main():
         elif event.type == VkBotEventType.GROUP_CHANGE_PHOTO:
             id = event.object.user_id
             domain = link(id)
-            msg(id_chat,
+            msg(admin_chat,
 '''#photo
 &#128444; @{0} ({1} {2}) изменил главную фотографию PTCodding'''.format(
                 domain, name(id)['first_name'], name(id)['last_name']))
 
     except Exception:
-        msg(id_chat,
-'''#log
-PTBot споткнулся о событие «{}» пользователя {}!
+        msg(165504240,
+'''
+PTBot споткнулся о событие «{0}» пользователя {1}!
+Диалог с подписчиком: vk.com/gim132868814?sel={1}
 
 Трейсбэк:
-{}
+{2}
 
 @pavetranquil (Павел), загляните в консоль и исправьте баг: dashboard.heroku.com/apps/ptcodding-bot/logs'''.format(
             event.type, id, '\n'.join(traceback.format_exc().split('\n')[1:])))
@@ -759,17 +760,8 @@ while True:
             main()
     elif time.time() - last_request >= 600:
         print('\nОбновляю новости...')
-        try:
-            news.refresh_internet()
-        except:
-            print('Новости интернета не обновлены!')
-        try:
-            news.refresh_games()
-        except:
-            print('Новости игр не обновлены!')
-        try:
-            news.refresh_gadgets()
-        except:
-            print('Новости гаджетов не обновлены!')
+        news.refresh_internet()
+        news.refresh_games()
+        news.refresh_gadgets()
         print('Закончил!\n')
         last_request = time.time()
