@@ -12,9 +12,14 @@ def msg(id, message='', board=[], forward='', attach='', parse=True):
     print('Сообщение для {} отправлено'.format(id))
 
 def msg_edit(id, m_id, message='', board=[]):
-	vk_session.method('messages.edit', {'peer_id': id, 'message': message, 
-										'keyboard': board, 'conversation_message_id': m_id, 'dont_parse_links': True})
-	print('Сообщение для {} изменено'.format(id))
+    try:
+        vk_session.method('messages.edit', {'peer_id': id, 'message': message, 'keyboard': board, 
+                                            'conversation_message_id': m_id, 'dont_parse_links': True})
+        print('Сообщение для {} изменено'.format(id))
+    except Exception:
+        vk_session.method('messages.send', {'peer_id': id, 'random_id': random.randint(-2147483648, 2147483647), 
+                                            'message': message, 'keyboard': board, 'dont_parse_links': True})
+        print('Сообщение для {} отправлено, а не изменено'.format(id))
 
 def name(id, case='nom'):
     if int(id) > 0:
