@@ -1,9 +1,10 @@
-﻿import keyboards
-import news
-import urllib.parse
+﻿import time
 import traceback
-import time
-from methods import msg, msg_edit, name, link, sex, get_id, delete, isMember, parse_docs, get_allow, upload, read_data, VkBotEventType, longpoll
+import urllib.parse
+
+import keyboards
+import news
+from methods import *
 
 data = read_data()
 states, news_types, mails, mute = data[0], data[1], data[2], data[3]

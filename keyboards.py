@@ -1,7 +1,7 @@
-import vk_api
 import json
-from vk_api.keyboard import VkKeyboard
 
+import vk_api
+from vk_api.keyboard import VkKeyboard
 
 carts = {}
 

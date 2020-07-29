@@ -1,6 +1,7 @@
+import time
+
 import requests
 from bs4 import BeautifulSoup as bs
-import time
 
 headers_gadgets, descs_gadgets, originals_gadgets = [], [], []
 headers_internet, descs_internet, originals_internet = [], [], []
