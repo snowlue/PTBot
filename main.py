@@ -24,7 +24,7 @@ def main():
     try:
         if event.type not in [VkBotEventType.MESSAGE_REPLY, VkBotEventType.MESSAGE_EDIT]:
             print('\nЛовлю события... Поймал {}'.format(event.type))
-        if event.type in [VkBotEventType.MESSAGE_NEW, 'message_event']:
+        if event.type in [VkBotEventType.MESSAGE_NEW, VkBotEventType.MESSAGE_EVENT]:
             if event.type == VkBotEventType.MESSAGE_NEW:
                 id = event.object['message']['peer_id']  # всегда число!
                 payload = event.object['message']['payload'] if 'payload' in event.object['message'] else ''
@@ -320,6 +320,10 @@ def main():
 Данные взяты из news.yandex.ru''',
                         keyboards.news)
                     news_types[id] = ''
+
+                # ОБРАТНАЯ СОВМЕСТИМОСТЬ НА ВЕБЕ! УДАЛИТЬ, КОГДА КНОПКИ БУДУТ ПОДДЕРЖИВАТЬСЯ!
+                elif text in ['Интернет 🌐', 'Гаджеты 📱', 'Игры 🎮']:
+                    msg(id, 'Увы, сейчас такие кнопки не поддерживаются на этой платформе. Попробуйте нажать на них, находясь в мобильной версии ВКонтакте (m.vk.com) или через приложение ВКонтакте на Android и iOS.')
 
                 elif states[id] == '{"command":"donate"}':
                     msg(id, 'Я очень хочу кушать. Я голодный... &#128546; Дайте, пожалуйста, пару долларов, чтобы мне купили пончик &#127849;',

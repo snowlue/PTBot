@@ -1,6 +1,5 @@
 import json
 
-import vk_api
 from vk_api.keyboard import VkKeyboard
 
 carts = {}
@@ -86,37 +85,37 @@ def listboard():
         'buttons': [
             [
                 {
-                    'action': {'type': 'callback', 'label': '1&#8419;', 'payload': '{"command":"1"}'},
+                    'action': {'type': 'callback', 'label': '1️⃣', 'payload': '{"command":"1"}'},
                     'color': 'secondary'
                 },
                 {
-                    'action': {'type': 'callback', 'label': '2&#8419;', 'payload': '{"command":"2"}'},
+                    'action': {'type': 'callback', 'label': '2️⃣', 'payload': '{"command":"2"}'},
                     'color': 'secondary'
                 },
                 {
-                    'action': {'type': 'callback', 'label': '3&#8419;', 'payload': '{"command":"3"}'},
+                    'action': {'type': 'callback', 'label': '3️⃣', 'payload': '{"command":"3"}'},
                     'color': 'secondary'
                 },
                 {
-                    'action': {'type': 'callback', 'label': '4&#8419;', 'payload': '{"command":"4"}'},
+                    'action': {'type': 'callback', 'label': '4️⃣', 'payload': '{"command":"4"}'},
                     'color': 'secondary'
                 }
             ],
             [
                 {
-                    'action': {'type': 'callback', 'label': '5&#8419;', 'payload': '{"command":"5"}'},
+                    'action': {'type': 'callback', 'label': '5️⃣', 'payload': '{"command":"5"}'},
                     'color': 'secondary'
                 },
                 {
-                    'action': {'type': 'callback', 'label': '6&#8419;', 'payload': '{"command":"6"}'},
+                    'action': {'type': 'callback', 'label': '6️⃣', 'payload': '{"command":"6"}'},
                     'color': 'secondary'
                 },
                 {
-                    'action': {'type': 'callback', 'label': '7&#8419;', 'payload': '{"command":"7"}'},
+                    'action': {'type': 'callback', 'label': '7️⃣', 'payload': '{"command":"7"}'},
                     'color': 'secondary'
                 },
                 {
-                    'action': {'type': 'callback', 'label': '8&#8419;', 'payload': '{"command":"8"}'},
+                    'action': {'type': 'callback', 'label': '8️⃣', 'payload': '{"command":"8"}'},
                     'color': 'secondary'
                 }
             ],
