@@ -771,7 +771,7 @@ while True:
     if events:
         for event in events:
             main()
-    elif time.time() - last_request >= 600:
+    elif time.time() - last_request >= 1800:
         print('\nОбновляю новости...')
         news.refresh_internet()
         news.refresh_games()
