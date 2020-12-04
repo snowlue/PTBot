@@ -1,6 +1,7 @@
 ﻿import time
 import traceback
 import urllib.parse
+from pythonping import ping
 
 import keyboards
 import news
@@ -70,6 +71,7 @@ def main():
                     states[id] = 'sending partner'
                 else:
                     states[id] = payload
+
             try:
                 if id < 2*10**9 and (states[id] == '{"command":"start"}' or 'нач' in text.lower().split()[0] or 'start' in text.lower().split()[0] or 'ptbot' in text.lower().split()[0] or 'поехали' in text.lower().split()[0] or 'появи' in text.lower().split()[0] or 'откр' in text.lower().split()[0] or 'эй' in text.lower().split()[0] or 'клавиатур' in text.lower().split()[0]) and states[id] not in ['sending idea', 'sending question', 'sending partner']:
                     msg(id, 
@@ -89,8 +91,17 @@ def main():
             except Exception:
                 pass
 
+            if 'пинг' in text.lower():
+                ping_api = ping('api.vk.com', count=1)
+                ping_vk = ping('vk.com', count=1)
+                ip_api, ms_api = ping_api.__str__().split()[2][:-1], ping_api.rtt_min_ms
+                ip_vk, ms_vk = ping_vk.__str__().split()[2][:-1], ping_vk.rtt_min_ms
 
-            if id != admin_chat:
+                msg(id, '🏓 Понг!\nvk.com [{}]: {} ms.\napi.vk.com [{}]: {} ms.'.format(
+                    ip_vk, ms_vk, ip_api, ms_api
+                ), parse=False)
+                
+            elif id != admin_chat:
 
                 if states[id] == '{"command":"partnership"}':
                     msg(id,

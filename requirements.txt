@@ -13,6 +13,7 @@ pycosat==0.6.3
 pycparser==2.19
 pyOpenSSL==19.0.0
 PySocks==1.6.8
+pythonping==1.0.15
 pytz==2019.1
 requests==2.21.0
 ruamel-yaml==0.15.46
