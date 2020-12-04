@@ -15,7 +15,7 @@ pyOpenSSL==19.0.0
 PySocks==1.6.8
 pythonping==1.0.15
 pytz==2019.1
-requests==2.21.0
+requests==2.22.0
 ruamel-yaml==0.15.46
 six==1.12.0
 soupsieve==1.9.1
