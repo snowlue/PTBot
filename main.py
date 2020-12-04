@@ -92,8 +92,8 @@ def main():
                 pass
 
             if 'пинг' in text.lower():
-                ping_api = popen('sh ping -с 1 api.vk.com').readlines()
-                ping_vk = popen('sh ping -с 1 vk.com').readlines()
+                ping_api = popen('sh sh/app/ping -с 1 api.vk.com').readlines()
+                ping_vk = popen('sh sh/app/ping -с 1 vk.com').readlines()
                 ip_api, ms_api = ping_api[1].encode('cp1251').decode('cp866').split()[4], ping_api[-1].split()[-2]
                 ip_vk, ms_vk = ping_vk[1].encode('cp1251').decode('cp866').split()[4], ping_vk[-1].split()[-2]
                 msg(id, '🏓 Понг!\nvk.com {}: {} ms.\napi.vk.com {}: {} ms.'.format(
