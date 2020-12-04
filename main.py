@@ -1,7 +1,7 @@
 ﻿import time
 import traceback
 import urllib.parse
-from pythonping import ping
+from os import popen
 
 import keyboards
 import news
@@ -92,12 +92,11 @@ def main():
                 pass
 
             if 'пинг' in text.lower():
-                ping_api = ping('api.vk.com', count=1)
-                ping_vk = ping('vk.com', count=1)
-                ip_api, ms_api = ping_api.__str__().split()[2][:-1], ping_api.rtt_min_ms
-                ip_vk, ms_vk = ping_vk.__str__().split()[2][:-1], ping_vk.rtt_min_ms
-
-                msg(id, '🏓 Понг!\nvk.com [{}]: {} ms.\napi.vk.com [{}]: {} ms.'.format(
+                ping_api = popen('ping -с 1 api.vk.com').readlines()
+                ping_vk = popen('ping -с 1 vk.com').readlines()
+                ip_api, ms_api = ping_api[1].encode('cp1251').decode('cp866').split()[4], ping_api[-1].split()[-2]
+                ip_vk, ms_vk = ping_vk[1].encode('cp1251').decode('cp866').split()[4], ping_vk[-1].split()[-2]
+                msg(id, '🏓 Понг!\nvk.com {}: {} ms.\napi.vk.com {}: {} ms.'.format(
                     ip_vk, ms_vk, ip_api, ms_api
                 ), parse=False)
                 
