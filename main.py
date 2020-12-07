@@ -36,6 +36,7 @@ def main():
             else:
                 id = event.object['peer_id']
                 payload = str(event.object['payload']) if 'payload' in event.object else ''
+                text = ''
                 cb_msg_id = event.object['conversation_message_id']
                 print('{} нажимает на Callback-кнопку'.format(id))
                 
