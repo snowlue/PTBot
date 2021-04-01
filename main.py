@@ -85,7 +85,7 @@ def main():
 #team — вопросы к команде и о команде''',
                     keyboards.menu(mails[id]))
                     states[id] = '{"command":"start"}'
-                elif id > 2*10**9 and ('нач' in text.lower().split()[1] or 'start' in text.lower().split()[1] or 'ptbot' in text.lower().split()[1] or 'поехали' in text.lower().split()[1] or 'появи' in text.lower().split()[1] or 'откр' in text.lower().split()[1] or 'эй' in text.lower().split()[1] or 'клавиатур' in text.lower().split()[1]):
+                elif id > 2*10**9 and ('нач' in text.lower() or 'start' in text.lower() or 'ptbot' in text.lower() or 'поехали' in text.lower() or 'появи' in text.lower() or 'откр' in text.lower() or 'эй' in text.lower() or 'клавиатур' in text.lower()):
                     msg(id, 'Привет, я PTBot — чат-бот команды PTCodding. &#9995; С моей помощью вы можете узнать последние новости и задонатить на топовый функционал моим создателям — @ptcodding (команде PTCodding). Если вдруг я стану не нужен, напишите «увидимся», «пока» или что-нибудь в этом роде.',
                         keyboards.conversation(mails[id]))
                     states[id] = '{"command":"start"}'
@@ -547,12 +547,12 @@ def main():
                     msg(admin_chat,
 '''#pay
 @{0} ({1} {2}) перевела ₽{3} с комментарием «{4}»'''.format(
-                        domain, name(id)['first_name'], name(id)['last_name'], amount / 1000000, text))
+                        domain, name(id)['first_name'], name(id)['last_name'], amount / 1000000, event.object.description))
                 else:
                     msg(admin_chat,
 '''#pay
 @{0} ({1} {2}) перевёл ₽{3} с комментарием «{4}»'''.format(
-                        domain, name(id)['first_name'], name(id)['last_name'], amount / 1000000, text))
+                        domain, name(id)['first_name'], name(id)['last_name'], amount / 1000000, event.object.description))
             else:
                 if sex(id) == 1:
                     msg(admin_chat,
