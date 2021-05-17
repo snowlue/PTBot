@@ -378,9 +378,6 @@ def main():
                 elif id > 2*10**9 and ('исчез' in text.lower() or 'убер' in text.lower() or 'убр' in text.lower() or 'скр' in text.lower() or 'пок' in text.lower() or 'св' in text.lower() or 'увид' in text.lower() or 'уй' in text.lower() or 'уш' in text.lower()):
                     msg(id, 'Если захотите, чтобы я снова появился — позовите меня по имени', keyboards.emptyboard())
 
-                elif states[id] == '':
-                    msg(id, 'Извините, я не понимаю Вас. Чтобы вернуться в главное меню, напишите «начать» или позовите меня по имени &#129335;')
-
             if id == admin_chat:
                 if state_chat == '{"command":"cancel"}':
                     msg(admin_chat, 'Отменяю и исчезаю...')
