@@ -74,7 +74,7 @@ def main():
                     states[id] = payload
 
             try:
-                if id < 2*10**9 and (states[id] == '{"command":"start"}' or 'нач' in text.lower().split()[0] or 'start' in text.lower().split()[0] or 'ptbot' in text.lower().split()[0] or 'поехали' in text.lower().split()[0] or 'появи' in text.lower().split()[0] or 'откр' in text.lower().split()[0] or 'эй' in text.lower().split()[0] or 'клавиатур' in text.lower().split()[0]) and states[id] not in ['sending idea', 'sending question', 'sending partner']:
+                if id < 2*10**9 and (states[id] == '{"command":"start"}' or any([cmd in text.lower().split()[0] for cmd in ('начать', 'start', 'ptbot', 'поехали', 'клавиатур')])) and states[id] not in ['sending idea', 'sending question', 'sending partner']:
                     msg(id, 
 '''Привет, я PTBot — дворецкий команды PTCodding. 
 Нажмите на нужную Вам кнопку, чтобы команда нашла Вас и быстро ответила, а я не потерял Вас &#128522;
@@ -85,7 +85,7 @@ def main():
 #team — вопросы к команде и о команде''',
                     keyboards.menu(mails[id]))
                     states[id] = '{"command":"start"}'
-                elif id > 2*10**9 and ('нач' in text.lower() or 'start' in text.lower() or 'ptbot' in text.lower() or 'поехали' in text.lower() or 'появи' in text.lower() or 'откр' in text.lower() or 'эй' in text.lower() or 'клавиатур' in text.lower()):
+                elif id > 2*10**9 and (any([cmd in text.lower().split()[0] for cmd in ('начать', 'start', 'ptbot', 'поехали', 'клавиатур', 'эй')]) or any([cmd in text.lower().split()[1] for cmd in ('начать', 'start', 'ptbot', 'поехали', 'клавиатур', 'эй')])):
                     msg(id, 'Привет, я PTBot — чат-бот команды PTCodding. &#9995; С моей помощью вы можете узнать последние новости и задонатить на топовый функционал моим создателям — @ptcodding (команде PTCodding). Если вдруг я стану не нужен, напишите «увидимся», «пока» или что-нибудь в этом роде.',
                         keyboards.conversation(mails[id]))
                     states[id] = '{"command":"start"}'
