@@ -844,15 +844,16 @@ while True:
             main()
     else:
         if time.time() - last_requests[0] >= 600:
-            print('\nОбновляю новости...')
+            print('Обновляю новости...', end='\r')
             news.refresh_internet()
             news.refresh_games()
             news.refresh_gadgets()
-            print('Закончил!\n')
+            print('Закончил обновлять новости!\n')
             last_requests[0] = time.time()
         if time.time() - last_requests[1] >= 30:
             resp_id = check_wall()
             if resp_id != -1 and resp_id != last_id_postponed:
                 msg(admin_chat, '📃 Новый отложенный пост: vk.com/wall-132868814_{} 👈🏻'.format(resp_id))
+                print('Новый отложенный пост!\n')
                 last_id_postponed = resp_id
             last_requests[1] = time.time()
