@@ -1,25 +1,28 @@
 import random
+from os import environ
 
 import requests
 import vk_api
-from vk_api.bot_longpoll import VkBotEventType, VkBotLongPoll
+from vk_api.bot_longpoll import VkBotLongPoll
 
 
 def msg(id, message='', board=[], forward='', attach='', parse=True):
-    vk_session.method('messages.send', {'peer_id': id, 'random_id': random.randint(-2147483648, 2147483647), 
-                                        'message': message, 'forward_messages': forward, 'keyboard': board, 
+    vk_session.method('messages.send', {'peer_id': id, 'random_id': random.randint(-2147483648, 2147483647),
+                                        'message': message, 'forward_messages': forward, 'keyboard': board,
                                         'dont_parse_links': not parse, 'attachment': attach})
     print('Сообщение для {} отправлено'.format(id))
 
+
 def msg_edit(id, m_id, message='', board=[]):
     try:
-        vk_session.method('messages.edit', {'peer_id': id, 'message': message, 'keyboard': board, 
+        vk_session.method('messages.edit', {'peer_id': id, 'message': message, 'keyboard': board,
                                             'conversation_message_id': m_id, 'dont_parse_links': True})
         print('Сообщение для {} изменено'.format(id))
     except Exception:
-        vk_session.method('messages.send', {'peer_id': id, 'random_id': random.randint(-2147483648, 2147483647), 
+        vk_session.method('messages.send', {'peer_id': id, 'random_id': random.randint(-2147483648, 2147483647),
                                             'message': message, 'keyboard': board, 'dont_parse_links': True})
         print('Сообщение для {} отправлено, а не изменено'.format(id))
+
 
 def name(id, case='nom'):
     if int(id) > 0:
@@ -44,12 +47,12 @@ def get_id(id, offset=1):
     return vk.messages.getHistory(offset=offset, count=1, user_id=id)['items'][0]['id']
 
 
-def delete(msg_id):
-    vk.messages.delete(message_ids=msg_id, delete_for_all=True)
-
-
-def isMember(group, id):
-    return vk.groups.isMember(group_id=group, user_id=id)
+def check_wall():
+    response = vk_user_session.method('wall.get', {'domain': 'ptcodding', 'filter': 'postponed'})
+    if response['count'] == 0:
+        return -1
+    else:
+        return response['items'][-1]['id']
 
 
 def parse_docs(attachments):
@@ -120,8 +123,8 @@ def read_data():
     return [states, news_types, mails, mute, carts]
 
 
-vk_session = vk_api.VkApi(
-    token='9dfd38af10a2e483ef4c15dadbb77d6b186e912afcdd58680fd5be588c25b1d8096f4a2038623d54a2cb5')
+vk_session = vk_api.VkApi(token=environ['BOT_TOKEN'])
+vk_user_session = vk_api.VkApi(token=environ['USER_TOKEN'])
 
 vk = vk_session.get_api()
 longpoll = VkBotLongPoll(vk_session, '132868814', 0)
