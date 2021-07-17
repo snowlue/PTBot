@@ -1,5 +1,3 @@
-import json
-
 from vk_api.keyboard import VkKeyboard
 
 carts = {}
@@ -58,75 +56,29 @@ def menu(mail):
 
 
 def newsboard():
-    board = {
-        'one_time': False,
-        'buttons': [
-            [{
-                'action': {'type': 'callback', 'label': 'Интернет 🌐', 'payload': '{"command":"news_internet"}'},
-                'color': 'primary'
-            }],
-            [{
-                'action': {'type': 'callback', 'label': 'Гаджеты 📱', 'payload': '{"command":"news_gadgets"}'},
-                'color': 'primary'
-            }],
-            [{
-                'action': {'type': 'callback', 'label': 'Игры 🎮', 'payload': '{"command":"news_games"}'},
-                'color': 'primary'
-            }]
-        ],
-        'inline': True
-    }
-    return json.dumps(board)
+    board = VkKeyboard(inline=True)
+    board.add_callback_button('Интернет 🌐', 'primary', '{"command":"news_internet"}')
+    board.add_line()
+    board.add_callback_button('Гаджеты 📱', 'primary', '{"command":"news_gadgets"}')
+    board.add_line()
+    board.add_callback_button('Игры 🎮', 'primary', '{"command":"news_games"}')
+    return board.get_keyboard()
 
 
 def listboard():
-    board = {
-        'one_time': False,
-        'buttons': [
-            [
-                {
-                    'action': {'type': 'callback', 'label': '1️⃣', 'payload': '{"command":"1"}'},
-                    'color': 'secondary'
-                },
-                {
-                    'action': {'type': 'callback', 'label': '2️⃣', 'payload': '{"command":"2"}'},
-                    'color': 'secondary'
-                },
-                {
-                    'action': {'type': 'callback', 'label': '3️⃣', 'payload': '{"command":"3"}'},
-                    'color': 'secondary'
-                },
-                {
-                    'action': {'type': 'callback', 'label': '4️⃣', 'payload': '{"command":"4"}'},
-                    'color': 'secondary'
-                }
-            ],
-            [
-                {
-                    'action': {'type': 'callback', 'label': '5️⃣', 'payload': '{"command":"5"}'},
-                    'color': 'secondary'
-                },
-                {
-                    'action': {'type': 'callback', 'label': '6️⃣', 'payload': '{"command":"6"}'},
-                    'color': 'secondary'
-                },
-                {
-                    'action': {'type': 'callback', 'label': '7️⃣', 'payload': '{"command":"7"}'},
-                    'color': 'secondary'
-                },
-                {
-                    'action': {'type': 'callback', 'label': '8️⃣', 'payload': '{"command":"8"}'},
-                    'color': 'secondary'
-                }
-            ],
-            [{
-                'action': {'type': 'callback', 'label': 'Вернуться &#8617;', 'payload': '{"command":"back_news"}'},
-                'color': 'negative'
-            }]
-        ],
-        'inline': True
-        }
-    return json.dumps(board)
+    board = VkKeyboard(inline=True)
+    board.add_callback_button('1️⃣', payload='{"command":"1"}')
+    board.add_callback_button('2️⃣', payload='{"command":"2"}')
+    board.add_callback_button('3️⃣', payload='{"command":"3"}')
+    board.add_callback_button('4️⃣', payload='{"command":"4"}')
+    board.add_line()
+    board.add_callback_button('5️⃣', payload='{"command":"5"}')
+    board.add_callback_button('6️⃣', payload='{"command":"6"}')
+    board.add_callback_button('7️⃣', payload='{"command":"7"}')
+    board.add_callback_button('8️⃣', payload='{"command":"8"}')
+    board.add_line()
+    board.add_callback_button('Вернуться &#8617;', 'negative', '{"command":"back_news"}')
+    return board.get_keyboard()
 
 
 def teamboard():
