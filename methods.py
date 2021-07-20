@@ -52,7 +52,7 @@ def check_wall():
     if response['count'] == 0:
         return -1
     else:
-        return response['items'][-1]['id']
+        return response['items'][-1]['id'] if response['items'][-1]['created_by'] != 165504240 else -1
 
 
 def parse_docs(attachments):
