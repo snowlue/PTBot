@@ -49,10 +49,11 @@ def get_id(id, offset=1):
 
 def check_wall():
     response = vk_user_session.method('wall.get', {'domain': 'ptcodding', 'filter': 'postponed'})
-    if response['count'] == 0:
+    count = response['count']
+    if count == 0:
         return -1
     else:
-        return response['items'][-1]['id']
+        return max([response['items'][i]['id'] for i in range(count)])
 
 
 def parse_docs(attachments):
