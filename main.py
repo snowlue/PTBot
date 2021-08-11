@@ -104,7 +104,7 @@ def main():
             except Exception:
                 pass
 
-            if 'пинг' in text.lower():
+            if 'пинг' in text.lower().split()[:2]:
                 ms_api = get('https://api.vk.com', timeout=5).elapsed.total_seconds() * 10 ** 3
                 ms_vk = get('https://vk.com', timeout=5).elapsed.total_seconds() * 10 ** 3
                 msg(id, '🏓 Понг!\nvk.com: {:.2f} ms.\napi.vk.com: {:.2f} ms.'.format(ms_vk, ms_api), parse=False)
@@ -535,36 +535,36 @@ https://vk.com/gim132868814?sel={}'''.format(id))
                                 pass
                     msg(admin_chat, 'Рассылка завершена!')
 
-                elif 'анмут' in text.lower():
+                elif 'анмут' in text.lower().split()[:2]:
                     mute = list(set(mute) - set([int(i) for i in text.replace(' ', '').split(',')[2:]]))
                     paste = 'пуст' if not ', '.join(map(str, mute)) else ', '.join(map(str, mute))
                     msg(admin_chat,
                         '''Великая печать бана снята. Удачи спамерам! 😎
 Список мутированных: ''' + paste + '.')
 
-                elif 'мут' in text.lower():
+                elif 'мут' in text.lower().split()[:2]:
                     mute += [int(i) for i in text.replace(' ', '').split(',')[2:]]
                     mute = list(set(mute))
                     msg(admin_chat,
                         '''На всех, кого вы написали, наложил великую печать бана! 😈
 Список мутированных: ''' + ', '.join(map(str, mute)) + '.')
 
-                elif 'vk pay' in text.lower() or 'vkpay' in text.lower():
+                elif 'vk pay' in text.lower().split()[:2] or 'vkpay' in text.lower().split()[:2]:
                     msg(admin_chat, 'Решили запросить у кого-то деньги? У кого? Отправьте id пользователя в ответ '
                         'на это сообщение.', keyboards.cancel())
                     state_chat = 'wait request_id'
 
-                elif 'перезапуск' in text.lower():
+                elif 'перезапуск' in text.lower().split()[:2]:
                     msg(admin_chat, 'Решили перезапустить меня? У кого? Отправьте id пользователей через запятую.',
                         keyboards.cancel())
                     state_chat = 'wait restart_id'
 
-                elif 'рассылка' in text.lower():
+                elif 'рассылка' in text.lower().split()[:2]:
                     msg(admin_chat, 'Какой текст рассылки отправляем пользователям? Отправьте сообщение в ответ на '
                         'это и не забудьте про первую заглавную', keyboards.cancel())
                     state_chat = 'wait mail_text'
 
-                elif 'консоль' in text.lower():
+                elif 'консоль' in text.lower().split()[:2]:
                     msg(admin_chat, 'Начинаю отправку...')
                     print('\nSTATES')
                     for id in states:
@@ -583,7 +583,7 @@ https://vk.com/gim132868814?sel={}'''.format(id))
                     msg(admin_chat,
                         'Все данные словарей states, news_types, mails, carts и списка mute были выведены в консоль!')
 
-                elif 'помощь' in text.lower():
+                elif 'помощь' in text.lower().split()[:2]:
                     msg(admin_chat,
                         '''
 Список команд:
