@@ -51,9 +51,9 @@ def check_wall():
     response = vk_user_session.method('wall.get', {'domain': 'ptcodding', 'filter': 'postponed'})
     count = response['count']
     if count == 0:
-        return -1
+        return []
     else:
-        return max([response['items'][i]['id'] for i in range(count)])
+        return sorted([response['items'][i]['id'] for i in range(count)])
 
 
 def parse_docs(attachments):

@@ -10,7 +10,11 @@ import news
 from methods import (check_wall, get_allow, link, longpoll, msg,
                      msg_edit, name, parse_docs, read_data, sex)
 
-data, last_id_postponed = read_data(), check_wall()
+data = read_data()
+if news_pack := check_wall():
+    last_id_postponed = news_pack[-1]
+else:
+    last_id_postponed = 0
 states, news_types, mails, mute = data[0], data[1], data[2], data[3]
 keyboards.carts = data[4]
 payload, state_chat, admin_chat = '', '', 2*10**9+6
@@ -851,9 +855,10 @@ while True:
             print('Закончил обновлять новости!\n')
             last_requests[0] = time.time()
         if time.time() - last_requests[1] >= 30:
-            resp_id = check_wall()
-            if resp_id > last_id_postponed:
-                msg(admin_chat, '📃 Новый отложенный пост: vk.com/wall-132868814_{} 👈🏻'.format(resp_id))
-                print('Новый отложенный пост!\n')
-                last_id_postponed = resp_id
+            last_news = check_wall()
+            for news_id in last_news:
+                if news_id > last_id_postponed:
+                    msg(admin_chat, '📃 Новый отложенный пост: vk.com/wall-132868814_{} 👈🏻'.format(news_id))
+                    print('Новый отложенный пост!\n')
+                    last_id_postponed = news_id
             last_requests[1] = time.time()
